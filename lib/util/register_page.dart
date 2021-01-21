@@ -9,7 +9,6 @@ class RegisterPage extends StatefulWidget {
 }
 
 class RegisterPageState extends State<RegisterPage> {
-
   String email;
   String nickname;
   String realname;
@@ -22,103 +21,109 @@ class RegisterPageState extends State<RegisterPage> {
       ),
       body: Center(
         child: SingleChildScrollView(
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.email),
-                      hintText: 'Email',
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                        color: Colors.blue,
-                      )),
-                      border: OutlineInputBorder(),
-                    ),
-                    onChanged: (value){
-                      setState(() {
-                        email = value;
-                      });
-                    },
-                  ),
+          child: Column(mainAxisAlignment: MainAxisAlignment.start, children: <
+              Widget>[
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+              child: TextField(
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.email),
+                  hintText: 'Email',
+                  enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                    color: Colors.blue,
+                  )),
+                  border: OutlineInputBorder(),
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.person),
-                      hintText: 'Nutzername',
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                        color: Colors.blue,
-                      )),
-                      border: OutlineInputBorder(),
-                    ),
-                    onChanged: (value){
-                      setState(() {
-                        nickname = value;
-                      });
-                    },
-                  ),
+                onChanged: (value) {
+                  setState(() {
+                    email = value;
+                  });
+                },
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+              child: TextField(
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.person),
+                  hintText: 'Nutzername',
+                  enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                    color: Colors.blue,
+                  )),
+                  border: OutlineInputBorder(),
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.person_outline),
-                      hintText: 'Vorname',
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                        color: Colors.blue,
-                      )),
-                      border: OutlineInputBorder(),
-                    ),
-                    onChanged: (value){
-                      setState(() {
-                        realname = value;
-                      });
-                    },
-                  ),
+                onChanged: (value) {
+                  setState(() {
+                    nickname = value;
+                  });
+                },
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+              child: TextField(
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.person_outline),
+                  hintText: 'Vorname',
+                  enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                    color: Colors.blue,
+                  )),
+                  border: OutlineInputBorder(),
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Passwort',
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.blue,
-                          )),
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
+                onChanged: (value) {
+                  setState(() {
+                    realname = value;
+                  });
+                },
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+              child: TextField(
+                obscureText: true,
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.lock),
+                  hintText: 'Passwort',
+                  enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                    color: Colors.blue,
+                  )),
+                  border: OutlineInputBorder(),
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Passwort wiederholen',
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.blue,
-                          )),
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
+                onChanged: (value) {
+                  setState(() {});
+                },
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+              child: TextField(
+                obscureText: true,
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.lock),
+                  hintText: 'Passwort wiederholen',
+                  enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                    color: Colors.blue,
+                  )),
+                  border: OutlineInputBorder(),
                 ),
-
-                Padding(padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                onChanged: (value) {
+                  setState(() {});
+                },
+              ),
+            ),
+            Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 child: MaterialButton(
                   child: Text('Registrieren'),
                   color: Colors.blue,
-                  onPressed: (){
-
-                  },
-                )
-                ),
-              ]),
+                  onPressed: () {},
+                )),
+          ]),
         ),
       ),
     );
