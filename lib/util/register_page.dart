@@ -12,8 +12,10 @@ class RegisterPageState extends State<RegisterPage> {
   String email;
   String nickname;
   String realname;
+  String password;
+  String passwordRepeat;
 
-  @override
+      @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -37,7 +39,15 @@ class RegisterPageState extends State<RegisterPage> {
                 ),
                 onChanged: (value) {
                   setState(() {
-                    email = value;
+                    bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value);
+                    if(emailValid==true){
+                      email = value;
+                      print(emailValid);
+                    }
+                    else{
+                      email = null;
+                      print("ungültig");
+                    }
                   });
                 },
               ),
@@ -94,7 +104,10 @@ class RegisterPageState extends State<RegisterPage> {
                   border: OutlineInputBorder(),
                 ),
                 onChanged: (value) {
-                  setState(() {});
+                  setState(() {
+                    password = value;
+                    print(password);
+                  });
                 },
               ),
             ),
@@ -112,7 +125,9 @@ class RegisterPageState extends State<RegisterPage> {
                   border: OutlineInputBorder(),
                 ),
                 onChanged: (value) {
-                  setState(() {});
+                  setState(() {
+                    passwordRepeat = value;
+                  });
                 },
               ),
             ),
@@ -121,7 +136,14 @@ class RegisterPageState extends State<RegisterPage> {
                 child: MaterialButton(
                   child: Text('Registrieren'),
                   color: Colors.blue,
-                  onPressed: () {},
+                  onPressed: () {
+                    if(password == passwordRepeat){
+
+                    }
+                    else{
+                      print("Passwort bitte erneut eingeben");
+                    }
+                  },
                 )),
           ]),
         ),
