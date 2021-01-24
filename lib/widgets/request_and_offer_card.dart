@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:traveltogether_frontend/shared/address_table.dart';
-import 'package:traveltogether_frontend/shared/formatted_date_time.dart';
+import 'file:///C:/Users/admin/Documents/FH/SWE_II/traveltogether/traveltogether_frontend/lib/widgets/address_table.dart';
+import 'file:///C:/Users/admin/Documents/FH/SWE_II/traveltogether/traveltogether_frontend/lib/widgets/formatted_date_time.dart';
 
 class RequestAndOfferCard extends StatelessWidget {
   @override

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:traveltogether_frontend/shared/formatted_address.dart';
+import 'file:///C:/Users/admin/Documents/FH/SWE_II/traveltogether/traveltogether_frontend/lib/widgets/formatted_address.dart';
 
 class AddressTable extends StatelessWidget {
   @override

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:traveltogether_frontend/shared/request_and_offer_card.dart';
+import 'file:///C:/Users/admin/Documents/FH/SWE_II/traveltogether/traveltogether_frontend/lib/widgets/request_and_offer_card.dart';
 
 void main() {
   runApp(MyApp());
