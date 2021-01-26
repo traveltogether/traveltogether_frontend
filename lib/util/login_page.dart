@@ -72,8 +72,8 @@ class LoginPageState extends State<LoginPage> {
                     child: Text('Login'),
                     color: Colors.blue,
                     onPressed: () {
-                      if (_validation(name, password) == true ||
-                          _validation(name, password) == true) {
+                      if (_validation(name, password)  ||
+                          _validation(name, password)) {
                         print("Erfolgreicher Login");
                       } else {
                         print(

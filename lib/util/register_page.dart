@@ -15,7 +15,7 @@ class RegisterPageState extends State<RegisterPage> {
   String password;
   String passwordRepeat;
 
-      @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -39,12 +39,13 @@ class RegisterPageState extends State<RegisterPage> {
                 ),
                 onChanged: (value) {
                   setState(() {
-                    bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value);
-                    if(emailValid==true){
+                    bool emailValid = RegExp(
+                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                        .hasMatch(value);
+                    if (emailValid) {
                       email = value;
                       print(emailValid);
-                    }
-                    else{
+                    } else {
                       email = null;
                       print("ungültig");
                     }
@@ -137,10 +138,8 @@ class RegisterPageState extends State<RegisterPage> {
                   child: Text('Registrieren'),
                   color: Colors.blue,
                   onPressed: () {
-                    if(password == passwordRepeat){
-
-                    }
-                    else{
+                    if (password == passwordRepeat) {
+                    } else {
                       print("Passwort bitte erneut eingeben");
                     }
                   },
