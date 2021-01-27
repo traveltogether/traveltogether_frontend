@@ -7,6 +7,11 @@ class FormattedAddress extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(this.address);
+    return Text(formatAddress(this.address));
+  }
+
+  formatAddress(String test){
+    var indexOfComma = this.address.indexOf(",");
+    return this.address.replaceRange(indexOfComma, indexOfComma + 2, "\n");
   }
 }

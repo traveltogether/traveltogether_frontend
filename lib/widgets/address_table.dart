@@ -8,12 +8,15 @@ class AddressTable extends StatelessWidget {
       children: [
         TableRow(children: <Widget>[
           Text("Von:"),
-          FormattedAddress("Musterstraße, Berlin"),
+          Padding(
+            padding: EdgeInsets.only(bottom: 5),
+            child: FormattedAddress("Musterstraße 15, 10753 Berlin")
+          ),
         ],
         ),
         TableRow(children: <Widget>[
           Text("Nach:"),
-          FormattedAddress("another Address, Berlin"),
+          FormattedAddress("another Address 24, 20306 Berlin"),
         ],
         )
       ],
