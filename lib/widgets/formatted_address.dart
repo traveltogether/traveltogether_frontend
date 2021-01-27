@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class FormattedAddress extends StatelessWidget {
-  String address;
+  final String address;
   
   FormattedAddress(this.address);
 
