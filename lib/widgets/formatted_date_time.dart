@@ -11,11 +11,12 @@ class FormattedDateTime extends StatelessWidget {
     return Text(getDateTime());
   }
 
-  String getDateTime(){
-    if (this.dateTime == null){
+  String getDateTime() {
+    if (this.dateTime == null) {
       return "-";
-    } else{
-      final DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(this.dateTime);
+    } else {
+      final DateTime dateTime =
+          DateTime.fromMillisecondsSinceEpoch(this.dateTime);
       final DateFormat formatter = DateFormat('dd.MM.yyyy, hh:mm');
       final String formatted = formatter.format(dateTime);
       return formatted;
