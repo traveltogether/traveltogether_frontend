@@ -18,9 +18,20 @@ class RequestAndOfferCard extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(bottom: 7),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  FormattedDateTime("starttime"),
-                  FormattedDateTime("endtime"),
+                  Column(
+                    children: [
+                      Text("Startzeit"),
+                      FormattedDateTime(null),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Text("Ankunftszeit"),
+                      FormattedDateTime(1670751000000),
+                    ],
+                  ),
                 ],
               ),
             ),
@@ -28,6 +39,7 @@ class RequestAndOfferCard extends StatelessWidget {
             Text(
                 "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea."),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Padding(
                   padding: EdgeInsets.only(top: 5),

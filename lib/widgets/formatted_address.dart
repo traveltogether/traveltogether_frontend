@@ -10,7 +10,7 @@ class FormattedAddress extends StatelessWidget {
     return Text(formatAddress(this.address));
   }
 
-  formatAddress(String test){
+  String formatAddress(String test){
     var indexOfComma = this.address.indexOf(",");
     return this.address.replaceRange(indexOfComma, indexOfComma + 2, "\n");
   }
