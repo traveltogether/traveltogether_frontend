@@ -26,6 +26,7 @@ class LoginPageState extends State<LoginPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
+              SizedBox(height: 170),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
                 child: TextField(
@@ -65,6 +66,7 @@ class LoginPageState extends State<LoginPage> {
                   },
                 ),
               ),
+              SizedBox(height: 170),
               Padding(
                   padding:
                       EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -77,7 +79,7 @@ class LoginPageState extends State<LoginPage> {
                         print("Erfolgreicher Login");
                       } else {
                         print(
-                            "Nutzerdaten nicht vorhanden, bitte Probieren sie es erneut");
+                            "Nutzerdaten nicht vorhanden, bitte Probieren Sie es erneut");
                       }
                     },
                   )),
