@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/text_input.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key, this.title}) : super(key: key);
@@ -15,6 +16,18 @@ class LoginPageState extends State<LoginPage> {
 
   bool check;
 
+  final _formKey = GlobalKey<FormState>();
+
+  TextEditingController _controllerName;
+  TextEditingController _controllerPassword;
+
+  @override
+  void initState(){
+    super.initState();
+    _controllerName = new TextEditingController();
+    _controllerPassword = new TextEditingController();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,48 +36,19 @@ class LoginPageState extends State<LoginPage> {
       ),
       body: Center(
         child: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               SizedBox(height: 170),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
-                child: TextField(
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.person),
-                    hintText: 'Email Oder Nutzername',
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                      color: Colors.blue,
-                    )),
-                    border: OutlineInputBorder(),
-                  ),
-                  onChanged: (value) {
-                    setState(() {
-                      name = value;
-                    });
-                  },
-                ),
+                child: TextInput("Username oder Email", Icons.person, _controllerName)
               ),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
-                child: TextField(
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.lock),
-                    hintText: 'Passwort',
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                      color: Colors.blue,
-                    )),
-                    border: OutlineInputBorder(),
-                  ),
-                  onChanged: (value) {
-                    setState(() {
-                      password = value;
-                    });
-                  },
-                ),
+                child: TextInput("Passwort", Icons.lock, _controllerPassword)
               ),
               SizedBox(height: 170),
               Padding(
@@ -74,6 +58,10 @@ class LoginPageState extends State<LoginPage> {
                     child: Text('Login'),
                     color: Colors.blue,
                     onPressed: () {
+                      print(_controllerName.text);
+                      name = _controllerName.text;
+
+                      password = _controllerPassword.text;
                       if (_validation(name, password)  ||
                           _validation(name, password)) {
                         print("Erfolgreicher Login");
@@ -81,10 +69,16 @@ class LoginPageState extends State<LoginPage> {
                         print(
                             "Nutzerdaten nicht vorhanden, bitte Probieren Sie es erneut");
                       }
+
+                      if(_formKey.currentState.validate()) print("valide");
                     },
+
                   )),
             ],
           ),
+
+              ),
+
         ),
       ),
     );
