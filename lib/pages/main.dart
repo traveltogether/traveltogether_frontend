@@ -57,8 +57,8 @@ class _MyHomePageState extends State<MyHomePage> {
   String journey = "";
 
   _MyHomePageState() {
-    this.journeyService.get(3).then((val) => setState(() {
-      journey = val;
+    this.journeyService.getAll().then((val) => setState(() {
+      journey = val[0].departureTime.toString();
     }));
   }
 
