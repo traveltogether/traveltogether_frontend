@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:traveltogether_frontend/services/journey_service.dart';
 import '../widgets/request_and_offer_card.dart';
 
 void main() {
@@ -52,6 +53,14 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  JourneyService journeyService = new JourneyService();
+  String journey = "";
+
+  _MyHomePageState() {
+    this.journeyService.get(3).then((val) => setState(() {
+      journey = val;
+    }));
+  }
 
   void _incrementCounter() {
     setState(() {
@@ -99,6 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             RequestAndOfferCard(),
+            Text(journey),
           ],
         ),
       ),
