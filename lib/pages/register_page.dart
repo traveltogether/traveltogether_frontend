@@ -16,6 +16,24 @@ class RegisterPageState extends State<RegisterPage> {
   String password;
   String passwordRepeat;
 
+  final _formKey = GlobalKey<FormState>();
+
+  TextEditingController _controllerNickname;
+  TextEditingController _controllerFirstName;
+  TextEditingController _controllerEmail;
+  TextEditingController _controllerPassword;
+  TextEditingController _controllerRepeatPassword;
+
+  @override
+  void initState() {
+    super.initState();
+    _controllerNickname = new TextEditingController();
+    _controllerFirstName = new TextEditingController();
+    _controllerEmail = new TextEditingController();
+    _controllerPassword = new TextEditingController();
+    _controllerRepeatPassword = new TextEditingController();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,128 +42,70 @@ class RegisterPageState extends State<RegisterPage> {
       ),
       body: Center(
         child: SingleChildScrollView(
-          child: Column(mainAxisAlignment: MainAxisAlignment.start, children: <
-              Widget>[
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
-              child: TextField(
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.email),
-                  hintText: 'Email',
-                  enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                    color: Colors.blue,
-                  )),
-                  border: OutlineInputBorder(),
-                ),
-                onChanged: (value) {
-                  setState(() {
+          child: Form(
+            key: _formKey,
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.start, children: <
+                    Widget>[
+              Padding(
+                  padding:
+                      EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+                  child: TextInput("Email", Icons.email, _controllerEmail,
+                      customValidator: (value) {
                     bool emailValid = RegExp(
                             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                         .hasMatch(value);
                     if (emailValid) {
                       email = value;
-                      print(emailValid);
+                      return null;
                     } else {
                       email = null;
-                      print("ungültig");
+                      return "ungültige Emailadresse";
                     }
-                  });
-                },
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
-              child: TextField(
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.person),
-                  hintText: 'Nutzername',
-                  enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
+                  })),
+              Padding(
+                  padding:
+                      EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+                  child: TextInput(
+                      "Nutzername", Icons.person, _controllerNickname)),
+              Padding(
+                  padding:
+                      EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+                  child: TextInput(
+                      "Vorname", Icons.person_outline, _controllerFirstName)),
+              Padding(
+                  padding:
+                      EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+                  child:
+                      TextInput("Passwort", Icons.lock, _controllerPassword)),
+              Padding(
+                  padding:
+                      EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+                  child: TextInput("Passwort wiederholen", Icons.lock,
+                      _controllerRepeatPassword)),
+              Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  child: MaterialButton(
+                    child: Text('Registrieren'),
                     color: Colors.blue,
+                    onPressed: () {
+                      email = _controllerEmail.text;
+                      nickname = _controllerNickname.text;
+                      realname = _controllerFirstName.text;
+                      password = _controllerPassword.text;
+                      passwordRepeat = _controllerRepeatPassword.text;
+
+                      if (_formKey.currentState.validate()) print("valide");
+
+                      if (password == passwordRepeat) {
+                      } else {
+                        print("Passwort bitte erneut eingeben");
+                      }
+                    },
                   )),
-                  border: OutlineInputBorder(),
-                ),
-                onChanged: (value) {
-                  setState(() {
-                    nickname = value;
-                  });
-                },
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
-              child: TextField(
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.person_outline),
-                  hintText: 'Vorname',
-                  enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                    color: Colors.blue,
-                  )),
-                  border: OutlineInputBorder(),
-                ),
-                onChanged: (value) {
-                  setState(() {
-                    realname = value;
-                  });
-                },
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
-              child: TextField(
-                obscureText: true,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.lock),
-                  hintText: 'Passwort',
-                  enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                    color: Colors.blue,
-                  )),
-                  border: OutlineInputBorder(),
-                ),
-                onChanged: (value) {
-                  setState(() {
-                    password = value;
-                    print(password);
-                  });
-                },
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
-              child: TextField(
-                obscureText: true,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.lock),
-                  hintText: 'Passwort wiederholen',
-                  enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                    color: Colors.blue,
-                  )),
-                  border: OutlineInputBorder(),
-                ),
-                onChanged: (value) {
-                  setState(() {
-                    passwordRepeat = value;
-                  });
-                },
-              ),
-            ),
-            Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                child: MaterialButton(
-                  child: Text('Registrieren'),
-                  color: Colors.blue,
-                  onPressed: () {
-                    if (password == passwordRepeat) {
-                    } else {
-                      print("Passwort bitte erneut eingeben");
-                    }
-                  },
-                )),
-          ]),
+            ]),
+          ),
         ),
       ),
     );
