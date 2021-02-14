@@ -42,7 +42,10 @@ class JourneyService extends ServiceBase {
 
   Future<Map<String, dynamic>> post(JourneyWriteViewModel journey) async {
     var json = mapJourneyToJson(journey);
-    debugPrint(json.toString());
     return await postHttpBody('$url', json);
+  }
+
+  Future<Map<String, dynamic>> changeJourneyState(int id, bool newState) async {
+    return put('$url/$id/open', {"value": newState});
   }
 }

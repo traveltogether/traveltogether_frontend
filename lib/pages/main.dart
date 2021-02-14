@@ -58,17 +58,8 @@ class _MyHomePageState extends State<MyHomePage> {
   String textfieldContent = "";
 
   _MyHomePageState() {
-    var journey = new JourneyWriteViewModel();
-    journey.request = true;
-    journey.offer = false;
-    journey.startLatLong = "52.540010;13.247840";
-    journey.endLatLong = "52.528910;13.132780";
-    journey.departureTime = 1616610960000;
-    journey.arrivalTime = null;
-
-
-    this.journeyService.post(journey).then((val) => setState(() {
-      textfieldContent = val.toString();
+    this.journeyService.get(5).then((val) => setState(() {
+      textfieldContent = val.startAddress.toString();
     }));
   }
 
