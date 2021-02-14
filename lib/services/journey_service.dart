@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:flutter/cupertino.dart';
 import 'package:traveltogether_frontend/mapping-functions/journey_mapping.dart';
 import 'package:traveltogether_frontend/services/service_base.dart';
 import 'package:traveltogether_frontend/view-models/journey_read_view_model.dart';
@@ -18,8 +17,8 @@ class JourneyService extends ServiceBase {
     return queryParameters;
   }
 
-  Future<JourneyReadViewModel> get(int id) async {
-    var journey = await getHttpBody('$url/${id.toString()}')
+  Future<JourneyReadViewModel> getJourney(int id) async {
+    var journey = await get('$url/${id.toString()}')
         .then((json) => mapJourneyToReadViewModel(json));
 
     return journey;
@@ -29,23 +28,29 @@ class JourneyService extends ServiceBase {
       {bool openForRequests, bool request, bool offer}) async {
     var queryParameters =
         assembleQueryParameters(openForRequests, request, offer);
-    var journeys = await getHttpBody('$url', queryParameters).then((json) {
+
+    var journeys = await get('$url', queryParameters).then((json) {
       List<JourneyReadViewModel> journeys = [];
       List<dynamic> jsonJourneys = json["journeys"];
       jsonJourneys.forEach(
           (journey) => journeys.add(mapJourneyToReadViewModel(journey)));
+
       return journeys;
     });
 
     return journeys;
   }
 
-  Future<Map<String, dynamic>> post(JourneyWriteViewModel journey) async {
+  Future<Map<String, dynamic>> add(JourneyWriteViewModel journey) async {
     var json = mapJourneyToJson(journey);
-    return await postHttpBody('$url', json);
+    return await post('$url', json);
   }
 
   Future<Map<String, dynamic>> changeJourneyState(int id, bool newState) async {
     return put('$url/$id/open', {"value": newState});
+  }
+
+  Future<Map<String, dynamic>> deleteJourney(int id) async {
+    return delete('$url/$id');
   }
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:traveltogether_frontend/services/journey_service.dart';
-import 'package:traveltogether_frontend/view-models/journey_write_view_model.dart';
 import '../widgets/request_and_offer_card.dart';
 
 void main() {
@@ -53,13 +52,12 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
   JourneyService journeyService = new JourneyService();
   String textfieldContent = "";
 
   _MyHomePageState() {
-    this.journeyService.get(5).then((val) => setState(() {
-      textfieldContent = val.startAddress.toString();
+    this.journeyService.deleteJourney(5).then((val) => setState(() {
+      textfieldContent = val.toString();
     }));
   }
 
