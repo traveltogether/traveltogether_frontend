@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:traveltogether_frontend/services/journey_service.dart';
+import 'package:traveltogether_frontend/view-models/journey_write_view_model.dart';
 import '../widgets/request_and_offer_card.dart';
 
 void main() {
@@ -54,11 +55,20 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   JourneyService journeyService = new JourneyService();
-  String journey = "";
+  String textfieldContent = "";
 
   _MyHomePageState() {
-    this.journeyService.getAll().then((val) => setState(() {
-      journey = val[0].startAddress;
+    var journey = new JourneyWriteViewModel();
+    journey.request = true;
+    journey.offer = false;
+    journey.startLatLong = "52.540010;13.247840";
+    journey.endLatLong = "52.528910;13.132780";
+    journey.departureTime = 1616610960000;
+    journey.arrivalTime = null;
+
+
+    this.journeyService.post(journey).then((val) => setState(() {
+      textfieldContent = val.toString();
     }));
   }
 
@@ -108,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             RequestAndOfferCard(),
-            Text(journey),
+            Text(textfieldContent),
           ],
         ),
       ),

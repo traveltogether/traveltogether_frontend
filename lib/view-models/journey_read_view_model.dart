@@ -1,4 +1,4 @@
-class JourneyViewModel{
+class JourneyReadViewModel{
   int id;
   int userId;
   String startAddress;
