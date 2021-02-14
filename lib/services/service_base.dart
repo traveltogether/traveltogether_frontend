@@ -22,7 +22,7 @@ class ServiceBase {
     return client
         .getUrl(Uri.https('$baseUrl', '$version$url', queryParams))
         .then((HttpClientRequest request) {
-      request.headers.add("X-Auth-Key", "54c8e0e0-d82c-4f50-92f8-834b8c013617");
+      request.headers.add("X-Auth-Key", "8c1e32b2-0faa-4d54-9e00-ddb64b2c3b57");
       return request.close();
     }).then((HttpClientResponse response) {
       return handleResponse(response);
@@ -30,13 +30,15 @@ class ServiceBase {
   }
 
   Future<Map<String, dynamic>> post(
-      String url, Map<String, dynamic> jsonBody) {
+      String url, [Map<String, dynamic> jsonBody]) {
     return client
         .postUrl(Uri.https('$baseUrl', '$version$url'))
         .then((HttpClientRequest request) {
-      request.headers.add("X-Auth-Key", "54c8e0e0-d82c-4f50-92f8-834b8c013617");
-      request.headers.add('content-type', 'application/json');
-      request.add(utf8.encode(json.encode(jsonBody)));
+      request.headers.add("X-Auth-Key", "8c1e32b2-0faa-4d54-9e00-ddb64b2c3b57");
+      if (jsonBody != null) {
+        request.headers.add('content-type', 'application/json');
+        request.add(utf8.encode(json.encode(jsonBody)));
+      }
       return request.close();
     }).then((HttpClientResponse response) {
       if (response.statusCode == 200) {
@@ -51,7 +53,7 @@ class ServiceBase {
     return client
         .putUrl(Uri.https('$baseUrl', '$version$url'))
         .then((HttpClientRequest request) {
-      request.headers.add("X-Auth-Key", "54c8e0e0-d82c-4f50-92f8-834b8c013617");
+      request.headers.add("X-Auth-Key", "8c1e32b2-0faa-4d54-9e00-ddb64b2c3b57");
       request.headers.add('content-type', 'application/json');
       request.add(utf8.encode(json.encode(jsonBody)));
       return request.close();
@@ -68,7 +70,7 @@ class ServiceBase {
     return client
         .deleteUrl(Uri.https('$baseUrl', '$version$url'))
         .then((HttpClientRequest request) {
-      request.headers.add("X-Auth-Key", "54c8e0e0-d82c-4f50-92f8-834b8c013617");
+      request.headers.add("X-Auth-Key", "8c1e32b2-0faa-4d54-9e00-ddb64b2c3b57");
       return request.close();
     }).then((HttpClientResponse response) {
       if (response.statusCode == 200) {

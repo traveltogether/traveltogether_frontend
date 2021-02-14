@@ -53,4 +53,8 @@ class JourneyService extends ServiceBase {
   Future<Map<String, dynamic>> deleteJourney(int id) async {
     return delete('$url/$id');
   }
+
+  Future<Map<String, dynamic>> joinJourney(int id) {
+    return post('$url/$id/join');
+  }
 }
