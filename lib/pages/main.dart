@@ -56,9 +56,16 @@ class _MyHomePageState extends State<MyHomePage> {
   String textfieldContent = "";
 
   _MyHomePageState() {
-    this.journeyService.joinJourney(4).then((val) => setState(() {
-      textfieldContent = val.toString();
-    }));
+
+    this.journeyService.post('auth/login', {
+      "username_or_mail": "j.kunow@outlook.de",
+      "password": "test"
+    }, true).then((val) {
+      debugPrint(val.toString());
+      this.journeyService.getJourney(4).then((val) => setState(() {
+        textfieldContent = val.startAddress.toString();
+      }));
+    });
   }
 
   @override

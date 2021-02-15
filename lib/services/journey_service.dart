@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/cupertino.dart';
 import 'package:traveltogether_frontend/mapping-functions/journey_mapping.dart';
 import 'package:traveltogether_frontend/services/service_base.dart';
 import 'package:traveltogether_frontend/view-models/journey_read_view_model.dart';
@@ -18,6 +19,7 @@ class JourneyService extends ServiceBase {
   }
 
   Future<JourneyReadViewModel> getJourney(int id) async {
+    debugPrint("getJourney");
     var journey = await get('$url/${id.toString()}')
         .then((json) => mapJourneyToReadViewModel(json));
 
