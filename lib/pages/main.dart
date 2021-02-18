@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:traveltogether_frontend/services/journey_service.dart';
-import '../widgets/request_and_offer_card.dart';
+import 'package:traveltogether_frontend/services/user_service.dart';
 import 'offers_page.dart';
 
 void main() {
@@ -31,13 +30,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  JourneyService journeyService = new JourneyService();
+  UserService userService = new UserService();
   String textfieldContent = "";
 
   _MyHomePageState() {
-    this.journeyService.joinJourney(4).then((val) => setState(() {
-          textfieldContent = val.toString();
-        }));
   }
 
   @override
@@ -105,6 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+
             Text(textfieldContent),
           ],
         ),
