@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:traveltogether_frontend/services/journey_service.dart';
 import 'package:traveltogether_frontend/services/user_service.dart';
-import 'package:traveltogether_frontend/view-models/user_write_view_model.dart';
 import '../widgets/request_and_offer_card.dart';
 
 void main() {
@@ -39,15 +37,16 @@ class _MyHomePageState extends State<MyHomePage> {
   String textfieldContent = "";
 
   _MyHomePageState() {
-    var user = new UserWriteViewModel();
-    user.username = "Kiyaran";
-    user.firstName = "Alp";
-    user.disabilities = "Brillenträger";
-    user.password = "Nika";
-    userService.changeUserPassword("Nika", "Ste");
-    user.mail = "NikaIstLehrerin@Stevenger.Liadan";
-    this.userService.addUser(user).then((val)=>print(val.toString()));
-    this.userService.getUser(4).then((val) => setState(() {
+
+
+    this.userService.changeDisability(3,"testDis").then((value) => print("change disability: " + value.toString()));
+    userService.login("test", "test").then((value) => print("login: "+ value.toString()));
+
+    userService.changeUsername(3, "Test").then((value) => print(value));
+    userService.changeMail("test@test").then((value) => print("mail change: "+ value.toString()));
+    userService.changePassword("test", "test").then((value) => print("change password: "+ value.toString()));
+
+    this.userService.getUser(3).then((val) => setState(() {
       print("meldung meldung!!!!!" + val.toString());
       textfieldContent = val.disabilities.toString();
     }));
