@@ -44,8 +44,9 @@ class _MyHomePageState extends State<MyHomePage> {
     user.firstName = "Alp";
     user.disabilities = "Brillenträger";
     user.password = "Nika";
+    userService.changeUserPassword("Nika", "Ste");
     user.mail = "NikaIstLehrerin@Stevenger.Liadan";
-    this.userService.add(user).then((val)=>print(val.toString()));
+    this.userService.addUser(user).then((val)=>print(val.toString()));
     this.userService.getUser(4).then((val) => setState(() {
       print("meldung meldung!!!!!" + val.toString());
       textfieldContent = val.disabilities.toString();
