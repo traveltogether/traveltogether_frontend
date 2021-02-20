@@ -5,18 +5,18 @@ class TextInput extends StatelessWidget {
   final IconData icon;
 
   final bool isDefaultValidatorActive;
-  final bool isPassword;
+  final bool isObscure;
   final String Function(String) customValidator;
 
   TextEditingController _controller;
 
   TextInput(this.text, this.icon, this._controller,
-      {this.isDefaultValidatorActive = true, this.customValidator, this.isPassword =false});
+      {this.isDefaultValidatorActive = true, this.customValidator, this.isObscure =false});
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      obscureText: isPassword,
+      obscureText: isObscure,
       decoration: InputDecoration(
         prefixIcon: Icon(this.icon),
         hintText: this.text,

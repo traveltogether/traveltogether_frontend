@@ -53,7 +53,7 @@ class LoginPageState extends State<LoginPage> {
                     padding:
                         EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
                     child:
-                        TextInput("Passwort", Icons.lock, _controllerPassword, isPassword: true)),
+                        TextInput("Passwort", Icons.lock, _controllerPassword, isObscure: true)),
                 SizedBox(height: 170),
                 Padding(
                     padding:

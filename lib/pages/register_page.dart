@@ -79,7 +79,7 @@ class RegisterPageState extends State<RegisterPage> {
               Padding(
                   padding:
                       EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
-                  child: TextInput("Passwort", Icons.lock, _controllerPassword, isPassword: true,
+                  child: TextInput("Passwort", Icons.lock, _controllerPassword, isObscure: true,
                       customValidator: (value) {
                     if (_controllerPassword.text.length >= 8) {
                       return null;
@@ -91,7 +91,7 @@ class RegisterPageState extends State<RegisterPage> {
                   padding:
                       EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
                   child: TextInput("Passwort wiederholen", Icons.lock,
-                      _controllerRepeatPassword, isPassword: true, customValidator: (value) {
+                      _controllerRepeatPassword, isObscure: true, customValidator: (value) {
                     if (_controllerRepeatPassword.text.length >= 8) {
                       return null;
                     }
