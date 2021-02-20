@@ -5,7 +5,6 @@ import '../widgets/request_and_offer_card.dart';
 import 'login_page.dart';
 import 'register_page.dart';
 
-
 void main() {
   runApp(MyApp());
 }
@@ -43,18 +42,26 @@ class _MyHomePageState extends State<MyHomePage> {
           textfieldContent = val.toString();
         }));
 
-    this.userService.changeDisability(3,"testDis").then((value) => print("change disability: " + value.toString()));
-    userService.login("test", "test").then((value) => print("login: "+ value.toString()));
+    this
+        .userService
+        .changeDisability(3, "testDis")
+        .then((value) => print("change disability: " + value.toString()));
+    userService
+        .login("test", "test")
+        .then((value) => print("login: " + value.toString()));
 
     userService.changeUsername(3, "Test").then((value) => print(value));
-    userService.changeMail("test@test").then((value) => print("mail change: "+ value.toString()));
-    userService.changePassword("test", "test").then((value) => print("change password: "+ value.toString()));
+    userService
+        .changeMail("test@test")
+        .then((value) => print("mail change: " + value.toString()));
+    userService
+        .changePassword("test", "test")
+        .then((value) => print("change password: " + value.toString()));
 
     this.userService.getUser(3).then((val) => setState(() {
-      print("meldung meldung!!!!!" + val.toString());
-      textfieldContent = val.disabilities.toString();
-    }));
-
+          print("meldung meldung!!!!!" + val.toString());
+          textfieldContent = val.disabilities.toString();
+        }));
   }
 
   @override
@@ -83,9 +90,11 @@ class _MyHomePageState extends State<MyHomePage> {
               title: Text("Register"),
               onTap: () {
                 setState(
-                      () {
+                  () {
                     Navigator.push(
-                        context, MaterialPageRoute(builder: (context) => RegisterPage()));
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => RegisterPage()));
                   },
                 );
               },
@@ -95,9 +104,9 @@ class _MyHomePageState extends State<MyHomePage> {
               title: Text("Login"),
               onTap: () {
                 setState(
-                      () {
-                    Navigator.push(
-                        context, MaterialPageRoute(builder: (context) => LoginPage()));
+                  () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => LoginPage()));
                   },
                 );
               },

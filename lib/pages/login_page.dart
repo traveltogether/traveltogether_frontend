@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/text_input.dart';
+import 'package:traveltogether_frontend/services/user_service.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key, this.title}) : super(key: key);
@@ -15,6 +16,7 @@ class LoginPageState extends State<LoginPage> {
   String password;
 
   bool check;
+  UserService userService = new UserService();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -51,7 +53,7 @@ class LoginPageState extends State<LoginPage> {
                     padding:
                         EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
                     child:
-                        TextInput("Passwort", Icons.lock, _controllerPassword)),
+                        TextInput("Passwort", Icons.lock, _controllerPassword, isPassword: true)),
                 SizedBox(height: 170),
                 Padding(
                     padding:
@@ -60,10 +62,9 @@ class LoginPageState extends State<LoginPage> {
                       child: Text('Login'),
                       color: Colors.blue,
                       onPressed: () {
-                        print(_controllerName.text);
-                        name = _controllerName.text;
+                        userService.login(
+                            _controllerName.text, _controllerPassword.text);
 
-                        password = _controllerPassword.text;
                         if (_validation(name, password)) {
                           print("Erfolgreicher Login");
                         } else {

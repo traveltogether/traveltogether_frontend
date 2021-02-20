@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:traveltogether_frontend/view-models/user_write_view_model.dart';
 import '../widgets/text_input.dart';
+import 'package:traveltogether_frontend/services/user_service.dart';
 
 class RegisterPage extends StatefulWidget {
   RegisterPage({Key key, this.title}) : super(key: key);
@@ -10,9 +12,10 @@ class RegisterPage extends StatefulWidget {
 }
 
 class RegisterPageState extends State<RegisterPage> {
-  String email;
-  String nickname;
-  String realname;
+  var user = new UserWriteViewModel();
+  UserService userService = new UserService();
+
+  bool mailIsValid;
   String password;
   String passwordRepeat;
 
@@ -56,10 +59,10 @@ class RegisterPageState extends State<RegisterPage> {
                             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                         .hasMatch(value);
                     if (emailValid) {
-                      email = value;
+                      mailIsValid = true;
                       return null;
                     } else {
-                      email = null;
+                      _controllerEmail.text = null;
                       return "ungültige Emailadresse";
                     }
                   })),
@@ -76,29 +79,57 @@ class RegisterPageState extends State<RegisterPage> {
               Padding(
                   padding:
                       EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
-                  child:
-                      TextInput("Passwort", Icons.lock, _controllerPassword)),
+                  child: TextInput("Passwort", Icons.lock, _controllerPassword, isPassword: true,
+                      customValidator: (value) {
+                    if (_controllerPassword.text.length >= 8) {
+                      return null;
+                    } else {
+                      return "Passwort benötigt mindestens 8 Zeichen";
+                    }
+                  })),
               Padding(
                   padding:
                       EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
                   child: TextInput("Passwort wiederholen", Icons.lock,
-                      _controllerRepeatPassword)),
+                      _controllerRepeatPassword, isPassword: true, customValidator: (value) {
+                    if (_controllerRepeatPassword.text.length >= 8) {
+                      return null;
+                    }
+                    if (_controllerPassword.text !=
+                        _controllerRepeatPassword.text) {
+                      return "Passwort muss gleich sein";
+                    } else {
+                      return "Passwort benötigt mindestens 8 Zeichen";
+                    }
+                  })),
               Padding(
                   padding:
                       EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                   child: MaterialButton(
                     child: Text('Registrieren'),
-                    color: Colors.blue,
+                    color: Colors.blueAccent,
                     onPressed: () {
-                      email = _controllerEmail.text;
-                      nickname = _controllerNickname.text;
-                      realname = _controllerFirstName.text;
                       password = _controllerPassword.text;
                       passwordRepeat = _controllerRepeatPassword.text;
 
                       if (_formKey.currentState.validate()) print("valide");
+                      if (password == passwordRepeat && password.length >= 8) {
+                        user.password = password;
+                        if (_controllerEmail.text.isNotEmpty &&
+                            _controllerFirstName.text.isNotEmpty &&
+                            _controllerEmail.text.isNotEmpty &&
+                            mailIsValid) {
+                          user.mail = _controllerEmail.text;
+                          user.username = _controllerNickname.text;
+                          user.firstName = _controllerFirstName.text;
 
-                      if (password == passwordRepeat) {
+                          this
+                              .userService
+                              .addUser(user)
+                              .then((val) => print(val.toString()));
+
+                          Navigator.pop(context);
+                        }
                       } else {
                         print("Passwort bitte erneut eingeben");
                       }
