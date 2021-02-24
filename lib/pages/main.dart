@@ -5,6 +5,10 @@ import '../widgets/request_and_offer_card.dart';
 import 'login_page.dart';
 import 'register_page.dart';
 
+
+String username = "";
+String firstName = "";
+
 void main() {
   runApp(MyApp());
 }
@@ -33,8 +37,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  UserService userService = new UserService();
   JourneyService journeyService = new JourneyService();
+  UserService userService = new UserService();
   String textfieldContent = "";
 
   _MyHomePageState() {
@@ -42,30 +46,27 @@ class _MyHomePageState extends State<MyHomePage> {
           textfieldContent = val.toString();
         }));
 
-    this
-        .userService
-        .changeDisability(3, "testDis")
-        .then((value) => print("change disability: " + value.toString()));
-    userService
-        .login("test", "test")
-        .then((value) => print("login: " + value.toString()));
 
-    userService.changeUsername(3, "Test").then((value) => print(value));
-    userService
-        .changeMail("test@test")
-        .then((value) => print("mail change: " + value.toString()));
-    userService
-        .changePassword("test", "test")
-        .then((value) => print("change password: " + value.toString()));
-
-    this.userService.getUser(3).then((val) => setState(() {
+    this.userService.getUser(4).then((val) => setState(() {
           print("meldung meldung!!!!!" + val.toString());
-          textfieldContent = val.disabilities.toString();
+          textfieldContent = val.firstName.toString();
         }));
+
+
+    userService.getUser(4).then((currentUser) => setState(() {
+      setState(() {
+        username = currentUser.username;
+        firstName = currentUser.firstName;
+      });
+    }),
+    );
+
   }
 
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -75,8 +76,8 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           children: <Widget>[
             UserAccountsDrawerHeader(
-              accountEmail: Text("hiersteht@eine.mail"),
-              accountName: Text("EinName"),
+              accountName: Text(username),
+              accountEmail: Text(firstName),
               currentAccountPicture: CircleAvatar(
                 backgroundImage: NetworkImage(
                     "https://blog.wwf.de/wp-content/uploads/2019/10/pinguine.jpg"),
