@@ -59,4 +59,30 @@ class JourneyService extends ServiceBase {
   Future<Map<String, dynamic>> joinJourney(int id) {
     return post('$url/$id/join');
   }
+
+  Future<Map<String, dynamic>> leaveJourney(int id) {
+    return delete('$url/$id/join');
+  }
+
+  Future<Map<String, dynamic>> acceptUser(int journeyId, int userId) {
+    return post('$url/$journeyId/accept/$userId');
+  }
+
+  Future<Map<String, dynamic>> removeAcceptedUser(int journeyId, int userId) {
+    // for user who have been accepted
+    return delete('$url/$journeyId/accept/$userId');
+  }
+
+  Future<Map<String, dynamic>> rejectUser(int journeyId, int userId) {
+    // for users who haven't been accepted
+    return post('$url/$journeyId/decline/$userId');
+  }
+
+  Future<Map<String, dynamic>> reverseRejectionOfUser(int journeyId, int userId) {
+    return delete('$url/$journeyId/decline/$userId');
+  }
+
+  Future<Map<String, dynamic>> cancelJourney(int id) {
+    return post('$url/$id/cancel');
+  }
 }
