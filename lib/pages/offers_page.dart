@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:traveltogether_frontend/widgets/request_and_offer_card.dart';
 
 class OffersPage extends StatefulWidget {
   @override
@@ -13,6 +14,15 @@ class _OffersPageState extends State<OffersPage> {
         appBar: AppBar(
           title: Text("Angebote"),
         ),
-        body: Center(child: Text("Hello World!")));
+        body: ListView(
+          children: [
+            RequestAndOfferCard(),
+            RequestAndOfferCard(),
+            RequestAndOfferCard(),
+            RequestAndOfferCard(),
+            RequestAndOfferCard(),
+          ],
+        )
+    );
   }
 }
