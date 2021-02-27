@@ -12,6 +12,11 @@ class UserService extends ServiceBase {
     return user;
   }
 
+  Future<UserReadViewModel> getCurrentUser() async {
+    var user = await get('$url/me')
+        .then((json) => mapUserToReadViewModel(json));
+    return user;
+  }
 
   Future<Map<String, dynamic>> addUser(UserWriteViewModel user) async {
     var json = mapUserToJson(user);
