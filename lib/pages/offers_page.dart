@@ -17,9 +17,6 @@ class _OffersPageState extends State<OffersPage> {
   void initState() {
     super.initState();
     journeyService = new JourneyService();
-    journeyService.getJourney(1).then((journey) {
-      this.journey = journey;
-    });
   }
 
   @override
@@ -28,17 +25,18 @@ class _OffersPageState extends State<OffersPage> {
       appBar: AppBar(
         title: Text("Angebote"),
       ),
-      body: FutureBuilder<JourneyReadViewModel>(
-        future: journeyService.getJourney(1),
+      body: FutureBuilder<List<JourneyReadViewModel>>(
+        future: journeyService.getAll(offer: true, openForRequests: true),
         builder: (BuildContext context,
-            AsyncSnapshot<JourneyReadViewModel> snapshot) {
+            AsyncSnapshot<List<JourneyReadViewModel>> snapshot) {
           if (!snapshot.hasData) {
             return Center(child: CircularProgressIndicator());
           } else {
-            return ListView(
-              children: [
-                RequestAndOfferCard(snapshot.data),
-              ],
+            return ListView.builder(
+              itemCount: snapshot.data.length,
+              itemBuilder: (context, index) {
+                return RequestAndOfferCard(snapshot.data[index]);
+              },
             );
           }
         },
