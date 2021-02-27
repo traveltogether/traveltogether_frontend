@@ -19,7 +19,8 @@ class RequestAndOfferCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
-            Padding(padding: EdgeInsets.only(bottom: 7), child: AddressTable()),
+            Padding(padding: EdgeInsets.only(bottom: 7),
+                child: AddressTable(journey.approximateStartAddress, journey.approximateEndAddress)),
             Padding(
               padding: EdgeInsets.only(bottom: 7),
               child: Row(
@@ -28,13 +29,13 @@ class RequestAndOfferCard extends StatelessWidget {
                   Column(
                     children: [
                       Text("Startzeit"),
-                      FormattedDateTime(null),
+                      FormattedDateTime(journey.departureTime),
                     ],
                   ),
                   Column(
                     children: [
                       Text("Ankunftszeit"),
-                      FormattedDateTime(1670751000000),
+                      FormattedDateTime(journey.arrivalTime),
                     ],
                   ),
                 ],
