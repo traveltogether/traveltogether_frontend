@@ -6,7 +6,7 @@ import 'package:traveltogether_frontend/view-models/user_write_view_model.dart';
 class UserService extends ServiceBase {
   final url = "users";
 
-  Future<UserReadViewModel> getUser(int id) async {
+  Future<UserReadViewModel> getUser(String id) async {
     var user = await get('$url/${id.toString()}')
         .then((json) => mapUserToReadViewModel(json));
 
