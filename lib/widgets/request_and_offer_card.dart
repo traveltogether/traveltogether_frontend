@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:traveltogether_frontend/view-models/journey_read_view_model.dart';
 import 'address_table.dart';
 import 'formatted_date_time.dart';
 
 class RequestAndOfferCard extends StatelessWidget {
+  final JourneyReadViewModel journey;
+
+  RequestAndOfferCard(this.journey);
+
   @override
   Widget build(BuildContext context) {
     return Card(
