@@ -21,7 +21,7 @@ class _OffersPageState extends State<OffersPage> {
     super.initState();
     journeyService = new JourneyService();
     userService = new UserService();
-    userService.getUser("me").then((user) => currentUser = user);
+    userService.getCurrentUser().then((user) => currentUser = user);
   }
 
   @override
