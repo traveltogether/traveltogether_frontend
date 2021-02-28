@@ -6,12 +6,12 @@ class PendingUserButtonRow extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        ElevatedButton(
+        OutlineButton(
             onPressed: (() {
               debugPrint("hey");
             }),
-            child: Text("Akzeptieren")),
-        ElevatedButton(
+            child: Text("Annehmen")),
+        OutlineButton(
           onPressed: (() {
             debugPrint("hey");
           }),
@@ -19,7 +19,7 @@ class PendingUserButtonRow extends StatelessWidget {
         ),
         ElevatedButton(
             onPressed: (() {
-              debugPrint("hey");
+              debugPrint("Chat");
             }),
             child: Text("Chat")),
       ],

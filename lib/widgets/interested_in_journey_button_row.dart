@@ -28,7 +28,7 @@ class _InterestedInJourneyButtonRowState
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         OutlinedButton(
             onPressed: widget.isInterestedInButtonDisabled
@@ -48,7 +48,7 @@ class _InterestedInJourneyButtonRowState
             child: Text("Interessiert mich")),
         ElevatedButton(
           onPressed: (() {
-            debugPrint("Chat button pressed");
+            debugPrint("Chat");
           }),
           child: Text("Chat"),
         ),
