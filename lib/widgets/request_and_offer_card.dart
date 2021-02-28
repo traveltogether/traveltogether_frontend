@@ -53,7 +53,7 @@ class RequestAndOfferCard extends StatelessWidget {
               ),
             (() {
               if(this.currentUserId != null) {
-                return InterestedInJourneyButtonRow();
+                return InterestedInJourneyButtonRow(this.journey.id);
               } else {
                 return AcceptDeclineJourneyButtonRow();
               }
