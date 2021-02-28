@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 import '../view-models/journey_write_view_model.dart';
 import '../view-models/journey_read_view_model.dart';
 
@@ -12,10 +14,11 @@ JourneyReadViewModel mapJourneyToReadViewModel(Map<String, dynamic> json) {
   journey.approximateEndAddress = json["approximate_end_address"];
   journey.departureTime = json["time_is_departure"] ? json["time"] : null;
   journey.arrivalTime = json["time_is_arrival"] ? json["time"] : null;
-  if (json.containsKey("note")) {
-    journey.note = json["note"];
-  }
+  if (json.containsKey("note")) journey.note = json["note"];
 
+  if (json.containsKey("pending_user_ids")) journey.pendingUserIds = new List<int>.from(json["pending_user_ids"]);
+  if (json.containsKey("accepted_user_ids")) journey.acceptedUserIds = new List<int>.from(json["accepted_user_ids"]);
+  if (json.containsKey("declined_user_ids")) journey.declinedUserIds = new List<int>.from(json["declined_user_ids"]);
   return journey;
 }
 
@@ -31,9 +34,6 @@ Map<String, dynamic> mapJourneyToJson(JourneyWriteViewModel journey) {
       : journey.departureTime;
   json["time_is_arrival"] = journey.arrivalTime == null ? false : true ;
   json["time_is_departure"] = journey.departureTime == null ? false : true ;
-  if (journey.note != null) {
-    json["note"] = journey.note;
-  }
-
+  if (journey.note != null) json["note"] = journey.note;
   return json;
 }
