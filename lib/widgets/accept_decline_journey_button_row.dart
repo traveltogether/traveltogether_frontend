@@ -6,18 +6,16 @@ class AcceptDeclineJourneyButtonRow extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Padding(
-          padding: EdgeInsets.only(top: 5),
-          child: ElevatedButton(
-              onPressed: (() {debugPrint("hey");}),
-              child: Text("Akzeptieren")),
-        ),
-        Padding(
-          padding: EdgeInsets.only(top: 5),
-          child: ElevatedButton(
-            onPressed: (() {debugPrint("hey");}),
-            child: Text("Ablehnen"),
-          ),
+        ElevatedButton(
+            onPressed: (() {
+              debugPrint("hey");
+            }),
+            child: Text("Akzeptieren")),
+        ElevatedButton(
+          onPressed: (() {
+            debugPrint("hey");
+          }),
+          child: Text("Ablehnen"),
         ),
       ],
     );

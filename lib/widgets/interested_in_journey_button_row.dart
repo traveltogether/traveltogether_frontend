@@ -6,18 +6,16 @@ class InterestedInJourneyButtonRow extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Padding(
-          padding: EdgeInsets.only(top: 5),
-          child: OutlinedButton(
-              onPressed: (() {debugPrint("hey");}),
-              child: Text("Interessiert mich")),
-        ),
-        Padding(
-          padding: EdgeInsets.only(top: 5),
-          child: ElevatedButton(
-            onPressed: (() {debugPrint("hey");}),
-            child: Text("Chat"),
-          ),
+        OutlinedButton(
+            onPressed: (() {
+              debugPrint("hey");
+            }),
+            child: Text("Interessiert mich")),
+        ElevatedButton(
+          onPressed: (() {
+            debugPrint("hey");
+          }),
+          child: Text("Chat"),
         ),
       ],
     );
