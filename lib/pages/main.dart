@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:traveltogether_frontend/pages/pending_page.dart';
 import 'package:traveltogether_frontend/services/user_service.dart';
 import 'requests_and_offers_page.dart';
 
@@ -83,8 +84,15 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             ListTile(
               leading: Icon(Icons.mail),
-              title: Text("Nummer 3"),
-              onTap: () {},
+              title: Text("Meine Fahrten"),
+              onTap: () {
+                setState(
+                      () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => PendingPage()));
+                  },
+                );
+              },
             ),
             ListTile(
               leading: Icon(Icons.mail),
