@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:traveltogether_frontend/services/user_service.dart';
-import 'offers_page.dart';
+import 'requests_and_offers_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -64,15 +64,22 @@ class _MyHomePageState extends State<MyHomePage> {
                 setState(
                       () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => OffersPage()));
+                        MaterialPageRoute(builder: (context) => RequestsAndOffersPage("offers")));
                   },
                 );
               },
             ),
             ListTile(
               leading: Icon(Icons.mail),
-              title: Text("Nummer 2"),
-              onTap: () {},
+              title: Text("Anfragen"),
+              onTap: () {
+                setState(
+                      () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => RequestsAndOffersPage("requests")));
+                  },
+                );
+              },
             ),
             ListTile(
               leading: Icon(Icons.mail),

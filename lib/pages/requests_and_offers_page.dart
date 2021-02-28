@@ -5,12 +5,16 @@ import 'package:traveltogether_frontend/view-models/journey_read_view_model.dart
 import 'package:traveltogether_frontend/view-models/user_read_view_model.dart';
 import 'package:traveltogether_frontend/widgets/request_and_offer_card.dart';
 
-class OffersPage extends StatefulWidget {
+class RequestsAndOffersPage extends StatefulWidget {
+  final String pageType;
+
+  const RequestsAndOffersPage(this.pageType, {Key key}) : super(key: key);
+
   @override
-  _OffersPageState createState() => _OffersPageState();
+  _RequestsAndOffersPageState createState() => _RequestsAndOffersPageState();
 }
 
-class _OffersPageState extends State<OffersPage> {
+class _RequestsAndOffersPageState extends State<RequestsAndOffersPage> {
   JourneyService journeyService;
   UserService userService;
   UserReadViewModel currentUser;
@@ -31,10 +35,14 @@ class _OffersPageState extends State<OffersPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Angebote"),
+        title: Text(widget.pageType == "requests" ? "Anfragen" : "Angebote"),
       ),
       body: FutureBuilder<List<JourneyReadViewModel>>(
-        future: journeyService.getAll(offer: true, openForRequests: true),
+        future: journeyService.getAll(
+            openForRequests: true,
+            offer: widget.pageType == "offers" ? true : null,
+            request: widget.pageType == "requests" ? true : null,
+        ),
         builder: (BuildContext context,
             AsyncSnapshot<List<JourneyReadViewModel>> snapshot) {
           if (!snapshot.hasData || currentUser == null) {
