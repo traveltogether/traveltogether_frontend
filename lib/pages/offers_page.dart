@@ -23,6 +23,10 @@ class _OffersPageState extends State<OffersPage> {
     userService.getCurrentUser().then((user) => currentUser = user);
   }
 
+  _refreshPage() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,11 +45,17 @@ class _OffersPageState extends State<OffersPage> {
               if (journey.userId != currentUser.id) {
                 journeys.add(journey);
               }
+              journeys.sort((a, b) =>
+                  (a.departureTime == null ? a.arrivalTime : a.departureTime)
+                      .compareTo(b.departureTime == null
+                          ? b.arrivalTime
+                          : b.departureTime));
             });
             return ListView.builder(
               itemCount: journeys.length,
               itemBuilder: (context, index) {
-                return RequestAndOfferCard(journeys[index], currentUser.id);
+                return RequestAndOfferCard(
+                    journeys[index], _refreshPage, currentUser.id);
               },
             );
           }

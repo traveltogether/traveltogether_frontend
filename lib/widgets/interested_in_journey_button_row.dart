@@ -4,21 +4,20 @@ import 'package:traveltogether_frontend/services/journey_service.dart';
 class InterestedInJourneyButtonRow extends StatefulWidget {
   final int journeyId;
   final bool isInterestedInButtonDisabled;
+  final void Function() refreshParent;
 
-  InterestedInJourneyButtonRow(this.journeyId, this.isInterestedInButtonDisabled);
+  InterestedInJourneyButtonRow(
+      this.journeyId, this.refreshParent, this.isInterestedInButtonDisabled);
   @override
   _InterestedInJourneyButtonRowState createState() =>
-      _InterestedInJourneyButtonRowState(journeyId, isInterestedInButtonDisabled);
+      _InterestedInJourneyButtonRowState();
 }
 
 class _InterestedInJourneyButtonRowState
     extends State<InterestedInJourneyButtonRow> {
-  final int journeyId;
-  final bool isInterestedInButtonDisabled;
   JourneyService journeyService;
 
-  _InterestedInJourneyButtonRowState(
-      this.journeyId, this.isInterestedInButtonDisabled);
+  _InterestedInJourneyButtonRowState();
 
   @override
   void initState() {
@@ -32,12 +31,15 @@ class _InterestedInJourneyButtonRowState
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         OutlinedButton(
-            onPressed: isInterestedInButtonDisabled
+            onPressed: widget.isInterestedInButtonDisabled
                 ? null
                 : (() {
-                    this.journeyService.joinJourney(journeyId).then((response) {
+                    this
+                        .journeyService
+                        .joinJourney(widget.journeyId)
+                        .then((response) {
                       if (response["error"] == null) {
-                        debugPrint("success!");
+                        widget.refreshParent();
                       } else {
                         debugPrint(response["error"]);
                       }

@@ -14,8 +14,9 @@ class RequestAndOfferCard extends StatelessWidget {
   bool _isCurrentUserPending = false;
   bool _isCurrentUserAccepted = false;
   bool _isCurrentUserDeclined = false;
+  final void Function() refreshParent;
 
-  RequestAndOfferCard(this.journey, [this.currentUserId]) {
+  RequestAndOfferCard(this.journey, this.refreshParent, [this.currentUserId]) {
     if (journey.pendingUserIds != null &&
         journey.pendingUserIds.contains(currentUserId)) {
       _isCurrentUserPending = true;
@@ -77,6 +78,7 @@ class RequestAndOfferCard extends StatelessWidget {
               if (this.currentUserId != null) {
                 return InterestedInJourneyButtonRow(
                     this.journey.id,
+                    refreshParent,
                     _isCurrentUserPending ||
                         _isCurrentUserAccepted ||
                         _isCurrentUserDeclined);
