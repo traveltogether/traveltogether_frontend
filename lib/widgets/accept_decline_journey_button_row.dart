@@ -4,7 +4,7 @@ class AcceptDeclineJourneyButtonRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         ElevatedButton(
             onPressed: (() {
@@ -17,6 +17,11 @@ class AcceptDeclineJourneyButtonRow extends StatelessWidget {
           }),
           child: Text("Ablehnen"),
         ),
+        ElevatedButton(
+            onPressed: (() {
+              debugPrint("hey");
+            }),
+            child: Text("Chat")),
       ],
     );
   }
