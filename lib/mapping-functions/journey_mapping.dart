@@ -12,6 +12,9 @@ JourneyReadViewModel mapJourneyToReadViewModel(Map<String, dynamic> json) {
   journey.approximateEndAddress = json["approximate_end_address"];
   journey.departureTime = json["time_is_departure"] ? json["time"] : null;
   journey.arrivalTime = json["time_is_arrival"] ? json["time"] : null;
+  if (json.containsKey("note")) {
+    journey.note = json["note"];
+  }
 
   return journey;
 }
@@ -28,6 +31,9 @@ Map<String, dynamic> mapJourneyToJson(JourneyWriteViewModel journey) {
       : journey.departureTime;
   json["time_is_arrival"] = journey.arrivalTime == null ? false : true ;
   json["time_is_departure"] = journey.departureTime == null ? false : true ;
+  if (journey.note != null) {
+    json["note"] = journey.note;
+  }
 
   return json;
 }

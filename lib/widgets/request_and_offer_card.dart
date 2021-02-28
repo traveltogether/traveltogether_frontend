@@ -46,9 +46,8 @@ class RequestAndOfferCard extends StatelessWidget {
                 ],
               ),
             ),
-            Text("Notiz"),
-            Text(
-                "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea."),
+            if (journey.note != null)
+              Text("Notiz:\n" + journey.note),
             (() {
               if(this.currentUserId != null) {
                 return InterestedInJourneyButtonRow();

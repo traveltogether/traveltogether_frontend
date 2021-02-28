@@ -7,4 +7,5 @@ class JourneyReadViewModel{
   String approximateEndAddress;
   int departureTime;
   int arrivalTime;
+  String note;
 }

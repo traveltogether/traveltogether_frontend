@@ -5,4 +5,5 @@ class JourneyWriteViewModel {
   String endLatLong;
   int departureTime;
   int arrivalTime;
+  String note;
 }
