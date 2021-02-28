@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:traveltogether_frontend/services/journey_service.dart';
 import 'package:traveltogether_frontend/services/user_service.dart';
@@ -46,7 +45,7 @@ class _OffersPageState extends State<OffersPage> {
             return ListView.builder(
               itemCount: journeys.length,
               itemBuilder: (context, index) {
-                return RequestAndOfferCard(journeys[index]);
+                return RequestAndOfferCard(journeys[index], currentUser.id);
               },
             );
           }
