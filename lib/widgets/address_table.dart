@@ -13,7 +13,7 @@ class AddressTable extends StatelessWidget {
       children: [
         TableRow(
           children: <Widget>[
-            Text("Von:"),
+            Text("Von:", style: TextStyle(fontWeight: FontWeight.bold),),
             Padding(
                 padding: EdgeInsets.only(bottom: 5),
                 child: FormattedAddress(startAddress)),
@@ -21,7 +21,7 @@ class AddressTable extends StatelessWidget {
         ),
         TableRow(
           children: <Widget>[
-            Text("Nach:"),
+            Text("Nach:", style: TextStyle(fontWeight: FontWeight.bold),),
             FormattedAddress(endAddress),
           ],
         )
