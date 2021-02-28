@@ -13,7 +13,20 @@ class _PendingPageState extends State<PendingPage> {
         appBar: AppBar(title: Text("Meine Fahrten")),
         body: Column(
           children: [
-            JourneyItem("User x interessiert sich für diese Fahrt!"),
+
+            // cases:
+            // pending user
+            JourneyItem(JourneyItemType.pending),
+            // accepted user
+            JourneyItem(JourneyItemType.accepted),
+            // rejected user
+            JourneyItem(JourneyItemType.rejected),
+
+            //ToDo: Journey BR - delete, closeForRequests
+            //ToDo: User BR - accept, decline, chat
+            //ToDo: accepted User BR - remove, chat
+            //ToDo: rejected User BR - reverse rejection
+
           ],
         ));
   }

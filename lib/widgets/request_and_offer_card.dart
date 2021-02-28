@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:traveltogether_frontend/view-models/journey_read_view_model.dart';
+import 'package:traveltogether_frontend/widgets/delete_close_journey_button_row.dart';
 import 'package:traveltogether_frontend/widgets/info_box.dart';
 import 'package:traveltogether_frontend/widgets/interested_in_journey_button_row.dart';
-import 'accept_decline_journey_button_row.dart';
+import 'pending_user_button_row.dart';
 import 'address_table.dart';
 import 'formatted_date_time.dart';
 
@@ -83,7 +84,7 @@ class RequestAndOfferCard extends StatelessWidget {
                         _isCurrentUserAccepted ||
                         _isCurrentUserDeclined);
               } else {
-                return AcceptDeclineJourneyButtonRow();
+                return DeleteCloseJourneyButtonRow();
               }
             }())
           ],
