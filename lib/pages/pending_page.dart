@@ -160,12 +160,6 @@ class _PendingPageState extends State<PendingPage> {
                     });
               }
             })
-
-        //ToDo: Journey BR - delete, closeForRequests
-        //ToDo: User BR - accept, decline, chat
-        //ToDo: accepted User BR - remove, chat
-        //ToDo: rejected User BR - reverse rejection
-
         );
   }
 }
