@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:traveltogether_frontend/view-models/user_read_view_model.dart';
 import 'package:traveltogether_frontend/widgets/accepted_user_button_row.dart';
 import 'package:traveltogether_frontend/widgets/pending_user_button_row.dart';
 import 'package:traveltogether_frontend/widgets/rejected_user_button_row.dart';
@@ -11,20 +12,22 @@ enum JourneyItemType {
 
 class JourneyItem extends StatelessWidget {
   final JourneyItemType type;
+  final UserReadViewModel user;
+  final void Function() refreshParent;
   String _text;
 
-  JourneyItem(this.type) {
+  JourneyItem(this.type, this.user, this.refreshParent) {
     switch(this.type) {
       case JourneyItemType.pending: {
-        _text = "User x interessiert sich für diese Fahrt!";
+        _text = "${user.username} interessiert sich für diese Fahrt!";
       }
       break;
       case JourneyItemType.accepted: {
-        _text = "Du hast User x für diese Fahrt angenommen";
+        _text = "Du hast ${user.username} für diese Fahrt angenommen";
       }
       break;
       case JourneyItemType.rejected: {
-        _text = "Du hast User x für diese Fahrt abgelehnt";
+        _text = "Du hast ${user.username} für diese Fahrt abgelehnt";
       }
       break;
       default: {
