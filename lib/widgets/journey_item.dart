@@ -12,11 +12,12 @@ enum JourneyItemType {
 
 class JourneyItem extends StatelessWidget {
   final JourneyItemType type;
+  final int journeyId;
   final UserReadViewModel user;
   final void Function() refreshParent;
   String _text;
 
-  JourneyItem(this.type, this.user, this.refreshParent) {
+  JourneyItem(this.type, this.journeyId, this.user, this.refreshParent) {
     switch(this.type) {
       case JourneyItemType.pending: {
         _text = "${user.username} interessiert sich für diese Fahrt!";
@@ -59,7 +60,7 @@ class JourneyItem extends StatelessWidget {
                           (() {
                             switch(this.type) {
                               case JourneyItemType.pending: {
-                                return PendingUserButtonRow();
+                                return PendingUserButtonRow(journeyId, user.id, refreshParent);
                               }
                               break;
                               case JourneyItemType.accepted: {

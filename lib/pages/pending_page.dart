@@ -92,6 +92,7 @@ class _PendingPageState extends State<PendingPage> {
                                           } else {
                                             return JourneyItem(
                                                 JourneyItemType.pending,
+                                                journeys[index].id,
                                                 snapshot2.data,
                                                 _refreshPage);
                                           }
@@ -119,6 +120,7 @@ class _PendingPageState extends State<PendingPage> {
                                           } else {
                                             return JourneyItem(
                                                 JourneyItemType.accepted,
+                                                journeys[index].id,
                                                 snapshot2.data,
                                                 _refreshPage);
                                           }
@@ -146,6 +148,7 @@ class _PendingPageState extends State<PendingPage> {
                                           } else {
                                             return JourneyItem(
                                                 JourneyItemType.declined,
+                                                journeys[index].id,
                                                 snapshot2.data,
                                                 _refreshPage);
                                           }
