@@ -12,6 +12,7 @@ class DeleteCloseJourneyButtonRow extends StatelessWidget {
             }),
             child: Text("Löschen")),
         OutlineButton(
+          //ToDo: implement switch here (to make it toggle)
             onPressed: (() {
               debugPrint("hey");
             }),
