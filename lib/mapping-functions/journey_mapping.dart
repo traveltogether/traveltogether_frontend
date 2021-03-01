@@ -14,6 +14,7 @@ JourneyReadViewModel mapJourneyToReadViewModel(Map<String, dynamic> json) {
   journey.approximateEndAddress = json["approximate_end_address"];
   journey.departureTime = json["time_is_departure"] ? json["time"] : null;
   journey.arrivalTime = json["time_is_arrival"] ? json["time"] : null;
+  journey.isOpenForRequests = json["open_for_requests"];
   if (json.containsKey("note")) journey.note = json["note"];
 
   if (json.containsKey("pending_user_ids")) journey.pendingUserIds = new List<int>.from(json["pending_user_ids"]);

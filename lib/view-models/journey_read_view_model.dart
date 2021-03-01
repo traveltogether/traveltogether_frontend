@@ -8,6 +8,7 @@ class JourneyReadViewModel{
   int departureTime;
   int arrivalTime;
   String note;
+  bool isOpenForRequests;
   List<int> pendingUserIds;
   List<int> acceptedUserIds;
   List<int> declinedUserIds;
