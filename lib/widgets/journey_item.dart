@@ -64,11 +64,11 @@ class JourneyItem extends StatelessWidget {
                               }
                               break;
                               case JourneyItemType.accepted: {
-                                return AcceptedUserButtonRow();
+                                return AcceptedUserButtonRow(journeyId, user.id, refreshParent);
                               }
                               break;
                               case JourneyItemType.declined: {
-                                return RejectedUserButtonRow();
+                                return RejectedUserButtonRow(journeyId, user.id, refreshParent);
                               }
                               break;
                               default: {
