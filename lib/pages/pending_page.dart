@@ -47,6 +47,12 @@ class _PendingPageState extends State<PendingPage> {
                   if (journey.userId == currentUserId) {
                     journeys.add(journey);
                   }
+                  journeys.sort((a, b) => (a.departureTime == null
+                          ? a.arrivalTime
+                          : a.departureTime)
+                      .compareTo(b.departureTime == null
+                          ? b.arrivalTime
+                          : b.departureTime));
                 });
 
                 return ListView.builder(
@@ -54,7 +60,17 @@ class _PendingPageState extends State<PendingPage> {
                     itemBuilder: (context, index) {
                       return Column(
                         children: [
-                          RequestAndOfferCard(journeys[index], _refreshPage),
+                          (() {
+                            if (index != 0) {
+                              return Padding(
+                                  padding: EdgeInsets.only(top: 15),
+                                  child: RequestAndOfferCard(
+                                      journeys[index], _refreshPage));
+                            } else {
+                              return RequestAndOfferCard(
+                                  journeys[index], _refreshPage);
+                            }
+                          }()),
                           if (journeys[index].pendingUserIds != null)
                             (() {
                               return ListView.builder(
@@ -82,28 +98,70 @@ class _PendingPageState extends State<PendingPage> {
                                         });
                                   });
                             }()),
+                          if (journeys[index].acceptedUserIds != null)
+                            (() {
+                              return ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount:
+                                      journeys[index].acceptedUserIds.length,
+                                  itemBuilder: (context, jndex) {
+                                    return FutureBuilder<UserReadViewModel>(
+                                        future: userService.getUser(
+                                            journeys[index]
+                                                .acceptedUserIds[jndex]),
+                                        builder: (BuildContext context,
+                                            AsyncSnapshot<UserReadViewModel>
+                                                snapshot2) {
+                                          if (!snapshot2.hasData) {
+                                            return Center(
+                                                child:
+                                                    CircularProgressIndicator());
+                                          } else {
+                                            return JourneyItem(
+                                                JourneyItemType.accepted,
+                                                snapshot2.data,
+                                                _refreshPage);
+                                          }
+                                        });
+                                  });
+                            }()),
+                          if (journeys[index].declinedUserIds != null)
+                            (() {
+                              return ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount:
+                                      journeys[index].declinedUserIds.length,
+                                  itemBuilder: (context, jndex) {
+                                    return FutureBuilder<UserReadViewModel>(
+                                        future: userService.getUser(
+                                            journeys[index]
+                                                .declinedUserIds[jndex]),
+                                        builder: (BuildContext context,
+                                            AsyncSnapshot<UserReadViewModel>
+                                                snapshot2) {
+                                          if (!snapshot2.hasData) {
+                                            return Center(
+                                                child:
+                                                    CircularProgressIndicator());
+                                          } else {
+                                            return JourneyItem(
+                                                JourneyItemType.declined,
+                                                snapshot2.data,
+                                                _refreshPage);
+                                          }
+                                        });
+                                  });
+                            }()),
                         ],
                       );
                     });
               }
             })
 
-        /*Column(
-          children: [
-
-            // cases:
-            // accepted user
-            JourneyItem(JourneyItemType.accepted),
-            // rejected user
-            JourneyItem(JourneyItemType.rejected),
-
-            //ToDo: Journey BR - delete, closeForRequests
-            //ToDo: User BR - accept, decline, chat
-            //ToDo: accepted User BR - remove, chat
-            //ToDo: rejected User BR - reverse rejection
-
-          ],
-        )*/
+        //ToDo: Journey BR - delete, closeForRequests
+        //ToDo: User BR - accept, decline, chat
+        //ToDo: accepted User BR - remove, chat
+        //ToDo: rejected User BR - reverse rejection
 
         );
   }

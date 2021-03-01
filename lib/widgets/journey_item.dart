@@ -7,7 +7,7 @@ import 'package:traveltogether_frontend/widgets/rejected_user_button_row.dart';
 enum JourneyItemType {
   pending,
   accepted,
-  rejected
+  declined
 }
 
 class JourneyItem extends StatelessWidget {
@@ -26,7 +26,7 @@ class JourneyItem extends StatelessWidget {
         _text = "Du hast ${user.username} für diese Fahrt angenommen";
       }
       break;
-      case JourneyItemType.rejected: {
+      case JourneyItemType.declined: {
         _text = "Du hast ${user.username} für diese Fahrt abgelehnt";
       }
       break;
@@ -66,7 +66,7 @@ class JourneyItem extends StatelessWidget {
                                 return AcceptedUserButtonRow();
                               }
                               break;
-                              case JourneyItemType.rejected: {
+                              case JourneyItemType.declined: {
                                 return RejectedUserButtonRow();
                               }
                               break;

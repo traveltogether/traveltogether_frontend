@@ -33,7 +33,7 @@ class RequestAndOfferCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.all(7),
+      margin: EdgeInsets.only(left: 7, right: 7, top: 5, bottom: 5),
       child: Padding(
         padding: EdgeInsets.all(10),
         child: Column(
