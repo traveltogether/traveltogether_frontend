@@ -84,7 +84,7 @@ class RequestAndOfferCard extends StatelessWidget {
                         _isCurrentUserAccepted ||
                         _isCurrentUserDeclined);
               } else {
-                return DeleteCloseJourneyButtonRow();
+                return DeleteCloseJourneyButtonRow(journey, refreshParent);
               }
             }())
           ],
