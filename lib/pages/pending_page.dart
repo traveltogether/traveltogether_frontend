@@ -55,111 +55,173 @@ class _PendingPageState extends State<PendingPage> {
                           : b.departureTime));
                 });
 
-                return ListView.builder(
-                    itemCount: journeys.length,
-                    itemBuilder: (context, index) {
-                      return Column(
-                        children: [
+                var othersJourneys = new List<JourneyReadViewModel>();
+                snapshot.data.forEach((journey) {
+                  if (journey.pendingUserIds != null &&
+                          journey.pendingUserIds.contains(currentUserId) ||
+                      journey.acceptedUserIds != null &&
+                          journey.acceptedUserIds.contains(currentUserId) ||
+                      journey.declinedUserIds != null &&
+                          journey.declinedUserIds.contains(currentUserId)) {
+                    othersJourneys.add(journey);
+                  }
+                  othersJourneys.sort((a, b) => (a.departureTime == null
+                          ? a.arrivalTime
+                          : a.departureTime)
+                      .compareTo(b.departureTime == null
+                          ? b.arrivalTime
+                          : b.departureTime));
+                });
+
+                return Scrollbar(
+                    child: ListView(shrinkWrap: true, children: [
+                  ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: journeys.length,
+                      itemBuilder: (context, index) {
+                        return Column(
+                          children: [
+                            (() {
+                              if (index != 0) {
+                                return Padding(
+                                    padding: EdgeInsets.only(top: 15),
+                                    child: RequestAndOfferCard(
+                                        journeys[index], _refreshPage));
+                              } else {
+                                return RequestAndOfferCard(
+                                    journeys[index], _refreshPage);
+                              }
+                            }()),
+                            if (journeys[index].pendingUserIds != null)
+                              (() {
+                                return ListView.builder(
+                                    physics: NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount:
+                                        journeys[index].pendingUserIds.length,
+                                    itemBuilder: (context, jndex) {
+                                      return FutureBuilder<UserReadViewModel>(
+                                          future: userService.getUser(
+                                              journeys[index]
+                                                  .pendingUserIds[jndex]),
+                                          builder: (BuildContext context,
+                                              AsyncSnapshot<UserReadViewModel>
+                                                  snapshot2) {
+                                            if (!snapshot2.hasData) {
+                                              return Center(
+                                                  child:
+                                                      CircularProgressIndicator());
+                                            } else {
+                                              return JourneyItem(
+                                                  JourneyItemType.pending,
+                                                  journeys[index].id,
+                                                  _refreshPage,
+                                                  snapshot2.data);
+                                            }
+                                          });
+                                    });
+                              }()),
+                            if (journeys[index].acceptedUserIds != null)
+                              (() {
+                                return ListView.builder(
+                                    physics: NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount:
+                                        journeys[index].acceptedUserIds.length,
+                                    itemBuilder: (context, jndex) {
+                                      return FutureBuilder<UserReadViewModel>(
+                                          future: userService.getUser(
+                                              journeys[index]
+                                                  .acceptedUserIds[jndex]),
+                                          builder: (BuildContext context,
+                                              AsyncSnapshot<UserReadViewModel>
+                                                  snapshot2) {
+                                            if (!snapshot2.hasData) {
+                                              return Center(
+                                                  child:
+                                                      CircularProgressIndicator());
+                                            } else {
+                                              return JourneyItem(
+                                                  JourneyItemType.accepted,
+                                                  journeys[index].id,
+                                                  _refreshPage,
+                                                  snapshot2.data);
+                                            }
+                                          });
+                                    });
+                              }()),
+                            if (journeys[index].declinedUserIds != null)
+                              (() {
+                                return ListView.builder(
+                                    physics: NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount:
+                                        journeys[index].declinedUserIds.length,
+                                    itemBuilder: (context, jndex) {
+                                      return FutureBuilder<UserReadViewModel>(
+                                          future: userService.getUser(
+                                              journeys[index]
+                                                  .declinedUserIds[jndex]),
+                                          builder: (BuildContext context,
+                                              AsyncSnapshot<UserReadViewModel>
+                                                  snapshot2) {
+                                            if (!snapshot2.hasData) {
+                                              return Center(
+                                                  child:
+                                                      CircularProgressIndicator());
+                                            } else {
+                                              return JourneyItem(
+                                                  JourneyItemType.declined,
+                                                  journeys[index].id,
+                                                  _refreshPage,
+                                                  snapshot2.data);
+                                            }
+                                          });
+                                    });
+                              }()),
+                          ],
+                        );
+                      }),
+                  ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: othersJourneys.length,
+                      itemBuilder: (context, index) {
+                        return Column(children: [
                           (() {
-                            if (index != 0) {
+                            if (journeys.length != 0) {
                               return Padding(
                                   padding: EdgeInsets.only(top: 15),
                                   child: RequestAndOfferCard(
-                                      journeys[index], _refreshPage));
+                                      othersJourneys[index], _refreshPage));
                             } else {
                               return RequestAndOfferCard(
-                                  journeys[index], _refreshPage);
+                                  othersJourneys[index], _refreshPage);
                             }
                           }()),
-                          if (journeys[index].pendingUserIds != null)
-                            (() {
-                              return ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount:
-                                      journeys[index].pendingUserIds.length,
-                                  itemBuilder: (context, jndex) {
-                                    return FutureBuilder<UserReadViewModel>(
-                                        future: userService.getUser(
-                                            journeys[index]
-                                                .pendingUserIds[jndex]),
-                                        builder: (BuildContext context,
-                                            AsyncSnapshot<UserReadViewModel>
-                                                snapshot2) {
-                                          if (!snapshot2.hasData) {
-                                            return Center(
-                                                child:
-                                                    CircularProgressIndicator());
-                                          } else {
-                                            return JourneyItem(
-                                                JourneyItemType.pending,
-                                                journeys[index].id,
-                                                snapshot2.data,
-                                                _refreshPage);
-                                          }
-                                        });
-                                  });
-                            }()),
-                          if (journeys[index].acceptedUserIds != null)
-                            (() {
-                              return ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount:
-                                      journeys[index].acceptedUserIds.length,
-                                  itemBuilder: (context, jndex) {
-                                    return FutureBuilder<UserReadViewModel>(
-                                        future: userService.getUser(
-                                            journeys[index]
-                                                .acceptedUserIds[jndex]),
-                                        builder: (BuildContext context,
-                                            AsyncSnapshot<UserReadViewModel>
-                                                snapshot2) {
-                                          if (!snapshot2.hasData) {
-                                            return Center(
-                                                child:
-                                                    CircularProgressIndicator());
-                                          } else {
-                                            return JourneyItem(
-                                                JourneyItemType.accepted,
-                                                journeys[index].id,
-                                                snapshot2.data,
-                                                _refreshPage);
-                                          }
-                                        });
-                                  });
-                            }()),
-                          if (journeys[index].declinedUserIds != null)
-                            (() {
-                              return ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount:
-                                      journeys[index].declinedUserIds.length,
-                                  itemBuilder: (context, jndex) {
-                                    return FutureBuilder<UserReadViewModel>(
-                                        future: userService.getUser(
-                                            journeys[index]
-                                                .declinedUserIds[jndex]),
-                                        builder: (BuildContext context,
-                                            AsyncSnapshot<UserReadViewModel>
-                                                snapshot2) {
-                                          if (!snapshot2.hasData) {
-                                            return Center(
-                                                child:
-                                                    CircularProgressIndicator());
-                                          } else {
-                                            return JourneyItem(
-                                                JourneyItemType.declined,
-                                                journeys[index].id,
-                                                snapshot2.data,
-                                                _refreshPage);
-                                          }
-                                        });
-                                  });
-                            }()),
-                        ],
-                      );
-                    });
+                          if (othersJourneys[index].pendingUserIds != null &&
+                              othersJourneys[index]
+                                  .pendingUserIds
+                                  .contains(currentUserId))
+                            JourneyItem(JourneyItemType.pendingOthersJourney,
+                                othersJourneys[index].id, _refreshPage),
+                          if (othersJourneys[index].acceptedUserIds != null &&
+                              othersJourneys[index]
+                                  .acceptedUserIds
+                                  .contains(currentUserId))
+                            JourneyItem(JourneyItemType.acceptedOthersJourney,
+                                othersJourneys[index].id, _refreshPage),
+                          if (othersJourneys[index].declinedUserIds != null &&
+                              othersJourneys[index]
+                                  .declinedUserIds
+                                  .contains(currentUserId))
+                            JourneyItem(JourneyItemType.declinedOthersJourney,
+                                othersJourneys[index].id, _refreshPage),
+                        ]);
+                      })
+                ]));
               }
-            })
-        );
+            }));
   }
 }

@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:traveltogether_frontend/view-models/user_read_view_model.dart';
+import 'package:traveltogether_frontend/widgets/accepted_other_journey_button_row.dart';
 import 'package:traveltogether_frontend/widgets/accepted_user_button_row.dart';
+import 'package:traveltogether_frontend/widgets/declined_other_journey_button_row.dart';
+import 'package:traveltogether_frontend/widgets/pending_other_journey_button_row.dart';
 import 'package:traveltogether_frontend/widgets/pending_user_button_row.dart';
 import 'package:traveltogether_frontend/widgets/rejected_user_button_row.dart';
 
 enum JourneyItemType {
   pending,
   accepted,
-  declined
+  declined,
+  pendingOthersJourney,
+  acceptedOthersJourney,
+  declinedOthersJourney
 }
 
 class JourneyItem extends StatelessWidget {
@@ -17,7 +23,7 @@ class JourneyItem extends StatelessWidget {
   final void Function() refreshParent;
   String _text;
 
-  JourneyItem(this.type, this.journeyId, this.user, this.refreshParent) {
+  JourneyItem(this.type, this.journeyId, this.refreshParent, [this.user]) {
     switch(this.type) {
       case JourneyItemType.pending: {
         _text = "${user.username} interessiert sich für diese Fahrt!";
@@ -31,6 +37,19 @@ class JourneyItem extends StatelessWidget {
         _text = "Du hast ${user.username} für diese Fahrt abgelehnt";
       }
       break;
+      case JourneyItemType.pendingOthersJourney: {
+        _text = "Du hast diese Fahrt angefragt";
+      }
+      break;
+      case JourneyItemType.acceptedOthersJourney: {
+        _text = "Du wurdest für diese Fahrt angenommen";
+      }
+      break;
+      case JourneyItemType.declinedOthersJourney: {
+        _text = "Du wurdest für diese Fahrt abgelehnt";
+      }
+      break;
+
       default: {
         _text = "";
       }
@@ -69,6 +88,18 @@ class JourneyItem extends StatelessWidget {
                               break;
                               case JourneyItemType.declined: {
                                 return RejectedUserButtonRow(journeyId, user.id, refreshParent);
+                              }
+                              break;
+                              case JourneyItemType.pendingOthersJourney: {
+                                return PendingOthersJourneyButtonRow(journeyId, refreshParent);
+                              }
+                              break;
+                              case JourneyItemType.acceptedOthersJourney: {
+                                return AcceptedOthersJourneyButtonRow(journeyId, refreshParent);
+                              }
+                              break;
+                              case JourneyItemType.declinedOthersJourney: {
+                                return DeclinedOthersJourneyButtonRow(refreshParent);
                               }
                               break;
                               default: {
