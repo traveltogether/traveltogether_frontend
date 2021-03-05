@@ -194,10 +194,10 @@ class _PendingPageState extends State<PendingPage> {
                               return Padding(
                                   padding: EdgeInsets.only(top: 15),
                                   child: RequestAndOfferCard(
-                                      othersJourneys[index], _refreshPage));
+                                      othersJourneys[index], _refreshPage, null, false));
                             } else {
                               return RequestAndOfferCard(
-                                  othersJourneys[index], _refreshPage);
+                                  othersJourneys[index], _refreshPage, null, false);
                             }
                           }()),
                           if (othersJourneys[index].pendingUserIds != null &&
