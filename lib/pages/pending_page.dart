@@ -32,6 +32,13 @@ class _PendingPageState extends State<PendingPage> {
     setState(() {});
   }
 
+  void sortByDate(List<JourneyReadViewModel> journeys) {
+    return journeys.sort((a, b) => (a.departureTime == null
+            ? a.arrivalTime
+            : a.departureTime)
+        .compareTo(b.departureTime == null ? b.arrivalTime : b.departureTime));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,19 +51,17 @@ class _PendingPageState extends State<PendingPage> {
                 return Center(child: CircularProgressIndicator());
               } else {
                 var journeys = new List<JourneyReadViewModel>();
+
                 snapshot.data.forEach((journey) {
                   if (journey.userId == currentUserId) {
                     journeys.add(journey);
                   }
-                  journeys.sort((a, b) => (a.departureTime == null
-                          ? a.arrivalTime
-                          : a.departureTime)
-                      .compareTo(b.departureTime == null
-                          ? b.arrivalTime
-                          : b.departureTime));
                 });
 
+                sortByDate(journeys);
+
                 var othersJourneys = new List<JourneyReadViewModel>();
+
                 snapshot.data.forEach((journey) {
                   if (journey.pendingUserIds != null &&
                           journey.pendingUserIds.contains(currentUserId) ||
@@ -66,13 +71,9 @@ class _PendingPageState extends State<PendingPage> {
                           journey.declinedUserIds.contains(currentUserId)) {
                     othersJourneys.add(journey);
                   }
-                  othersJourneys.sort((a, b) => (a.departureTime == null
-                          ? a.arrivalTime
-                          : a.departureTime)
-                      .compareTo(b.departureTime == null
-                          ? b.arrivalTime
-                          : b.departureTime));
                 });
+
+                sortByDate(othersJourneys);
 
                 return Scrollbar(
                     child: ListView(shrinkWrap: true, children: [
@@ -123,13 +124,16 @@ class _PendingPageState extends State<PendingPage> {
                         return Column(children: [
                           (() {
                             if (journeys.length == 0 && index == 0) {
-                              return RequestAndOfferCard(
-                                  othersJourneys[index], _refreshPage, null, false);
+                              return RequestAndOfferCard(othersJourneys[index],
+                                  _refreshPage, null, false);
                             } else {
                               return Padding(
                                   padding: EdgeInsets.only(top: 10),
                                   child: RequestAndOfferCard(
-                                      othersJourneys[index], _refreshPage, null, false));
+                                      othersJourneys[index],
+                                      _refreshPage,
+                                      null,
+                                      false));
                             }
                           }()),
                           if (othersJourneys[index].pendingUserIds != null &&
