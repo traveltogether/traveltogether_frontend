@@ -13,7 +13,8 @@ enum JourneyItemType {
   declined,
   pendingOthersJourney,
   acceptedOthersJourney,
-  declinedOthersJourney
+  declinedOthersJourney,
+  noRequests
 }
 
 class JourneyItem extends StatelessWidget {
@@ -23,7 +24,7 @@ class JourneyItem extends StatelessWidget {
   final void Function() refreshParent;
   String _text;
 
-  JourneyItem(this.type, this.journeyId, this.refreshParent, [this.user]) {
+  JourneyItem(this.type, [this.journeyId, this.refreshParent, this.user]) {
     switch (this.type) {
       case JourneyItemType.pending:
         {
@@ -53,6 +54,11 @@ class JourneyItem extends StatelessWidget {
       case JourneyItemType.declinedOthersJourney:
         {
           _text = "Du wurdest für diese Fahrt abgelehnt";
+        }
+        break;
+      case JourneyItemType.noRequests:
+        {
+          _text = "Für diese Fahrt gibt es noch keine Anfragen";
         }
         break;
 
@@ -120,9 +126,14 @@ class JourneyItem extends StatelessWidget {
                           return DeclinedOthersJourneyButtonRow(refreshParent);
                         }
                         break;
+                      case JourneyItemType.noRequests:
+                        {
+                          return SizedBox.shrink();
+                        }
+                        break;
                       default:
                         {
-                          return null;
+                          return SizedBox.shrink();
                         }
                         break;
                     }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:traveltogether_frontend/services/journey_service.dart';
 import 'package:traveltogether_frontend/services/user_service.dart';
 import 'package:traveltogether_frontend/view-models/journey_read_view_model.dart';
-import 'package:traveltogether_frontend/view-models/user_read_view_model.dart';
 import 'package:traveltogether_frontend/widgets/journey_item.dart';
 import 'package:traveltogether_frontend/widgets/pending_accepted_declined_users_list.dart';
 import 'package:traveltogether_frontend/widgets/request_and_offer_card.dart';
@@ -95,6 +94,10 @@ class _PendingPageState extends State<PendingPage> {
                                     journeys[index], _refreshPage);
                               }
                             }()),
+                            if (journeys[index].pendingUserIds == null &&
+                                journeys[index].acceptedUserIds == null &&
+                                journeys[index].declinedUserIds == null)
+                              JourneyItem(JourneyItemType.noRequests),
                             if (journeys[index].pendingUserIds != null)
                               PendingAcceptedDeclinedUsersList(
                                   journeys[index].pendingUserIds,
