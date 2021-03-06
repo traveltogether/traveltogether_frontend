@@ -85,7 +85,7 @@ class _PendingPageState extends State<PendingPage> {
                             (() {
                               if (index != 0) {
                                 return Padding(
-                                    padding: EdgeInsets.only(top: 15),
+                                    padding: EdgeInsets.only(top: 10),
                                     child: RequestAndOfferCard(
                                         journeys[index], _refreshPage));
                               } else {
@@ -190,14 +190,14 @@ class _PendingPageState extends State<PendingPage> {
                       itemBuilder: (context, index) {
                         return Column(children: [
                           (() {
-                            if (journeys.length != 0) {
-                              return Padding(
-                                  padding: EdgeInsets.only(top: 15),
-                                  child: RequestAndOfferCard(
-                                      othersJourneys[index], _refreshPage, null, false));
-                            } else {
+                            if (journeys.length == 0 && index == 0) {
                               return RequestAndOfferCard(
                                   othersJourneys[index], _refreshPage, null, false);
+                            } else {
+                              return Padding(
+                                  padding: EdgeInsets.only(top: 10),
+                                  child: RequestAndOfferCard(
+                                      othersJourneys[index], _refreshPage, null, false));
                             }
                           }()),
                           if (othersJourneys[index].pendingUserIds != null &&
