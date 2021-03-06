@@ -1,14 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:traveltogether_frontend/services/journey_service.dart';
 import 'package:traveltogether_frontend/services/user_service.dart';
-import '../widgets/request_and_offer_card.dart';
-import 'login_page.dart';
-import 'register_page.dart';
-import '../widgets/pop_up.dart';
-
-
-String username = "";
-String firstName = "";
+import 'requests_and_offers_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -38,36 +30,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  JourneyService journeyService = new JourneyService();
   UserService userService = new UserService();
   String textfieldContent = "";
 
   _MyHomePageState() {
-    this.journeyService.joinJourney(4).then((val) => setState(() {
-          textfieldContent = val.toString();
-        }));
-
-    this.userService.getUser(4).then((val) => setState(() {
-          print("meldung meldung!!!!!" + val.toString());
-          textfieldContent = val.firstName.toString();
-          userService.changePassword("Nika", "Alp");
-    }));
-
-
-    userService.getCurrentUser().then((currentUser) => setState(() {
-      setState(() {
-        username = currentUser.username;
-        firstName = currentUser.firstName;
-      });
-    }),
-    );
-
   }
 
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -77,8 +47,8 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           children: <Widget>[
             UserAccountsDrawerHeader(
-              accountName: Text(username),
-              accountEmail: Text(firstName),
+              accountEmail: Text("hiersteht@eine.mail"),
+              accountName: Text("EinName"),
               currentAccountPicture: CircleAvatar(
                 backgroundImage: NetworkImage(
                     "https://blog.wwf.de/wp-content/uploads/2019/10/pinguine.jpg"),
@@ -89,41 +59,32 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             ListTile(
               leading: Icon(Icons.mail),
-              title: Text("Register"),
+              title: Text("Angebote"),
               onTap: () {
                 setState(
-                  () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => RegisterPage()));
-                  },
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.mail),
-              title: Text("Login"),
-              onTap: () {
-                setState(
-                  () {
+                      () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => LoginPage()));
+                        MaterialPageRoute(builder: (context) => RequestsAndOffersPage("offers")));
                   },
                 );
               },
             ),
             ListTile(
               leading: Icon(Icons.mail),
-              title: Text("Pop Up test"),
+              title: Text("Anfragen"),
               onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return PopUp("Journey", "Hier ist ein Fehler passiert weil Fehler und sowas");
+                setState(
+                      () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => RequestsAndOffersPage("requests")));
                   },
                 );
               },
+            ),
+            ListTile(
+              leading: Icon(Icons.mail),
+              title: Text("Nummer 3"),
+              onTap: () {},
             ),
             ListTile(
               leading: Icon(Icons.mail),
@@ -133,13 +94,13 @@ class _MyHomePageState extends State<MyHomePage> {
             Divider(),
             Expanded(
                 child: Align(
-              alignment: FractionalOffset.bottomCenter,
-              child: ListTile(
-                leading: Icon(Icons.settings),
-                title: Text("Einstellungen"),
-                onTap: () {},
-              ),
-            ))
+                  alignment: FractionalOffset.bottomCenter,
+                  child: ListTile(
+                    leading: Icon(Icons.settings),
+                    title: Text("Einstellungen"),
+                    onTap: () {},
+                  ),
+                ))
           ],
         ),
       ),
@@ -147,6 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+
             Text(textfieldContent),
           ],
         ),
