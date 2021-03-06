@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:traveltogether_frontend/services/journey_service.dart';
 import 'package:traveltogether_frontend/view-models/journey_read_view_model.dart';
+import 'package:traveltogether_frontend/widgets/pop_up.dart';
 
 class DeleteCloseJourneyButtonRow extends StatelessWidget {
   final JourneyReadViewModel journey;
@@ -18,11 +19,24 @@ class DeleteCloseJourneyButtonRow extends StatelessWidget {
       children: [
         ElevatedButton(
             onPressed: (() {
-              this.journeyService.deleteJourney(journey.id).then((response) {
+              this
+                  .journeyService
+                  .cancelJourney(journey.id, "reason")
+                  .then((response) {
                 if (response["error"] == null) {
                   refreshParent();
                 } else {
-                  debugPrint(response["error"]);
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return PopUp(
+                        "Fehler",
+                        response["error"] +
+                            "\n\nBitte kontaktiere den Support.",
+                        isWarning: true,
+                      );
+                    },
+                  );
                 }
               });
             }),
@@ -36,7 +50,17 @@ class DeleteCloseJourneyButtonRow extends StatelessWidget {
                 if (response["error"] == null) {
                   refreshParent();
                 } else {
-                  debugPrint(response["error"]);
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return PopUp(
+                        "Fehler",
+                        response["error"] +
+                            "\n\nBitte kontaktiere den Support.",
+                        isWarning: true,
+                      );
+                    },
+                  );
                 }
               });
             }),

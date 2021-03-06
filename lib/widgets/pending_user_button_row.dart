@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:traveltogether_frontend/services/journey_service.dart';
 import 'package:traveltogether_frontend/view-models/user_read_view_model.dart';
+import 'package:traveltogether_frontend/widgets/pop_up.dart';
 
 class PendingUserButtonRow extends StatelessWidget {
   final int journeyId;
@@ -21,24 +22,41 @@ class PendingUserButtonRow extends StatelessWidget {
       children: [
         OutlineButton(
             onPressed: (() {
-              journeyService.acceptUser(journeyId, userId)
-                  .then((response) {
-                    if (response["error"] == null) {
-                      refreshParent();
-                    } else {
-                      debugPrint(response["error"]);
-                    }
+              journeyService.acceptUser(journeyId, userId).then((response) {
+                if (response["error"] == null) {
+                  refreshParent();
+                } else {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return PopUp(
+                        "Fehler",
+                        response["error"] +
+                            "\n\nBitte kontaktiere den Support.",
+                        isWarning: true,
+                      );
+                    },
+                  );
+                }
               });
             }),
             child: Text("Annehmen")),
         OutlineButton(
           onPressed: (() {
-            journeyService.rejectUser(journeyId, userId)
-                .then((response) {
+            journeyService.rejectUser(journeyId, userId).then((response) {
               if (response["error"] == null) {
                 refreshParent();
               } else {
-                debugPrint(response["error"]);
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return PopUp(
+                      "Fehler",
+                      response["error"] + "\n\nBitte kontaktiere den Support.",
+                      isWarning: true,
+                    );
+                  },
+                );
               }
             });
           }),

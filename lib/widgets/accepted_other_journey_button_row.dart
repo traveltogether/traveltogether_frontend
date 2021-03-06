@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:traveltogether_frontend/services/journey_service.dart';
+import 'package:traveltogether_frontend/widgets/pop_up.dart';
 
 class AcceptedOthersJourneyButtonRow extends StatelessWidget {
   final int journeyId;
@@ -17,13 +18,23 @@ class AcceptedOthersJourneyButtonRow extends StatelessWidget {
       children: [
         OutlineButton(
             onPressed: (() {
-              // ToDo: show popup to give a reason
-              journeyService.cancelJourney(journeyId, "reason")
+              journeyService
+                  .cancelJourney(journeyId, "reason")
                   .then((response) {
                 if (response["error"] == null) {
                   refreshParent();
                 } else {
-                  debugPrint(response["error"]);
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return PopUp(
+                        "Fehler",
+                        response["error"] +
+                            "\n\nBitte kontaktiere den Support.",
+                        isWarning: true,
+                      );
+                    },
+                  );
                 }
               });
             }),

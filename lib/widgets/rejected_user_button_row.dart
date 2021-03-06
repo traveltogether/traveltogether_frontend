@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:traveltogether_frontend/services/journey_service.dart';
+import 'package:traveltogether_frontend/widgets/pop_up.dart';
 
 class RejectedUserButtonRow extends StatelessWidget {
   final int journeyId;
@@ -18,12 +19,23 @@ class RejectedUserButtonRow extends StatelessWidget {
       children: [
         OutlineButton(
             onPressed: (() {
-              journeyService.reverseRejectionOfUser(journeyId, userId)
+              journeyService
+                  .reverseRejectionOfUser(journeyId, userId)
                   .then((response) {
                 if (response["error"] == null) {
                   refreshParent();
                 } else {
-                  debugPrint(response["error"]);
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return PopUp(
+                        "Fehler",
+                        response["error"] +
+                            "\n\nBitte kontaktiere den Support.",
+                        isWarning: true,
+                      );
+                    },
+                  );
                 }
               });
             }),
