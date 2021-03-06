@@ -18,7 +18,8 @@ class RequestAndOfferCard extends StatelessWidget {
   final void Function() refreshParent;
   final bool showDeleteCloseButtons;
 
-  RequestAndOfferCard(this.journey, this.refreshParent, [this.currentUserId, this.showDeleteCloseButtons = true]) {
+  RequestAndOfferCard(this.journey, this.refreshParent,
+      [this.currentUserId, this.showDeleteCloseButtons = true]) {
     if (journey.pendingUserIds != null &&
         journey.pendingUserIds.contains(currentUserId)) {
       _isCurrentUserPending = true;
@@ -84,7 +85,7 @@ class RequestAndOfferCard extends StatelessWidget {
                     _isCurrentUserPending ||
                         _isCurrentUserAccepted ||
                         _isCurrentUserDeclined);
-              } else if (showDeleteCloseButtons){
+              } else if (showDeleteCloseButtons) {
                 return DeleteCloseJourneyButtonRow(journey, refreshParent);
               } else {
                 // yes, this is an empty widget. It is needed as otherwise there

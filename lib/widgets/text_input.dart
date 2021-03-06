@@ -11,7 +11,9 @@ class TextInput extends StatelessWidget {
   TextEditingController _controller;
 
   TextInput(this.text, this.icon, this._controller,
-      {this.isDefaultValidatorActive = true, this.customValidator, this.isObscure =false});
+      {this.isDefaultValidatorActive = true,
+      this.customValidator,
+      this.isObscure = false});
 
   @override
   Widget build(BuildContext context) {

@@ -24,36 +24,43 @@ class JourneyItem extends StatelessWidget {
   String _text;
 
   JourneyItem(this.type, this.journeyId, this.refreshParent, [this.user]) {
-    switch(this.type) {
-      case JourneyItemType.pending: {
-        _text = "${user.username} interessiert sich für diese Fahrt!";
-      }
-      break;
-      case JourneyItemType.accepted: {
-        _text = "Du hast ${user.username} für diese Fahrt angenommen";
-      }
-      break;
-      case JourneyItemType.declined: {
-        _text = "Du hast ${user.username} für diese Fahrt abgelehnt";
-      }
-      break;
-      case JourneyItemType.pendingOthersJourney: {
-        _text = "Du hast diese Fahrt angefragt";
-      }
-      break;
-      case JourneyItemType.acceptedOthersJourney: {
-        _text = "Du wurdest für diese Fahrt angenommen";
-      }
-      break;
-      case JourneyItemType.declinedOthersJourney: {
-        _text = "Du wurdest für diese Fahrt abgelehnt";
-      }
-      break;
+    switch (this.type) {
+      case JourneyItemType.pending:
+        {
+          _text = "${user.username} interessiert sich für diese Fahrt!";
+        }
+        break;
+      case JourneyItemType.accepted:
+        {
+          _text = "Du hast ${user.username} für diese Fahrt angenommen";
+        }
+        break;
+      case JourneyItemType.declined:
+        {
+          _text = "Du hast ${user.username} für diese Fahrt abgelehnt";
+        }
+        break;
+      case JourneyItemType.pendingOthersJourney:
+        {
+          _text = "Du hast diese Fahrt angefragt";
+        }
+        break;
+      case JourneyItemType.acceptedOthersJourney:
+        {
+          _text = "Du wurdest für diese Fahrt angenommen";
+        }
+        break;
+      case JourneyItemType.declinedOthersJourney:
+        {
+          _text = "Du wurdest für diese Fahrt abgelehnt";
+        }
+        break;
 
-      default: {
-        _text = "";
-      }
-      break;
+      default:
+        {
+          _text = "";
+        }
+        break;
     }
   }
 
@@ -76,38 +83,50 @@ class JourneyItem extends StatelessWidget {
                     padding: EdgeInsets.only(bottom: 5),
                     child: Text(_text),
                   ),
-                          (() {
-                            switch(this.type) {
-                              case JourneyItemType.pending: {
-                                return PendingUserButtonRow(journeyId, user.id, refreshParent);
-                              }
-                              break;
-                              case JourneyItemType.accepted: {
-                                return AcceptedUserButtonRow(journeyId, user.id, refreshParent);
-                              }
-                              break;
-                              case JourneyItemType.declined: {
-                                return RejectedUserButtonRow(journeyId, user.id, refreshParent);
-                              }
-                              break;
-                              case JourneyItemType.pendingOthersJourney: {
-                                return PendingOthersJourneyButtonRow(journeyId, refreshParent);
-                              }
-                              break;
-                              case JourneyItemType.acceptedOthersJourney: {
-                                return AcceptedOthersJourneyButtonRow(journeyId, refreshParent);
-                              }
-                              break;
-                              case JourneyItemType.declinedOthersJourney: {
-                                return DeclinedOthersJourneyButtonRow(refreshParent);
-                              }
-                              break;
-                              default: {
-                                return null;
-                              }
-                              break;
-                            }
-                          }()),
+                  (() {
+                    switch (this.type) {
+                      case JourneyItemType.pending:
+                        {
+                          return PendingUserButtonRow(
+                              journeyId, user.id, refreshParent);
+                        }
+                        break;
+                      case JourneyItemType.accepted:
+                        {
+                          return AcceptedUserButtonRow(
+                              journeyId, user.id, refreshParent);
+                        }
+                        break;
+                      case JourneyItemType.declined:
+                        {
+                          return RejectedUserButtonRow(
+                              journeyId, user.id, refreshParent);
+                        }
+                        break;
+                      case JourneyItemType.pendingOthersJourney:
+                        {
+                          return PendingOthersJourneyButtonRow(
+                              journeyId, refreshParent);
+                        }
+                        break;
+                      case JourneyItemType.acceptedOthersJourney:
+                        {
+                          return AcceptedOthersJourneyButtonRow(
+                              journeyId, refreshParent);
+                        }
+                        break;
+                      case JourneyItemType.declinedOthersJourney:
+                        {
+                          return DeclinedOthersJourneyButtonRow(refreshParent);
+                        }
+                        break;
+                      default:
+                        {
+                          return null;
+                        }
+                        break;
+                    }
+                  }()),
                 ])))
               ],
             )));
