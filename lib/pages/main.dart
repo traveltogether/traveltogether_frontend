@@ -120,7 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return PopUp("Journey", "Hier ist ein Fehler passiert weil Fehler und sowas", isWarning: false,);
+                    return PopUp("Journey", "Hier ist ein Fehler passiert weil Fehler und sowas");
                   },
                 );
               },
@@ -147,7 +147,6 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            RequestAndOfferCard(),
             Text(textfieldContent),
           ],
         ),
