@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:traveltogether_frontend/pages/main.dart';
 
 class PopUp extends StatelessWidget {
   String title;
