@@ -17,7 +17,8 @@ class AcceptedOthersJourneyButtonRow extends StatelessWidget {
       children: [
         OutlineButton(
             onPressed: (() {
-              journeyService.cancelJourney(journeyId)
+              // ToDo: show popup to give a reason
+              journeyService.cancelJourney(journeyId, "reason")
                   .then((response) {
                 if (response["error"] == null) {
                   refreshParent();
