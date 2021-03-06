@@ -102,13 +102,13 @@ class _MyHomePageState extends State<MyHomePage> {
             Divider(),
             Expanded(
                 child: Align(
-              alignment: FractionalOffset.bottomCenter,
-              child: ListTile(
-                leading: Icon(Icons.settings),
-                title: Text("Einstellungen"),
-                onTap: () {},
-              ),
-            ))
+                  alignment: FractionalOffset.bottomCenter,
+                  child: ListTile(
+                    leading: Icon(Icons.settings),
+                    title: Text("Einstellungen"),
+                    onTap: () {},
+                  ),
+                ))
           ],
         ),
       ),
