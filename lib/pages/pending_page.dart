@@ -4,6 +4,7 @@ import 'package:traveltogether_frontend/services/user_service.dart';
 import 'package:traveltogether_frontend/view-models/journey_read_view_model.dart';
 import 'package:traveltogether_frontend/view-models/user_read_view_model.dart';
 import 'package:traveltogether_frontend/widgets/journey_item.dart';
+import 'package:traveltogether_frontend/widgets/pending_accepted_declined_users_list.dart';
 import 'package:traveltogether_frontend/widgets/request_and_offer_card.dart';
 
 class PendingPage extends StatefulWidget {
@@ -94,92 +95,23 @@ class _PendingPageState extends State<PendingPage> {
                               }
                             }()),
                             if (journeys[index].pendingUserIds != null)
-                              (() {
-                                return ListView.builder(
-                                    physics: NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    itemCount:
-                                        journeys[index].pendingUserIds.length,
-                                    itemBuilder: (context, jndex) {
-                                      return FutureBuilder<UserReadViewModel>(
-                                          future: userService.getUser(
-                                              journeys[index]
-                                                  .pendingUserIds[jndex]),
-                                          builder: (BuildContext context,
-                                              AsyncSnapshot<UserReadViewModel>
-                                                  snapshot2) {
-                                            if (!snapshot2.hasData) {
-                                              return Center(
-                                                  child:
-                                                      CircularProgressIndicator());
-                                            } else {
-                                              return JourneyItem(
-                                                  JourneyItemType.pending,
-                                                  journeys[index].id,
-                                                  _refreshPage,
-                                                  snapshot2.data);
-                                            }
-                                          });
-                                    });
-                              }()),
+                              PendingAcceptedDeclinedUsersList(
+                                  journeys[index].pendingUserIds,
+                                  journeys[index].id,
+                                  JourneyItemType.pending,
+                                  this._refreshPage),
                             if (journeys[index].acceptedUserIds != null)
-                              (() {
-                                return ListView.builder(
-                                    physics: NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    itemCount:
-                                        journeys[index].acceptedUserIds.length,
-                                    itemBuilder: (context, jndex) {
-                                      return FutureBuilder<UserReadViewModel>(
-                                          future: userService.getUser(
-                                              journeys[index]
-                                                  .acceptedUserIds[jndex]),
-                                          builder: (BuildContext context,
-                                              AsyncSnapshot<UserReadViewModel>
-                                                  snapshot2) {
-                                            if (!snapshot2.hasData) {
-                                              return Center(
-                                                  child:
-                                                      CircularProgressIndicator());
-                                            } else {
-                                              return JourneyItem(
-                                                  JourneyItemType.accepted,
-                                                  journeys[index].id,
-                                                  _refreshPage,
-                                                  snapshot2.data);
-                                            }
-                                          });
-                                    });
-                              }()),
+                              PendingAcceptedDeclinedUsersList(
+                                  journeys[index].acceptedUserIds,
+                                  journeys[index].id,
+                                  JourneyItemType.accepted,
+                                  this._refreshPage),
                             if (journeys[index].declinedUserIds != null)
-                              (() {
-                                return ListView.builder(
-                                    physics: NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    itemCount:
-                                        journeys[index].declinedUserIds.length,
-                                    itemBuilder: (context, jndex) {
-                                      return FutureBuilder<UserReadViewModel>(
-                                          future: userService.getUser(
-                                              journeys[index]
-                                                  .declinedUserIds[jndex]),
-                                          builder: (BuildContext context,
-                                              AsyncSnapshot<UserReadViewModel>
-                                                  snapshot2) {
-                                            if (!snapshot2.hasData) {
-                                              return Center(
-                                                  child:
-                                                      CircularProgressIndicator());
-                                            } else {
-                                              return JourneyItem(
-                                                  JourneyItemType.declined,
-                                                  journeys[index].id,
-                                                  _refreshPage,
-                                                  snapshot2.data);
-                                            }
-                                          });
-                                    });
-                              }()),
+                              PendingAcceptedDeclinedUsersList(
+                                  journeys[index].declinedUserIds,
+                                  journeys[index].id,
+                                  JourneyItemType.declined,
+                                  this._refreshPage),
                           ],
                         );
                       }),
