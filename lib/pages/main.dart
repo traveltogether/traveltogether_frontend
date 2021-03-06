@@ -120,7 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return PopUp("Journey", "Hier ist ein Fehler passiert weil Fehler und sowas", isWarning: true,);
+                    return PopUp("Journey", "Hier ist ein Fehler passiert weil Fehler und sowas", isWarning: false,);
                   },
                 );
               },
