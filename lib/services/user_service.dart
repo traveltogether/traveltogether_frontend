@@ -35,7 +35,6 @@ class UserService extends ServiceBase {
     return put("auth/password", {"old_password": oldPassword, "new_password": newPassword});
   }
 
-
   Future<Map<String, dynamic>> changeDisability(int id, String disability) async {
     return put("users/${id.toString()}/disabilities", {"disabilities": disability});
   }

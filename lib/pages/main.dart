@@ -4,6 +4,7 @@ import 'package:traveltogether_frontend/services/user_service.dart';
 import '../widgets/request_and_offer_card.dart';
 import 'login_page.dart';
 import 'register_page.dart';
+import '../widgets/pop_up.dart';
 
 
 String username = "";
@@ -46,14 +47,14 @@ class _MyHomePageState extends State<MyHomePage> {
           textfieldContent = val.toString();
         }));
 
-
     this.userService.getUser(4).then((val) => setState(() {
           print("meldung meldung!!!!!" + val.toString());
           textfieldContent = val.firstName.toString();
-        }));
+          userService.changePassword("Nika", "Alp");
+    }));
 
 
-    userService.getUser(4).then((currentUser) => setState(() {
+    userService.getCurrentUser().then((currentUser) => setState(() {
       setState(() {
         username = currentUser.username;
         firstName = currentUser.firstName;
@@ -114,8 +115,15 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             ListTile(
               leading: Icon(Icons.mail),
-              title: Text("Nummer 3"),
-              onTap: () {},
+              title: Text("Pop Up test"),
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return PopUp("Journey", "Hier ist ein Fehler passiert weil Fehler und sowas", isWarning: true,);
+                  },
+                );
+              },
             ),
             ListTile(
               leading: Icon(Icons.mail),
