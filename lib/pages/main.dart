@@ -8,6 +8,9 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+
+
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -26,15 +29,27 @@ class MyHomePage extends StatefulWidget {
 
   final String title;
 
+
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  UserService userService = new UserService();
   String textfieldContent = "";
 
+  UserService userService = new UserService();
+  String username;
+  String firstName;
+
   _MyHomePageState() {
+
+    userService.getCurrentUser().then((currentUser) => setState(() {
+      setState(() {
+        username = currentUser.username;
+        firstName = currentUser.firstName;
+      });
+    }),
+    );
   }
 
   @override
@@ -48,8 +63,8 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           children: <Widget>[
             UserAccountsDrawerHeader(
-              accountEmail: Text("hiersteht@eine.mail"),
-              accountName: Text("EinName"),
+              accountName: Text(username),
+              accountEmail: Text(firstName),
               currentAccountPicture: CircleAvatar(
                 backgroundImage: NetworkImage(
                     "https://blog.wwf.de/wp-content/uploads/2019/10/pinguine.jpg"),
