@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:traveltogether_frontend/pages/view_profile_page.dart';
 import 'package:traveltogether_frontend/services/user_service.dart';
 import 'requests_and_offers_page.dart';
 
@@ -52,6 +53,23 @@ class _MyHomePageState extends State<MyHomePage> {
               currentAccountPicture: CircleAvatar(
                 backgroundImage: NetworkImage(
                     "https://blog.wwf.de/wp-content/uploads/2019/10/pinguine.jpg"),
+                child: Padding(padding: EdgeInsets.only(top: 35, left: 40),
+                  child:
+                  CircleAvatar(
+                    backgroundColor: Colors.black54,
+                  child:
+                  IconButton(
+                    iconSize: 20,
+                    icon: Icon(Icons.edit, color: Colors.white), onPressed: (){
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => ViewProfilePage()));
+                    // => EditProfilPage statt ViewProfile
+                  },),
+
+                  ),
+
+                ),
+
               ),
             ),
             Padding(
@@ -84,7 +102,10 @@ class _MyHomePageState extends State<MyHomePage> {
             ListTile(
               leading: Icon(Icons.mail),
               title: Text("Nummer 3"),
-              onTap: () {},
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ViewProfilePage()));
+              },
             ),
             ListTile(
               leading: Icon(Icons.mail),
