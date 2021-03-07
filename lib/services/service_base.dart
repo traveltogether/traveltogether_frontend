@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'dart:convert';
 import 'dart:async';
+import 'package:flutter/cupertino.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter/foundation.dart';
 
@@ -8,11 +10,16 @@ class ServiceBase {
   HttpClient client = new HttpClient();
   final String baseUrl = "api.traveltogether.eu";
   final String version = "/v1/";
-  String authKey = "";
 
   void setAuthKey(Future<Map<String, dynamic>> json) async {
-    authKey = await json.then((value) => value["session_key"].toString());
-    debugPrint(authKey);
+    var authKey = await json.then((value) => value["session_key"].toString());
+    var sharedPreferences = await SharedPreferences.getInstance();
+    await sharedPreferences.setString("authKey", authKey);
+  }
+
+  Future<String> getAuthKey() async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+    return sharedPreferences.getString("authKey");
   }
 
   Future<Map<String, dynamic>> handleResponse(HttpClientResponse response) {
@@ -27,10 +34,10 @@ class ServiceBase {
 
   Future<Map<String, dynamic>> get(String url,
       [Map<String, String> queryParams]) async {
-    debugPrint(this.authKey);
     return client
         .getUrl(Uri.https('$baseUrl', '$version$url', queryParams))
-        .then((HttpClientRequest request) {
+        .then((HttpClientRequest request) async {
+      var authKey = await getAuthKey();
       request.headers.add("X-Auth-Key", authKey);
       return request.close();
     }).then((HttpClientResponse response) {
@@ -38,14 +45,15 @@ class ServiceBase {
     });
   }
 
-  Future<Map<String, dynamic>> post(
-      String url, [Map<String, dynamic> jsonBody, bool login]) async {
+  Future<Map<String, dynamic>> post(String url,
+      [Map<String, dynamic> jsonBody, bool login]) async {
     return client
         .postUrl(Uri.https('$baseUrl', '$version$url'))
-        .then((HttpClientRequest request) {
-          if (!login) {
-            request.headers.add("X-Auth-Key", authKey);
-          }
+        .then((HttpClientRequest request) async {
+      if (!login) {
+        var authKey = await getAuthKey();
+        request.headers.add("X-Auth-Key", authKey);
+      }
       if (jsonBody != null) {
         request.headers.add('content-type', 'application/json');
         request.add(utf8.encode(json.encode(jsonBody)));
@@ -53,7 +61,7 @@ class ServiceBase {
       return request.close();
     }).then((HttpClientResponse response) async {
       if (response.statusCode == 200) {
-        if (login){
+        if (login) {
           await setAuthKey(handleResponse(response));
         }
         return {"error": null};
@@ -66,7 +74,8 @@ class ServiceBase {
   Future<Map<String, dynamic>> put(String url, Map<String, dynamic> jsonBody) {
     return client
         .putUrl(Uri.https('$baseUrl', '$version$url'))
-        .then((HttpClientRequest request) {
+        .then((HttpClientRequest request) async {
+      var authKey = await getAuthKey();
       request.headers.add("X-Auth-Key", authKey);
       request.headers.add('content-type', 'application/json');
       request.add(utf8.encode(json.encode(jsonBody)));
@@ -83,7 +92,8 @@ class ServiceBase {
   Future<Map<String, dynamic>> delete(String url) {
     return client
         .deleteUrl(Uri.https('$baseUrl', '$version$url'))
-        .then((HttpClientRequest request) {
+        .then((HttpClientRequest request) async {
+      var authKey = await getAuthKey();
       request.headers.add("X-Auth-Key", authKey);
       return request.close();
     }).then((HttpClientResponse response) {
