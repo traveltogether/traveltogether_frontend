@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:traveltogether_frontend/pages/edit_profile_page.dart';
 import 'package:traveltogether_frontend/pages/view_profile_page.dart';
 import 'package:traveltogether_frontend/services/user_service.dart';
 import 'requests_and_offers_page.dart';
@@ -77,8 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     iconSize: 20,
                     icon: Icon(Icons.edit, color: Colors.white), onPressed: (){
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => ViewProfilePage()));
-                    // => EditProfilPage statt ViewProfile
+                        MaterialPageRoute(builder: (context) => EditProfilePage()));
                   },),
 
                   ),
