@@ -116,18 +116,18 @@ class EditProfilePageState extends State<EditProfilePage> {
                 padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
                 child: Container(
                     child: TextInput(
-                        this.firstName, Icons.person, _controllerFirstName)),
+                        this.firstName, Icons.person, _controllerFirstName, isDefaultValidatorActive: false)),
               ),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
                 child: Container(
-                    child: TextInput(this.email, Icons.mail, _controllerEmail)),
+                    child: TextInput(this.email, Icons.mail, _controllerEmail, isDefaultValidatorActive: false)),
               ),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
                 child: Container(
                     child: TextInput(this.disabilities,
-                        Icons.accessible_rounded, _controllerDisabilities)),
+                        Icons.accessible_rounded, _controllerDisabilities, isDefaultValidatorActive: false)),
               ),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
@@ -136,7 +136,7 @@ class EditProfilePageState extends State<EditProfilePage> {
                   "altes Passwort",
                   Icons.lock,
                   _controllerOldPassword,
-                  isObscure: true,
+                  isObscure: true, isDefaultValidatorActive: false,
                 )),
               ),
               Padding(
@@ -145,8 +145,17 @@ class EditProfilePageState extends State<EditProfilePage> {
                     child: TextInput(
                       "neues Passwort",
                       Icons.lock,
-                      _controllerNewPassword,
+                      _controllerNewPassword, isDefaultValidatorActive: false,
                       isObscure: true,
+                        customValidator: (value) {
+                          if (_controllerNewPassword.text.length >= 8) {
+                            return null;
+                          }
+                          if (_controllerNewPassword.text.length <= 1) return null;
+                          else {
+                            return "Passwort benötigt mindestens 8 Zeichen";
+                          }
+                        }
                     )),
               ),
               Padding(
@@ -155,8 +164,20 @@ class EditProfilePageState extends State<EditProfilePage> {
                     child: TextInput(
                       "neues Passwort bestätigen",
                       Icons.lock,
-                      _controllerRepeatNewPassword,
+                      _controllerRepeatNewPassword, isDefaultValidatorActive: false,
                       isObscure: true,
+                        customValidator: (value) {
+                          if (_controllerRepeatNewPassword.text.length >= 8) {
+                            return null;
+                          }
+                          if (_controllerNewPassword.text.length <= 1) return null;
+                          if (_controllerNewPassword.text !=
+                              _controllerRepeatNewPassword.text) {
+                            return "Passwort muss gleich sein";
+                          } else {
+                            return "Passwort benötigt mindestens 8 Zeichen";
+                          }
+                        }
                     )),
               ),
               Padding(
@@ -169,7 +190,10 @@ class EditProfilePageState extends State<EditProfilePage> {
                         if (_formKey.currentState.validate()) print("valide");
 
                         this.oldPassword = _controllerOldPassword.text;
-                        if(_controllerNewPassword.text == _controllerRepeatNewPassword.text) this.newPassword= _controllerNewPassword.text;
+                        if(_controllerNewPassword.text == _controllerRepeatNewPassword.text){
+                          this.newPassword= _controllerNewPassword.text;
+
+                        }
 
                       },
                     ),
