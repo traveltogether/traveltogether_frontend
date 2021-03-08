@@ -18,7 +18,7 @@ class Button extends StatelessWidget {
         this.text,
         style: TextStyle(color: this.customTextColor),
         textScaleFactor: this.customTextScale,
-        textAlign: TextAlign.right,
+        textAlign: TextAlign.left,
       ),
     );
   }
