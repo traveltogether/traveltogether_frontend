@@ -19,7 +19,9 @@ class EditProfilePageState extends State<EditProfilePage> {
   String email;
   String disabilities;
   String profilePic;
-  String password;
+
+  String oldPassword;
+  String newPassword;
 
   EditProfilePageState() {
     userService.getCurrentUser().then(
@@ -44,6 +46,7 @@ class EditProfilePageState extends State<EditProfilePage> {
 
   TextEditingController _controllerOldPassword;
   TextEditingController _controllerNewPassword;
+  TextEditingController _controllerRepeatNewPassword;
 
   @override
   void initState() {
@@ -52,6 +55,7 @@ class EditProfilePageState extends State<EditProfilePage> {
     _controllerEmail = new TextEditingController();
     _controllerOldPassword = new TextEditingController();
     _controllerNewPassword = new TextEditingController();
+    _controllerRepeatNewPassword = new TextEditingController();
   }
 
   @override
@@ -62,7 +66,9 @@ class EditProfilePageState extends State<EditProfilePage> {
       ),
       body: Center(
         child: SingleChildScrollView(
-          child: Column(
+        child: Form(
+          key: _formKey,
+        child: Column(
             children: <Widget>[
               Stack(
                 alignment: Alignment.center,
@@ -102,7 +108,8 @@ class EditProfilePageState extends State<EditProfilePage> {
                 child: Container(
                     width: 350,
                     height: 45,
-                    child: Button("username: "+this.username, customTextColor: Colors.black54, customTextScale: 1.1,),
+
+                    child: Button("Nutzername: "+this.username, customTextColor: Colors.black54, customTextScale: 1.1,),
                 ),
               ),
               Padding(
@@ -142,8 +149,35 @@ class EditProfilePageState extends State<EditProfilePage> {
                       isObscure: true,
                     )),
               ),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+                child: Container(
+                    child: TextInput(
+                      "neues Passwort bestätigen",
+                      Icons.lock,
+                      _controllerRepeatNewPassword,
+                      isObscure: true,
+                    )),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+                child: Container(
+                    child: FlatButton(
+                      color: Colors.blueAccent,
+                      child: Text("Änderungen speichern"),
+                      onPressed: (){
+                        if (_formKey.currentState.validate()) print("valide");
+
+                        this.oldPassword = _controllerOldPassword.text;
+                        if(_controllerNewPassword.text == _controllerRepeatNewPassword.text) this.newPassword= _controllerNewPassword.text;
+
+                      },
+                    ),
+                ),
+              ),
             ],
           ),
+        ),
         ),
       ),
     );
