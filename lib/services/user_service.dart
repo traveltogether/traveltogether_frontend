@@ -43,7 +43,7 @@ class UserService extends ServiceBase {
     return put("users/${id.toString()}/profile-image", {"profile_image": profilePic});
   }
 
-  Future<Map<String, dynamic>> changeUsername(int id, String username) async {
-    return put("users/${id.toString()}/username", {"username": username});
+  Future<Map<String, dynamic>> changeFirstname(int id, String firstname) async {
+    return put("users/${id.toString()}/firstname", {"first_name": firstname});
   }
 }
