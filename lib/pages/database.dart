@@ -41,7 +41,7 @@ class DatabaseMethods {
     }
   }
 
-  createChatRoom(String chatRoomID, chatRoomMap){
+  createChatRoom(int chatRoomID, chatRoomMap){
     _chatRoom.add(ChatRoom(chatRoomID: chatRoomID,chatRoomMap: chatRoomMap));
     return ChatRoom(chatRoomID: chatRoomID, chatRoomMap: chatRoomMap);
   }
@@ -55,7 +55,7 @@ class User {
 
 class ChatRoom {
   Map chatRoomMap = Map<List, String>();
-  String chatRoomID;
+  int chatRoomID;
   ChatRoom({this.chatRoomID, this.chatRoomMap});
 }
 
