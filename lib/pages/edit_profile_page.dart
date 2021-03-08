@@ -23,6 +23,8 @@ class EditProfilePageState extends State<EditProfilePage> {
   String oldPassword;
   String newPassword;
 
+  bool mailIsValid = false;
+
   EditProfilePageState() {
     userService.getCurrentUser().then(
           (currentUser) => setState(() {
@@ -121,7 +123,21 @@ class EditProfilePageState extends State<EditProfilePage> {
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
                 child: Container(
-                    child: TextInput(this.email, Icons.mail, _controllerEmail, isDefaultValidatorActive: false)),
+                    child: TextInput(this.email, Icons.mail, _controllerEmail, isDefaultValidatorActive: false,
+                        customValidator: (value) {
+                          bool emailValid = RegExp(
+                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                              .hasMatch(value);
+                          if (emailValid) {
+                            mailIsValid = true;
+                            return null;
+                          } if(_controllerEmail.text.length < 1) return null;
+                          else {
+                            _controllerEmail.text = null;
+                            return "ungültige Emailadresse";
+                          }
+                        }
+                    )),
               ),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
@@ -189,12 +205,15 @@ class EditProfilePageState extends State<EditProfilePage> {
                       onPressed: (){
                         if (_formKey.currentState.validate()) print("valide");
 
-                        this.oldPassword = _controllerOldPassword.text;
-                        if(_controllerNewPassword.text == _controllerRepeatNewPassword.text){
+                        if(_controllerNewPassword.text == _controllerRepeatNewPassword.text && _controllerNewPassword.text.length >= 8){
+                          this.oldPassword = _controllerOldPassword.text;
                           this.newPassword= _controllerNewPassword.text;
-
+                          if(_controllerNewPassword.text.length >= 8) userService.changePassword(oldPassword, newPassword);
                         }
-
+                        
+                        if(_controllerFirstName.text.length >= 4) userService.changeFirstname(_controllerFirstName.text);
+                        if(_controllerDisabilities.text.length >= 1) userService.changeDisability(this._controllerDisabilities.text);
+                        if(mailIsValid) userService.changeMail(_controllerEmail.text);
                       },
                     ),
                 ),
