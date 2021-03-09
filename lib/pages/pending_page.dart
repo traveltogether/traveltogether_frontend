@@ -66,6 +66,7 @@ class _PendingPageState extends State<PendingPage> {
                 sortByDate(cancelledJourneys);
 
                 var othersJourneys = <JourneyReadViewModel>[];
+                var cancelledOthersJourneys = <JourneyReadViewModel>[];
 
                 snapshot.data.forEach((journey) {
                   if (journey.pendingUserIds != null &&
@@ -74,11 +75,16 @@ class _PendingPageState extends State<PendingPage> {
                           journey.acceptedUserIds.contains(currentUserId) ||
                       journey.declinedUserIds != null &&
                           journey.declinedUserIds.contains(currentUserId)) {
-                    othersJourneys.add(journey);
+                    if (!journey.cancelledByHost) {
+                      othersJourneys.add(journey);
+                    } else {
+                      cancelledOthersJourneys.add(journey);
+                    }
                   }
                 });
 
                 sortByDate(othersJourneys);
+                sortByDate(cancelledOthersJourneys);
 
                 return Scrollbar(
                     child: ListView(shrinkWrap: true, children: [
@@ -191,7 +197,40 @@ class _PendingPageState extends State<PendingPage> {
                                         false));
                               }
                             }()),
-                            JourneyItem(JourneyItemType.cancelled, cancelledJourneys[index])
+                            JourneyItem(JourneyItemType.cancelled,
+                                cancelledJourneys[index])
+                          ],
+                        );
+                      }),
+                  ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: cancelledOthersJourneys.length,
+                      itemBuilder: (context, index) {
+                        return Column(
+                          children: [
+                            (() {
+                              if (journeys.length == 0 &&
+                                  othersJourneys.length == 0 &&
+                                  cancelledJourneys == 0 &&
+                                  index == 0) {
+                                return RequestAndOfferCard(
+                                    cancelledOthersJourneys[index],
+                                    _refreshPage,
+                                    null,
+                                    false);
+                              } else {
+                                return Padding(
+                                    padding: EdgeInsets.only(top: 10),
+                                    child: RequestAndOfferCard(
+                                        cancelledOthersJourneys[index],
+                                        _refreshPage,
+                                        null,
+                                        false));
+                              }
+                            }()),
+                            JourneyItem(JourneyItemType.othersCancelled,
+                                cancelledOthersJourneys[index])
                           ],
                         );
                       })

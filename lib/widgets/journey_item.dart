@@ -16,7 +16,8 @@ enum JourneyItemType {
   acceptedOthersJourney,
   declinedOthersJourney,
   noRequests,
-  cancelled
+  cancelled,
+  othersCancelled
 }
 
 class JourneyItem extends StatelessWidget {
@@ -24,55 +25,67 @@ class JourneyItem extends StatelessWidget {
   final JourneyReadViewModel journey;
   final UserReadViewModel user;
   final void Function() refreshParent;
-  String _text;
+  String text;
+  String reason;
+  Color color = Colors.black;
 
   JourneyItem(this.type, [this.journey, this.refreshParent, this.user]) {
     switch (this.type) {
       case JourneyItemType.pending:
         {
-          _text = "${user.username} interessiert sich für diese Fahrt!";
+          text = "${user.username} interessiert sich für diese Fahrt!";
         }
         break;
       case JourneyItemType.accepted:
         {
-          _text = "Du hast ${user.username} für diese Fahrt angenommen";
+          text = "Du hast ${user.username} für diese Fahrt angenommen";
         }
         break;
       case JourneyItemType.declined:
         {
-          _text = "Du hast ${user.username} für diese Fahrt abgelehnt";
+          text = "Du hast ${user.username} für diese Fahrt abgelehnt";
         }
         break;
       case JourneyItemType.pendingOthersJourney:
         {
-          _text = "Du hast diese Fahrt angefragt";
+          text = "Du hast diese Fahrt angefragt";
         }
         break;
       case JourneyItemType.acceptedOthersJourney:
         {
-          _text = "Du wurdest für diese Fahrt angenommen";
+          text = "Du wurdest für diese Fahrt angenommen";
         }
         break;
       case JourneyItemType.declinedOthersJourney:
         {
-          _text = "Du wurdest für diese Fahrt abgelehnt";
+          text = "Du wurdest für diese Fahrt abgelehnt";
         }
         break;
       case JourneyItemType.noRequests:
         {
-          _text = "Für diese Fahrt gibt es noch keine Anfragen";
+          text = "Für diese Fahrt gibt es noch keine Anfragen";
         }
         break;
       case JourneyItemType.cancelled:
         {
-          _text =
-              "Du hast diese Fahrt abgesagt:\n${journey.cancelledByHostReason}";
+          text =
+              "Du hast diese Fahrt abgesagt:";
+          reason = journey.cancelledByHostReason;
+              color = Colors.red;
+        }
+        break;
+      case JourneyItemType.othersCancelled:
+        {
+          text =
+              "Diese Fahrt wurde abgesagt:";
+          reason = journey.cancelledByHostReason;
+              color = Colors.red;
         }
         break;
 
       default:
         {
-          _text = "";
+          text = "";
         }
         break;
     }
@@ -95,7 +108,21 @@ class JourneyItem extends StatelessWidget {
                         child: Column(children: [
                   Padding(
                     padding: EdgeInsets.only(bottom: 5),
-                    child: Text(_text),
+                    child: RichText(
+                        text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: text,
+                          style: TextStyle(color: color),
+                        ),
+                        if (reason != null)
+                          TextSpan(
+                          text: "\n${reason}",
+                          style: TextStyle(color: Colors.black),
+                        )
+                      ]
+                    )
+                    )
                   ),
                   (() {
                     switch (this.type) {
@@ -132,16 +159,6 @@ class JourneyItem extends StatelessWidget {
                       case JourneyItemType.declinedOthersJourney:
                         {
                           return DeclinedOthersJourneyButtonRow(refreshParent);
-                        }
-                        break;
-                      case JourneyItemType.noRequests:
-                        {
-                          return SizedBox.shrink();
-                        }
-                        break;
-                      case JourneyItemType.cancelled:
-                        {
-                          return SizedBox.shrink();
                         }
                         break;
                       default:
