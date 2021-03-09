@@ -40,8 +40,6 @@ class _MyHomePageState extends State<MyHomePage> {
   String textfieldContent = "";
 
   UserService userService = new UserService();
-  String username = "";
-  String firstName = "";
 
   @override
   Widget build(BuildContext context) {
