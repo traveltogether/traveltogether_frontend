@@ -24,6 +24,7 @@ class _PendingPageState extends State<PendingPage> {
 
     userService.getCurrentUser().then((user) {
       currentUserId = user.id;
+      _refreshPage();
     });
   }
 
