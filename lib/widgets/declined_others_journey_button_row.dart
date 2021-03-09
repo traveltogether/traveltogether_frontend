@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:traveltogether_frontend/services/journey_service.dart';
+import 'package:traveltogether_frontend/view-models/journey_read_view_model.dart';
 
 class DeclinedOthersJourneyButtonRow extends StatelessWidget {
+  final JourneyReadViewModel journey;
+  final int currentUserId;
   final void Function() refreshParent;
-  JourneyService journeyService;
 
-  DeclinedOthersJourneyButtonRow(this.refreshParent) {
-    this.journeyService = new JourneyService();
-  }
+  const DeclinedOthersJourneyButtonRow(
+      this.journey, this.currentUserId, this.refreshParent);
 
   @override
   Widget build(BuildContext context) {

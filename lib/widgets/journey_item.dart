@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:traveltogether_frontend/view-models/journey_read_view_model.dart';
 import 'package:traveltogether_frontend/view-models/user_read_view_model.dart';
-import 'package:traveltogether_frontend/widgets/accepted_other_journey_button_row.dart';
+import 'package:traveltogether_frontend/widgets/accepted_others_journey_button_row.dart';
 import 'package:traveltogether_frontend/widgets/accepted_user_button_row.dart';
-import 'package:traveltogether_frontend/widgets/declined_other_journey_button_row.dart';
-import 'package:traveltogether_frontend/widgets/pending_other_journey_button_row.dart';
+import 'package:traveltogether_frontend/widgets/declined_others_journey_button_row.dart';
+import 'package:traveltogether_frontend/widgets/pending_others_journey_button_row.dart';
 import 'package:traveltogether_frontend/widgets/pending_user_button_row.dart';
 import 'package:traveltogether_frontend/widgets/rejected_user_button_row.dart';
 
@@ -24,12 +24,14 @@ class JourneyItem extends StatelessWidget {
   final JourneyItemType type;
   final JourneyReadViewModel journey;
   final UserReadViewModel user;
+  final int currentUserId;
   final void Function() refreshParent;
   String text;
   String reason;
   Color color = Colors.black;
 
-  JourneyItem(this.type, [this.journey, this.refreshParent, this.user]) {
+  JourneyItem(this.type,
+      [this.journey, this.refreshParent, this.user, this.currentUserId]) {
     switch (this.type) {
       case JourneyItemType.pending:
         {
@@ -68,18 +70,16 @@ class JourneyItem extends StatelessWidget {
         break;
       case JourneyItemType.cancelled:
         {
-          text =
-              "Du hast diese Fahrt abgesagt:";
+          text = "Du hast diese Fahrt abgesagt:";
           reason = journey.cancelledByHostReason;
-              color = Colors.red;
+          color = Colors.red;
         }
         break;
       case JourneyItemType.othersCancelled:
         {
-          text =
-              "Diese Fahrt wurde abgesagt:";
+          text = "Diese Fahrt wurde abgesagt:";
           reason = journey.cancelledByHostReason;
-              color = Colors.red;
+          color = Colors.red;
         }
         break;
 
@@ -107,58 +107,55 @@ class JourneyItem extends StatelessWidget {
                     child: Center(
                         child: Column(children: [
                   Padding(
-                    padding: EdgeInsets.only(bottom: 5),
-                    child: RichText(
-                        text: TextSpan(
-                      children: [
+                      padding: EdgeInsets.only(bottom: 5),
+                      child: RichText(
+                          text: TextSpan(children: [
                         TextSpan(
                           text: text,
                           style: TextStyle(color: color),
                         ),
                         if (reason != null)
                           TextSpan(
-                          text: "\n${reason}",
-                          style: TextStyle(color: Colors.black),
-                        )
-                      ]
-                    )
-                    )
-                  ),
+                            text: "\n${reason}",
+                            style: TextStyle(color: Colors.black),
+                          )
+                      ]))),
                   (() {
                     switch (this.type) {
                       case JourneyItemType.pending:
                         {
                           return PendingUserButtonRow(
-                              journey.id, user.id, refreshParent);
+                              journey, user.id, refreshParent);
                         }
                         break;
                       case JourneyItemType.accepted:
                         {
                           return AcceptedUserButtonRow(
-                              journey.id, user.id, refreshParent);
+                              journey, user.id, refreshParent);
                         }
                         break;
                       case JourneyItemType.declined:
                         {
                           return RejectedUserButtonRow(
-                              journey.id, user.id, refreshParent);
+                              journey, user.id, refreshParent);
                         }
                         break;
                       case JourneyItemType.pendingOthersJourney:
                         {
                           return PendingOthersJourneyButtonRow(
-                              journey.id, refreshParent);
+                              journey, currentUserId, refreshParent);
                         }
                         break;
                       case JourneyItemType.acceptedOthersJourney:
                         {
                           return AcceptedOthersJourneyButtonRow(
-                              journey.id, refreshParent);
+                              journey, currentUserId, refreshParent);
                         }
                         break;
                       case JourneyItemType.declinedOthersJourney:
                         {
-                          return DeclinedOthersJourneyButtonRow(refreshParent);
+                          return DeclinedOthersJourneyButtonRow(
+                              journey, currentUserId, refreshParent);
                         }
                         break;
                       default:

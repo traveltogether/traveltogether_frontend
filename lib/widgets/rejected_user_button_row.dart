@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:traveltogether_frontend/services/journey_service.dart';
+import 'package:traveltogether_frontend/view-models/journey_read_view_model.dart';
 import 'package:traveltogether_frontend/widgets/pop_up.dart';
 
 class RejectedUserButtonRow extends StatelessWidget {
-  final int journeyId;
+  final JourneyReadViewModel journey;
   final int userId;
   final void Function() refreshParent;
   JourneyService journeyService;
 
-  RejectedUserButtonRow(this.journeyId, this.userId, this.refreshParent) {
+  RejectedUserButtonRow(this.journey, this.userId, this.refreshParent) {
     this.journeyService = new JourneyService();
   }
 
@@ -20,7 +21,7 @@ class RejectedUserButtonRow extends StatelessWidget {
         OutlinedButton(
             onPressed: (() {
               journeyService
-                  .reverseRejectionOfUser(journeyId, userId)
+                  .reverseRejectionOfUser(journey.id, userId)
                   .then((response) {
                 if (response["error"] == null) {
                   refreshParent();

@@ -2,16 +2,17 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:traveltogether_frontend/services/journey_service.dart';
+import 'package:traveltogether_frontend/view-models/journey_read_view_model.dart';
 import 'package:traveltogether_frontend/view-models/user_read_view_model.dart';
 import 'package:traveltogether_frontend/widgets/pop_up.dart';
 
 class PendingUserButtonRow extends StatelessWidget {
-  final int journeyId;
+  final JourneyReadViewModel journey;
   final int userId;
   final void Function() refreshParent;
   JourneyService journeyService;
 
-  PendingUserButtonRow(this.journeyId, this.userId, this.refreshParent) {
+  PendingUserButtonRow(this.journey, this.userId, this.refreshParent) {
     this.journeyService = new JourneyService();
   }
 
@@ -22,7 +23,7 @@ class PendingUserButtonRow extends StatelessWidget {
       children: [
         OutlinedButton(
             onPressed: (() {
-              journeyService.acceptUser(journeyId, userId).then((response) {
+              journeyService.acceptUser(journey.id, userId).then((response) {
                 if (response["error"] == null) {
                   refreshParent();
                 } else {
@@ -43,7 +44,7 @@ class PendingUserButtonRow extends StatelessWidget {
             child: Text("Annehmen")),
         OutlinedButton(
           onPressed: (() {
-            journeyService.rejectUser(journeyId, userId).then((response) {
+            journeyService.rejectUser(journey.id, userId).then((response) {
               if (response["error"] == null) {
                 refreshParent();
               } else {

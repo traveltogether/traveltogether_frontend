@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:traveltogether_frontend/services/journey_service.dart';
+import 'package:traveltogether_frontend/view-models/journey_read_view_model.dart';
 import 'package:traveltogether_frontend/widgets/pop_up.dart';
 
-class PendingOthersJourneyButtonRow extends StatelessWidget {
-  final int journeyId;
+class AcceptedOthersJourneyButtonRow extends StatelessWidget {
+  final JourneyReadViewModel journey;
+  final int currentUserId;
   final void Function() refreshParent;
   JourneyService journeyService;
 
-  PendingOthersJourneyButtonRow(this.journeyId, this.refreshParent) {
+  AcceptedOthersJourneyButtonRow(this.journey, this.currentUserId, this.refreshParent) {
     this.journeyService = new JourneyService();
   }
 
@@ -18,7 +20,9 @@ class PendingOthersJourneyButtonRow extends StatelessWidget {
       children: [
         OutlinedButton(
             onPressed: (() {
-              journeyService.leaveJourney(journeyId).then((response) {
+              journeyService
+                  .cancelJourney(journey.id, "reason")
+                  .then((response) {
                 if (response["error"] == null) {
                   refreshParent();
                 } else {
@@ -36,7 +40,7 @@ class PendingOthersJourneyButtonRow extends StatelessWidget {
                 }
               });
             }),
-            child: Text("Entfernen")),
+            child: Text("Verlassen")),
         ElevatedButton(
             onPressed: (() {
               debugPrint("Chat");

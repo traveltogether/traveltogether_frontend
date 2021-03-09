@@ -161,14 +161,22 @@ class _PendingPageState extends State<PendingPage> {
                               othersJourneys[index]
                                   .acceptedUserIds
                                   .contains(currentUserId))
-                            JourneyItem(JourneyItemType.acceptedOthersJourney,
-                                othersJourneys[index], _refreshPage),
+                            JourneyItem(
+                                JourneyItemType.acceptedOthersJourney,
+                                othersJourneys[index],
+                                _refreshPage,
+                                null,
+                                currentUserId),
                           if (othersJourneys[index].declinedUserIds != null &&
                               othersJourneys[index]
                                   .declinedUserIds
                                   .contains(currentUserId))
-                            JourneyItem(JourneyItemType.declinedOthersJourney,
-                                othersJourneys[index], _refreshPage),
+                            JourneyItem(
+                                JourneyItemType.declinedOthersJourney,
+                                othersJourneys[index],
+                                _refreshPage,
+                                null,
+                                currentUserId),
                         ]);
                       }),
                   ListView.builder(
