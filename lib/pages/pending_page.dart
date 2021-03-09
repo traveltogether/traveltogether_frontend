@@ -50,17 +50,22 @@ class _PendingPageState extends State<PendingPage> {
               if (!snapshot.hasData || currentUserId == null) {
                 return Center(child: CircularProgressIndicator());
               } else {
-                var journeys = new List<JourneyReadViewModel>();
-
+                var journeys = <JourneyReadViewModel>[];
+                var cancelledJourneys = <JourneyReadViewModel>[];
                 snapshot.data.forEach((journey) {
                   if (journey.userId == currentUserId) {
-                    journeys.add(journey);
+                    if (!journey.cancelledByHost) {
+                      journeys.add(journey);
+                    } else {
+                      cancelledJourneys.add(journey);
+                    }
                   }
                 });
 
                 sortByDate(journeys);
+                sortByDate(cancelledJourneys);
 
-                var othersJourneys = new List<JourneyReadViewModel>();
+                var othersJourneys = <JourneyReadViewModel>[];
 
                 snapshot.data.forEach((journey) {
                   if (journey.pendingUserIds != null &&
@@ -102,19 +107,19 @@ class _PendingPageState extends State<PendingPage> {
                             if (journeys[index].pendingUserIds != null)
                               PendingAcceptedDeclinedUsersList(
                                   journeys[index].pendingUserIds,
-                                  journeys[index].id,
+                                  journeys[index],
                                   JourneyItemType.pending,
                                   this._refreshPage),
                             if (journeys[index].acceptedUserIds != null)
                               PendingAcceptedDeclinedUsersList(
                                   journeys[index].acceptedUserIds,
-                                  journeys[index].id,
+                                  journeys[index],
                                   JourneyItemType.accepted,
                                   this._refreshPage),
                             if (journeys[index].declinedUserIds != null)
                               PendingAcceptedDeclinedUsersList(
                                   journeys[index].declinedUserIds,
-                                  journeys[index].id,
+                                  journeys[index],
                                   JourneyItemType.declined,
                                   this._refreshPage),
                           ],
@@ -145,20 +150,50 @@ class _PendingPageState extends State<PendingPage> {
                                   .pendingUserIds
                                   .contains(currentUserId))
                             JourneyItem(JourneyItemType.pendingOthersJourney,
-                                othersJourneys[index].id, _refreshPage),
+                                othersJourneys[index], _refreshPage),
                           if (othersJourneys[index].acceptedUserIds != null &&
                               othersJourneys[index]
                                   .acceptedUserIds
                                   .contains(currentUserId))
                             JourneyItem(JourneyItemType.acceptedOthersJourney,
-                                othersJourneys[index].id, _refreshPage),
+                                othersJourneys[index], _refreshPage),
                           if (othersJourneys[index].declinedUserIds != null &&
                               othersJourneys[index]
                                   .declinedUserIds
                                   .contains(currentUserId))
                             JourneyItem(JourneyItemType.declinedOthersJourney,
-                                othersJourneys[index].id, _refreshPage),
+                                othersJourneys[index], _refreshPage),
                         ]);
+                      }),
+                  ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: cancelledJourneys.length,
+                      itemBuilder: (context, index) {
+                        return Column(
+                          children: [
+                            (() {
+                              if (journeys.length == 0 &&
+                                  othersJourneys.length == 0 &&
+                                  index == 0) {
+                                return RequestAndOfferCard(
+                                    cancelledJourneys[index],
+                                    _refreshPage,
+                                    null,
+                                    false);
+                              } else {
+                                return Padding(
+                                    padding: EdgeInsets.only(top: 10),
+                                    child: RequestAndOfferCard(
+                                        cancelledJourneys[index],
+                                        _refreshPage,
+                                        null,
+                                        false));
+                              }
+                            }()),
+                            JourneyItem(JourneyItemType.cancelled, cancelledJourneys[index])
+                          ],
+                        );
                       })
                 ]));
               }

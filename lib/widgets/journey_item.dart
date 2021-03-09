@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:traveltogether_frontend/view-models/journey_read_view_model.dart';
 import 'package:traveltogether_frontend/view-models/user_read_view_model.dart';
 import 'package:traveltogether_frontend/widgets/accepted_other_journey_button_row.dart';
 import 'package:traveltogether_frontend/widgets/accepted_user_button_row.dart';
@@ -14,17 +15,18 @@ enum JourneyItemType {
   pendingOthersJourney,
   acceptedOthersJourney,
   declinedOthersJourney,
-  noRequests
+  noRequests,
+  cancelled
 }
 
 class JourneyItem extends StatelessWidget {
   final JourneyItemType type;
-  final int journeyId;
+  final JourneyReadViewModel journey;
   final UserReadViewModel user;
   final void Function() refreshParent;
   String _text;
 
-  JourneyItem(this.type, [this.journeyId, this.refreshParent, this.user]) {
+  JourneyItem(this.type, [this.journey, this.refreshParent, this.user]) {
     switch (this.type) {
       case JourneyItemType.pending:
         {
@@ -61,6 +63,12 @@ class JourneyItem extends StatelessWidget {
           _text = "Für diese Fahrt gibt es noch keine Anfragen";
         }
         break;
+      case JourneyItemType.cancelled:
+        {
+          _text =
+              "Du hast diese Fahrt abgesagt:\n${journey.cancelledByHostReason}";
+        }
+        break;
 
       default:
         {
@@ -94,31 +102,31 @@ class JourneyItem extends StatelessWidget {
                       case JourneyItemType.pending:
                         {
                           return PendingUserButtonRow(
-                              journeyId, user.id, refreshParent);
+                              journey.id, user.id, refreshParent);
                         }
                         break;
                       case JourneyItemType.accepted:
                         {
                           return AcceptedUserButtonRow(
-                              journeyId, user.id, refreshParent);
+                              journey.id, user.id, refreshParent);
                         }
                         break;
                       case JourneyItemType.declined:
                         {
                           return RejectedUserButtonRow(
-                              journeyId, user.id, refreshParent);
+                              journey.id, user.id, refreshParent);
                         }
                         break;
                       case JourneyItemType.pendingOthersJourney:
                         {
                           return PendingOthersJourneyButtonRow(
-                              journeyId, refreshParent);
+                              journey.id, refreshParent);
                         }
                         break;
                       case JourneyItemType.acceptedOthersJourney:
                         {
                           return AcceptedOthersJourneyButtonRow(
-                              journeyId, refreshParent);
+                              journey.id, refreshParent);
                         }
                         break;
                       case JourneyItemType.declinedOthersJourney:
@@ -127,6 +135,11 @@ class JourneyItem extends StatelessWidget {
                         }
                         break;
                       case JourneyItemType.noRequests:
+                        {
+                          return SizedBox.shrink();
+                        }
+                        break;
+                      case JourneyItemType.cancelled:
                         {
                           return SizedBox.shrink();
                         }

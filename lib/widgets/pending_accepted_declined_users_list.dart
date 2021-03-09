@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:traveltogether_frontend/services/user_service.dart';
+import 'package:traveltogether_frontend/view-models/journey_read_view_model.dart';
 import 'package:traveltogether_frontend/view-models/user_read_view_model.dart';
 import 'package:traveltogether_frontend/widgets/journey_item.dart';
 
 class PendingAcceptedDeclinedUsersList extends StatelessWidget {
   final List<int> users;
-  final int journeyId;
+  final JourneyReadViewModel journey;
   final JourneyItemType journeyItemType;
   final void Function() refreshParent;
   UserService userService;
 
   PendingAcceptedDeclinedUsersList(
-      this.users, this.journeyId, this.journeyItemType, this.refreshParent) {
+      this.users, this.journey, this.journeyItemType, this.refreshParent) {
     userService = new UserService();
   }
 
@@ -29,7 +30,7 @@ class PendingAcceptedDeclinedUsersList extends StatelessWidget {
                 if (!snapshot2.hasData) {
                   return Center(child: CircularProgressIndicator());
                 } else {
-                  return JourneyItem(journeyItemType, journeyId, refreshParent,
+                  return JourneyItem(journeyItemType, journey, refreshParent,
                       snapshot2.data);
                 }
               });
