@@ -19,7 +19,7 @@ class PopUp extends StatelessWidget {
     if (isWarning == true) titleColor = Colors.red;
     if (isHighContrast == true) titleColor = Colors.black;
 
-    Widget okButton = FlatButton(
+    Widget okButton = TextButton(
       child: Text(
         this.answer,
         style: TextStyle(color: Colors.blueAccent),
