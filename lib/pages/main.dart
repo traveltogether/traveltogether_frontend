@@ -43,16 +43,6 @@ class _MyHomePageState extends State<MyHomePage> {
   String username = "";
   String firstName = "";
 
-  //_MyHomePageState() {
-  //  userService.getCurrentUser().then((currentUser) => setState(() {
-  //    setState(() {
-  //      username = currentUser.username;
-  //      firstName = currentUser.firstName;
-  //    });
-  //  }),
-  //  );
-  //}
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
