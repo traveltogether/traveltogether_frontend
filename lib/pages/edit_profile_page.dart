@@ -14,11 +14,11 @@ class EditProfilePage extends StatefulWidget {
 
 class EditProfilePageState extends State<EditProfilePage> {
   UserService userService = new UserService();
-  String username;
-  String firstName;
-  String email;
-  String disabilities;
-  String profilePic;
+  String username = "";
+  String firstName = "";
+  String email = "";
+  String disabilities = "";
+  String profilePic = "";
 
   String oldPassword;
   String newPassword;
