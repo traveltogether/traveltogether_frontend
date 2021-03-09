@@ -13,8 +13,7 @@ class DeleteCloseJourneyButtonRow extends StatelessWidget {
 
   DeleteCloseJourneyButtonRow(this.journey, this.refreshParent) {
     this.journeyService = new JourneyService();
-    if (journey.pendingUserIds == null &&
-        journey.acceptedUserIds == null) {
+    if (journey.pendingUserIds == null && journey.acceptedUserIds == null) {
       isDeletable = true;
     } else {
       isDeletable = false;
@@ -62,17 +61,32 @@ class DeleteCloseJourneyButtonRow extends StatelessWidget {
                   if (response["error"] == null) {
                     refreshParent();
                   } else {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return PopUp(
-                          "Fehler",
-                          response["error"] +
-                              "\n\nBitte kontaktiere den Support.",
-                          isWarning: true,
-                        );
-                      },
-                    );
+                    if (response["error"] ==
+                        "deletion_not_available_due_to_requests") {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return PopUp(
+                            "Fehler",
+                            "Da es für diese Fahrt inzwischen Anfragen gibt, kannst du sie nicht mehr löschen. Wenn du sie immer noch entfernen möchtest kannst du sie absagen und einen Grund angeben.",
+                            isWarning: true,
+                          );
+                        },
+                      );
+                      refreshParent();
+                    } else {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return PopUp(
+                            "Fehler",
+                            response["error"] +
+                                "\n\nBitte kontaktiere den Support.",
+                            isWarning: true,
+                          );
+                        },
+                      );
+                    }
                   }
                 });
               }
