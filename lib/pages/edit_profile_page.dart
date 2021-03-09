@@ -24,7 +24,6 @@ class EditProfilePageState extends State<EditProfilePage> {
   String newPassword;
 
   bool mailIsValid = false;
-
   EditProfilePageState() {
     userService.getCurrentUser().then(
           (currentUser) => setState(() {
@@ -55,6 +54,7 @@ class EditProfilePageState extends State<EditProfilePage> {
     super.initState();
     _controllerFirstName = new TextEditingController();
     _controllerEmail = new TextEditingController();
+    _controllerDisabilities = new TextEditingController();
     _controllerOldPassword = new TextEditingController();
     _controllerNewPassword = new TextEditingController();
     _controllerRepeatNewPassword = new TextEditingController();
@@ -199,12 +199,11 @@ class EditProfilePageState extends State<EditProfilePage> {
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
                 child: Container(
-                    child: FlatButton(
+                    child: MaterialButton(
                       color: Colors.blueAccent,
                       child: Text("Änderungen speichern"),
                       onPressed: (){
                         if (_formKey.currentState.validate()) print("valide");
-
                         if(_controllerNewPassword.text == _controllerRepeatNewPassword.text && _controllerNewPassword.text.length >= 8){
                           this.oldPassword = _controllerOldPassword.text;
                           this.newPassword= _controllerNewPassword.text;
@@ -212,7 +211,7 @@ class EditProfilePageState extends State<EditProfilePage> {
                         }
                         
                         if(_controllerFirstName.text.length >= 4) userService.changeFirstname(_controllerFirstName.text);
-                        if(_controllerDisabilities.text.length >= 1) userService.changeDisability(this._controllerDisabilities.text);
+                        if(_controllerDisabilities.text.length >= 1) userService.changeDisability(_controllerDisabilities.text);
                         if(mailIsValid) userService.changeMail(_controllerEmail.text);
                       },
                     ),
