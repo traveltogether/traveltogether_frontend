@@ -16,7 +16,7 @@ class PendingOthersJourneyButtonRow extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        OutlineButton(
+        OutlinedButton(
             onPressed: (() {
               journeyService.leaveJourney(journeyId).then((response) {
                 if (response["error"] == null) {

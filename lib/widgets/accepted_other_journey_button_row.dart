@@ -16,7 +16,7 @@ class AcceptedOthersJourneyButtonRow extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        OutlineButton(
+        OutlinedButton(
             onPressed: (() {
               journeyService
                   .cancelJourney(journeyId, "reason")

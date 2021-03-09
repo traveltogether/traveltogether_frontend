@@ -20,7 +20,7 @@ class PendingUserButtonRow extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        OutlineButton(
+        OutlinedButton(
             onPressed: (() {
               journeyService.acceptUser(journeyId, userId).then((response) {
                 if (response["error"] == null) {
@@ -41,7 +41,7 @@ class PendingUserButtonRow extends StatelessWidget {
               });
             }),
             child: Text("Annehmen")),
-        OutlineButton(
+        OutlinedButton(
           onPressed: (() {
             journeyService.rejectUser(journeyId, userId).then((response) {
               if (response["error"] == null) {

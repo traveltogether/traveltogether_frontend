@@ -17,7 +17,7 @@ class RejectedUserButtonRow extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        OutlineButton(
+        OutlinedButton(
             onPressed: (() {
               journeyService
                   .reverseRejectionOfUser(journeyId, userId)
