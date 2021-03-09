@@ -25,6 +25,12 @@ JourneyReadViewModel mapJourneyToReadViewModel(Map<String, dynamic> json) {
   if (json.containsKey("declined_user_ids") &&
       !json["declined_user_ids"].isEmpty)
     journey.declinedUserIds = new List<int>.from(json["declined_user_ids"]);
+
+  journey.cancelledByHost = json["cancelled_by_host"];
+  if (journey.cancelledByHost) {
+    journey.cancelledByHostReason = json["cancelled_by_host_reason"];
+  }
+
   return journey;
 }
 

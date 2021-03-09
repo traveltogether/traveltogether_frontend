@@ -12,4 +12,6 @@ class JourneyReadViewModel{
   List<int> pendingUserIds;
   List<int> acceptedUserIds;
   List<int> declinedUserIds;
+  bool cancelledByHost;
+  String cancelledByHostReason;
 }
