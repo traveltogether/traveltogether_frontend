@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:traveltogether_frontend/services/journey_service.dart';
 import 'package:traveltogether_frontend/services/user_service.dart';
 import 'package:traveltogether_frontend/view-models/journey_read_view_model.dart';
+import 'package:traveltogether_frontend/widgets/pop_up.dart';
+
 import 'chat_button.dart';
 
 class InterestedInJourneyButtonRow extends StatefulWidget {
@@ -15,7 +17,7 @@ class InterestedInJourneyButtonRow extends StatefulWidget {
 
   @override
   _InterestedInJourneyButtonRowState createState() =>
-      _InterestedInJourneyButtonRowState(this.currentUserId);
+      _InterestedInJourneyButtonRowState();
 }
 
 class _InterestedInJourneyButtonRowState
@@ -24,8 +26,8 @@ class _InterestedInJourneyButtonRowState
   UserService userService = new UserService();
   String userName = "";
 
-  _InterestedInJourneyButtonRowState(id) {
-    userService.getUser(id).then(
+  _InterestedInJourneyButtonRowState() {
+    userService.getUser(widget.journey.userId).then(
       (value) => setState(() {
         setState(() {
           userName = value.username;
@@ -34,14 +36,16 @@ class _InterestedInJourneyButtonRowState
     );
   }
 
+  @override
   void initState() {
     super.initState();
+    journeyService = new JourneyService();
   }
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         OutlinedButton(
             onPressed: widget.isInterestedInButtonDisabled
@@ -54,7 +58,17 @@ class _InterestedInJourneyButtonRowState
                       if (response["error"] == null) {
                         widget.refreshParent();
                       } else {
-                        debugPrint(response["error"]);
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return PopUp(
+                              "Fehler",
+                              response["error"] +
+                                  "\n\nBitte kontaktiere den Support.",
+                              isWarning: true,
+                            );
+                          },
+                        );
                       }
                     });
                   }),

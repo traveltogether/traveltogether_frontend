@@ -7,6 +7,7 @@ import 'package:traveltogether_frontend/widgets/request_and_offer_card.dart';
 
 
 class RequestsAndOffersPage extends StatefulWidget {
+  //ToDo: final UserReadViewModel user;
   final String pageType;
 
   const RequestsAndOffersPage(this.pageType, {Key key}) : super(key: key);
@@ -25,7 +26,10 @@ class _RequestsAndOffersPageState extends State<RequestsAndOffersPage> {
     super.initState();
     journeyService = new JourneyService();
     userService = new UserService();
-    userService.getCurrentUser().then((user) => currentUser = user);
+    userService.getCurrentUser().then((user) {
+      currentUser = user;
+      _refreshPage();
+    });
   }
 
   _refreshPage() {
@@ -40,13 +44,13 @@ class _RequestsAndOffersPageState extends State<RequestsAndOffersPage> {
       ),
       body: FutureBuilder<List<JourneyReadViewModel>>(
         future: journeyService.getAll(
-            openForRequests: true,
-            offer: widget.pageType == "offers" ? true : null,
-            request: widget.pageType == "requests" ? true : null,
+          openForRequests: true,
+          offer: widget.pageType == "offers" ? true : null,
+          request: widget.pageType == "requests" ? true : null,
         ),
         builder: (BuildContext context,
             AsyncSnapshot<List<JourneyReadViewModel>> snapshot) {
-          if (!snapshot.hasData || currentUser == null) {
+          if ((!snapshot.hasData || currentUser == null)) {
             return Center(child: CircularProgressIndicator());
           } else {
             List<JourneyReadViewModel> journeys = [];

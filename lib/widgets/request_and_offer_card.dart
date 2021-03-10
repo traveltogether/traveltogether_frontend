@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:traveltogether_frontend/view-models/journey_read_view_model.dart';
+import 'package:traveltogether_frontend/widgets/delete_close_journey_button_row.dart';
 import 'package:traveltogether_frontend/widgets/info_box.dart';
 import 'package:traveltogether_frontend/widgets/interested_in_journey_button_row.dart';
-import 'accept_decline_journey_button_row.dart';
+import 'pending_user_button_row.dart';
 import 'address_table.dart';
 import 'formatted_date_time.dart';
 
@@ -15,8 +16,10 @@ class RequestAndOfferCard extends StatelessWidget {
   bool _isCurrentUserAccepted = false;
   bool _isCurrentUserDeclined = false;
   final void Function() refreshParent;
+  final bool showDeleteCloseButtons;
 
-  RequestAndOfferCard(this.journey, this.refreshParent, [this.currentUserId]) {
+  RequestAndOfferCard(this.journey, this.refreshParent,
+      [this.currentUserId, this.showDeleteCloseButtons = true]) {
     if (journey.pendingUserIds != null &&
         journey.pendingUserIds.contains(currentUserId)) {
       _isCurrentUserPending = true;
@@ -32,7 +35,7 @@ class RequestAndOfferCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.all(7),
+      margin: EdgeInsets.only(left: 7, right: 7, top: 5),
       child: Padding(
         padding: EdgeInsets.all(10),
         child: Column(
@@ -83,8 +86,12 @@ class RequestAndOfferCard extends StatelessWidget {
                     _isCurrentUserPending ||
                         _isCurrentUserAccepted ||
                         _isCurrentUserDeclined);
+              } else if (showDeleteCloseButtons) {
+                return DeleteCloseJourneyButtonRow(journey, refreshParent);
               } else {
-                return AcceptDeclineJourneyButtonRow();
+                // yes, this is an empty widget. It is needed as otherwise there
+                // would be an error, because a widget has to be returned to the column
+                return SizedBox.shrink();
               }
             }())
           ],
