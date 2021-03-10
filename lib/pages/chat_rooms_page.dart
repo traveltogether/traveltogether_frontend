@@ -1,54 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:traveltogether_frontend/services/user_service.dart';
-import 'package:traveltogether_frontend/view-models/chat_communication.dart';
+import 'file:///C:/Users/AnandarL/Documents/semester%204/SWE%20II/traveltogether_frontend/lib/websockets/chat_communication.dart';
+import 'package:traveltogether_frontend/view-models/user_read_view_model.dart';
 
 class ChatRoomsPage extends StatefulWidget {
   final List chatRoomsList;
-  ChatRoomsPage(this.chatRoomsList);
+  final UserReadViewModel currentUser;
+
+  ChatRoomsPage(this.chatRoomsList, this.currentUser);
 
   @override
-  _ChatRoomsPageState createState() => _ChatRoomsPageState(this.chatRoomsList);
+  _ChatRoomsPageState createState() => _ChatRoomsPageState(this.chatRoomsList, this.currentUser);
 }
 
 class _ChatRoomsPageState extends State<ChatRoomsPage> {
-  UserService currentUserService = new UserService();
-  UserService chatUserService = new UserService();
-  List<String> userNames = [""];
-  int currentUserId;
-  int participantIndex;
+  UserService userService = new UserService();
+  List<int> userIds = [];
 
-  _ChatRoomsPageState(chatRoomsList) {
-    debugPrint("before ");
-    currentUserService.getCurrentUser().then(
-          (currentUser) {
-            currentUserId = currentUser.id;
-          debugPrint("after");
-          userNames = new List(chatRoomsList.length);
-          for (var i = 0; i < chatRoomsList.length; i++) {
-            List<int> participants = chatRoomsList[i].participants;
-            int index = participants.indexOf(currentUserId);
-            if (index == 0){
-              participantIndex = 1;
-            }else if (index == 1){
-              participantIndex = 0;
-            }
-            int userId = participants[participantIndex];
-            debugPrint(userId.toString());
-            chatUserService.getUser(userId).then(
-                  (value) => setState(() {
-                setState(() {
-                  userNames[i] = value.username;
-                });
-              }),
-            );
-          }
+  _ChatRoomsPageState(chatRoomList, currentUser) {
+    print(chatRoomList);
+    chatRoomList.forEach((chatRoom) {
+      List<int> participants = chatRoom.participants;
+      participants.forEach((id) {
+        if (id != currentUser.id) {
+          debugPrint("id: " + id.toString());
+          userIds.add(id);
         }
-    );
-
-  }
-
-  void initState() {
-    super.initState();
+      });
+    });
   }
 
   _onAddUser(int user_id, int chat_id) {
@@ -60,33 +39,10 @@ class _ChatRoomsPageState extends State<ChatRoomsPage> {
     chat.send("ChatRoomAddUserPacket", information);
   }
 
-  _onOpenChat(int id, String name) {
-    List<String> information = [id.toString(), name];
+  _onOpenChat(int chatId, int userId, int currentUserId) {
+    List<String> information = [chatId.toString(), userId.toString(), currentUserId.toString()];
     String info = information.join(',');
     chat.send('ChatRoomMessagesPacket', info);
-  }
-
-  Widget _chatRoomsList() {
-    return widget.chatRoomsList.isEmpty
-        ? Center(child: Text('Noch keine Chats vorhanden'))
-        : ListView.builder(
-            itemCount: widget.chatRoomsList.length,
-            shrinkWrap: true,
-            padding: EdgeInsets.only(top: 10, bottom: 10),
-            physics: ScrollPhysics(),
-            itemBuilder: (context, index) {
-              return new ListTile(
-                title: new Text(userNames[index]),
-                trailing: new RaisedButton(
-                  onPressed: () {
-                    _onOpenChat(
-                        widget.chatRoomsList[index].id, userNames[index]);
-                  },
-                  child: new Text('Chat'),
-                ),
-              );
-            },
-          );
   }
 
   @override
@@ -96,15 +52,31 @@ class _ChatRoomsPageState extends State<ChatRoomsPage> {
         title: Text("travel together"),
         automaticallyImplyLeading: false,
       ),
-      body: SingleChildScrollView(
-        child: new Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            _chatRoomsList(),
-          ],
-        ),
-        reverse: true,
-      ),
+      body: widget.chatRoomsList.isEmpty
+          ? Center(child: Text('Noch keine Chats vorhanden'))
+          : ListView.builder(
+              itemCount: widget.chatRoomsList.length,
+              padding: EdgeInsets.only(top: 10, bottom: 10),
+              itemBuilder: (context, index) {
+                return FutureBuilder<UserReadViewModel>(
+                    future: userService.getUser(userIds[index]),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return Center(child: CircularProgressIndicator());
+                      } else {
+                        return ListTile(
+                          title: Text(snapshot.data.username),
+                          trailing: ElevatedButton(
+                            onPressed: () {
+                              _onOpenChat(widget.chatRoomsList[index].id,
+                                  snapshot.data.id, widget.currentUser.id);
+                            },
+                            child: new Text('Chat'),
+                          ),
+                        );
+                      }
+                    });
+              }),
     );
   }
 }

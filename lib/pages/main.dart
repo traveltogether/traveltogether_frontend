@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:traveltogether_frontend/pages/edit_profile_page.dart';
 import 'package:traveltogether_frontend/pages/pending_page.dart';
 import 'package:traveltogether_frontend/services/user_service.dart';
-import 'package:traveltogether_frontend/view-models/chat_communication.dart';
+import 'file:///C:/Users/AnandarL/Documents/semester%204/SWE%20II/traveltogether_frontend/lib/websockets/chat_communication.dart';
 import 'package:traveltogether_frontend/view-models/user_read_view_model.dart';
 import 'requests_and_offers_page.dart';
 
@@ -27,6 +27,7 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   final String title;
+
   MyHomePage({Key key, this.title}) : super(key: key);
 
   @override
@@ -125,7 +126,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     leading: Icon(Icons.mail),
                     title: Text("Chat"),
                     onTap: () {
-                      chat.send("ChatRoomsPacket", "");
+                      chat.send("ChatRoomsPacket", "", snapshot.data);
                     },
                   ),
                   Divider(),

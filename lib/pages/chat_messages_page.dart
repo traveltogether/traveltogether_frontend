@@ -3,49 +3,54 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:traveltogether_frontend/services/user_service.dart';
 import 'package:traveltogether_frontend/view-models/chat_room_view_model.dart';
-import 'file:///C:/Users/AnandarL/Documents/semester%204/SWE%20II/traveltogether_frontend/lib/view-models/chat_communication.dart';
 import 'package:traveltogether_frontend/view-models/user_read_view_model.dart';
+import 'package:traveltogether_frontend/websockets/chat_communication.dart';
 
 class ChatMessagesPage extends StatefulWidget {
   final int chatRoomID;
   final List messagesList;
-  final String userName;
+  final int userId;
+  final int currentUserId;
 
-  ChatMessagesPage(this.chatRoomID, this.messagesList, this.userName);
+  ChatMessagesPage(
+      this.chatRoomID, this.messagesList, this.userId, this.currentUserId);
 
   @override
   _ChatMessagesPageState createState() => _ChatMessagesPageState();
 }
 
 class _ChatMessagesPageState extends State<ChatMessagesPage> {
-  UserReadViewModel chatUser = new UserReadViewModel();
   UserService userService = new UserService();
-  UserReadViewModel currentUser = new UserReadViewModel();
   TextEditingController messageController = new TextEditingController();
   ScrollController _scrollController = ScrollController();
 
   void initState() {
     super.initState();
-    chat.addListener(_onAction);
+    chat.addListener(_onMessageAction);
   }
 
   @override
   void dispose() {
-    chat.removeListener(_onAction);
+    chat.removeListener(_onMessageAction);
     super.dispose();
   }
 
-  _onAction(message) {
+  _refreshPage() {
+    setState(() {});
+    _scrollController.animateTo(0.0,
+        duration: Duration(milliseconds: 50), curve: Curves.fastOutSlowIn);
+  }
+
+  _onMessageAction(message) {
+    print(message);
     switch (message["type"]) {
       case 'ChatMessagePacket':
         ChatMessageViewModel newMessage =
             new ChatMessageViewModel.fromJson(message["chat_message"]);
+        print("before = " + widget.messagesList.length.toString());
         widget.messagesList.add(newMessage);
-        setState(() {
-          _scrollController.animateTo(0.0,
-              duration: Duration(milliseconds: 100),
-              curve: Curves.fastOutSlowIn);
-        });
+        print("after = " + widget.messagesList.length.toString());
+        _refreshPage();
         break;
       case "ChatRoomLeaveUserPacket":
         debugPrint("Left Chat");
@@ -104,52 +109,60 @@ class _ChatMessagesPageState extends State<ChatMessagesPage> {
         backgroundColor: Colors.white,
         flexibleSpace: SafeArea(
           child: Container(
-            padding: EdgeInsets.only(right: 16),
-            child: Row(
-              children: <Widget>[
-                IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: Icon(
-                    Icons.arrow_back,
-                    color: Colors.black,
-                  ),
-                ),
-                SizedBox(
-                  width: 2,
-                ),
-                CircleAvatar(
-                  //backgroundImage: NetworkImage("<https://randomuser.me/api/portraits/men/5.jpg>"),
-                  maxRadius: 20,
-                ),
-                SizedBox(
-                  width: 12,
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(widget.userName),
-                      SizedBox(
-                        height: 6,
-                      ),
-                    ],
-                  ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    _onLeaveChat();
-                  },
-                  icon: Icon(
-                    Icons.exit_to_app_rounded,
-                    color: Colors.black,
-                  ),
-                ),
-              ],
-            ),
-          ),
+              padding: EdgeInsets.only(right: 16),
+              child: FutureBuilder<UserReadViewModel>(
+                  future: userService.getUser(widget.userId),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return Center(child: CircularProgressIndicator());
+                    } else {
+                      print(widget.userId);
+                      return Row(
+                        children: <Widget>[
+                          IconButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            icon: Icon(
+                              Icons.arrow_back,
+                              color: Colors.black,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 2,
+                          ),
+                          CircleAvatar(
+                            //backgroundImage: NetworkImage("<https://randomuser.me/api/portraits/men/5.jpg>"),
+                            maxRadius: 20,
+                          ),
+                          SizedBox(
+                            width: 12,
+                          ),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(snapshot.data.username),
+                                SizedBox(
+                                  height: 6,
+                                ),
+                              ],
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              _onLeaveChat();
+                            },
+                            icon: Icon(
+                              Icons.exit_to_app_rounded,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
+                      );
+                    }
+                  })),
         ),
       ),
       body: Stack(
@@ -165,15 +178,15 @@ class _ChatMessagesPageState extends State<ChatMessagesPage> {
                 padding:
                     EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 10),
                 child: Align(
-                  alignment:
-                      (widget.messagesList[index].sender_id == currentUser.id
-                          ? Alignment.topLeft
-                          : Alignment.topRight),
+                  alignment: (widget.messagesList[index].sender_id !=
+                          widget.currentUserId
+                      ? Alignment.topLeft
+                      : Alignment.topRight),
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      color: (widget.messagesList[index].sender_id ==
-                              currentUser.id
+                      color: (widget.messagesList[index].sender_id !=
+                              widget.currentUserId
                           ? Colors.grey.shade200
                           : Colors.blue[200]),
                     ),

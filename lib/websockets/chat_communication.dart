@@ -3,7 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:traveltogether_frontend/pages/chat_messages_page.dart';
 import 'package:traveltogether_frontend/pages/chat_rooms_page.dart';
-import 'chat_room_view_model.dart';
+import 'package:traveltogether_frontend/view-models/user_read_view_model.dart';
+import 'package:traveltogether_frontend/view-models/chat_room_view_model.dart';
 import 'web_socket.dart';
 
 ChatCommunication chat = new ChatCommunication();
@@ -15,6 +16,9 @@ class ChatCommunication {
   String userName;
   bool chatRoomAlreadyExists = false;
   int userId;
+  int currentUserId;
+  int chatId;
+  UserReadViewModel currentUser = new UserReadViewModel();
 
   factory ChatCommunication() {
     return _chat;
@@ -33,15 +37,21 @@ class ChatCommunication {
         List<ChatRoomViewModel> chatRoomsList = List<ChatRoomViewModel>.from(
             message["chat_rooms"].map((i) => ChatRoomViewModel.fromJson(i)));
         if (chatRoomAlreadyExists == true){
-          List<ChatRoomViewModel> chatRooms = chatRoomsList.where((chatRoom) => (chatRoom.participants.contains(userId)));
-          if (chatRooms.length == 1){
-            List<String> information = [chatRooms[0].id.toString(), userName];
-            String info = information.join(',');
-            chat.send('ChatRoomMessagesPacket', info);
-          }
+          chatRoomsList.forEach((chatRoom) {
+            List<int> participants = chatRoom.participants;
+            participants.forEach((id) {
+              if (id == userId) {
+                List<String> information = [chatRoom.id.toString(), userId.toString(), currentUserId.toString()];
+                debugPrint("id: " + id.toString());
+                String info = information.join(',');
+                chatRoomAlreadyExists == false;
+                chat.send('ChatRoomMessagesPacket', info);
+              }
+            });
+          });
         }else{
           navigatorKey.currentState.push(MaterialPageRoute(
-              builder: (context) => ChatRoomsPage(chatRoomsList)));
+              builder: (context) => ChatRoomsPage(chatRoomsList, currentUser)));
         }
         break;
       case "ChatUnreadMessagesPacket":
@@ -56,16 +66,18 @@ class ChatCommunication {
         chatRoomMessagesList.sort((a, b) => a.time.compareTo(b.time));
         navigatorKey.currentState.push(new MaterialPageRoute(
             builder: (context) => new ChatMessagesPage(
-                chatRoomMessagesList[0].chat_id,
+                chatId,
                 chatRoomMessagesList,
-                userName)));
+                userId,
+            currentUserId)));
         break;
       case "ChatRoomCreatePacket":
+
         ChatRoomViewModel newChatRoom =
             message["information"].map((i) => ChatRoomViewModel.fromJson(i));
         navigatorKey.currentState.push(new MaterialPageRoute(
             builder: (context) =>
-                new ChatMessagesPage(newChatRoom.id, [], userName)));
+                 ChatMessagesPage(newChatRoom.id, [], userId, currentUserId)));
         break;
       default:
         _listeners.forEach((Function callback) {
@@ -75,18 +87,22 @@ class ChatCommunication {
     }
     switch (message["error"]) {
       case "privat_chat_already_exists":
+        print("HELLO: " + currentUserId.toString());
         chatRoomAlreadyExists = true;
         debugPrint("privat_chat_already_exists");
         chat.send("ChatRoomsPacket", "");
     }
   }
 
-  send(String type, information) {
+  send(String type, String information, [UserReadViewModel user] ) {
     if (type == 'ChatRoomsPacket') {
+      currentUser = user;
       sockets.send(json.encode({"type": "ChatRoomsPacket"}));
     } else if (type == 'ChatRoomMessagesPacket') {
       List<String> info = information.split(',');
-      userName = info[1];
+      chatId = int.parse(info[0]);
+      userId = int.parse(info[1]);
+      currentUserId = int.parse(info[2]);
       sockets.send(json.encode({"type": type, "chat_id": int.parse(info[0])}));
     } else if (type == 'ChatMessagePacket') {
       sockets.send(information);
@@ -98,11 +114,12 @@ class ChatCommunication {
     } else if (type == 'ChatRoomCreatePacket') {
       List<String> info = information.split(',');
       userId = int.parse(info[0]);
-      userName = info[1];
+      currentUserId = int.parse(info[1]);
+
       sockets.send(json.encode({
         "type": type,
         "information": {
-          "participants": [int.parse(info[0])],
+          "participants": [userId],
           "group": false,
         }
       }));

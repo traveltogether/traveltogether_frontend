@@ -12,8 +12,8 @@ class InterestedInJourneyButtonRow extends StatefulWidget {
   final bool isInterestedInButtonDisabled;
   final void Function() refreshParent;
 
-  InterestedInJourneyButtonRow(this.currentUserId, this.journey, this.refreshParent,
-      this.isInterestedInButtonDisabled);
+  InterestedInJourneyButtonRow(this.currentUserId, this.journey,
+      this.refreshParent, this.isInterestedInButtonDisabled);
 
   @override
   _InterestedInJourneyButtonRowState createState() =>
@@ -25,16 +25,6 @@ class _InterestedInJourneyButtonRowState
   JourneyService journeyService;
   UserService userService = new UserService();
   String userName = "";
-
-  _InterestedInJourneyButtonRowState() {
-    userService.getUser(widget.journey.userId).then(
-      (value) => setState(() {
-        setState(() {
-          userName = value.username;
-        });
-      }),
-    );
-  }
 
   @override
   void initState() {
@@ -73,7 +63,7 @@ class _InterestedInJourneyButtonRowState
                     });
                   }),
             child: Text("Interessiert mich")),
-        ChatButton(widget.journey.userId, userName),
+        ChatButton(widget.journey.userId, widget.currentUserId),
       ],
     );
   }
