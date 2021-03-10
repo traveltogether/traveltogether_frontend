@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:traveltogether_frontend/services/user_service.dart';
+import 'package:traveltogether_frontend/view-models/chat_communication.dart';
 import 'requests_and_offers_page.dart';
 
 void main() {
@@ -11,6 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      navigatorKey: navigatorKey,
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -33,8 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
   UserService userService = new UserService();
   String textfieldContent = "";
 
-  _MyHomePageState() {
-  }
+  _MyHomePageState() {}
 
   @override
   Widget build(BuildContext context) {
@@ -62,9 +63,12 @@ class _MyHomePageState extends State<MyHomePage> {
               title: Text("Angebote"),
               onTap: () {
                 setState(
-                      () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => RequestsAndOffersPage("offers")));
+                  () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                RequestsAndOffersPage("offers")));
                   },
                 );
               },
@@ -74,17 +78,22 @@ class _MyHomePageState extends State<MyHomePage> {
               title: Text("Anfragen"),
               onTap: () {
                 setState(
-                      () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => RequestsAndOffersPage("requests")));
+                  () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                RequestsAndOffersPage("requests")));
                   },
                 );
               },
             ),
             ListTile(
               leading: Icon(Icons.mail),
-              title: Text("Nummer 3"),
-              onTap: () {},
+              title: Text("Chat"),
+              onTap: () {
+                chat.send("ChatRoomsPacket", "");
+              },
             ),
             ListTile(
               leading: Icon(Icons.mail),
@@ -94,13 +103,13 @@ class _MyHomePageState extends State<MyHomePage> {
             Divider(),
             Expanded(
                 child: Align(
-                  alignment: FractionalOffset.bottomCenter,
-                  child: ListTile(
-                    leading: Icon(Icons.settings),
-                    title: Text("Einstellungen"),
-                    onTap: () {},
-                  ),
-                ))
+              alignment: FractionalOffset.bottomCenter,
+              child: ListTile(
+                leading: Icon(Icons.settings),
+                title: Text("Einstellungen"),
+                onTap: () {},
+              ),
+            ))
           ],
         ),
       ),
@@ -108,7 +117,6 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-
             Text(textfieldContent),
           ],
         ),

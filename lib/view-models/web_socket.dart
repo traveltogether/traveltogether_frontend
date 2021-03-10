@@ -1,64 +1,68 @@
 import 'package:flutter/foundation.dart';
 import 'package:web_socket_channel/io.dart';
 
-WebSocketsNotifications sockets = new WebSocketsNotifications(); /// Application-level global variable to access the WebSockets
+WebSocketsNotifications sockets = new WebSocketsNotifications();
 
-const String _SERVER_ADDRESS = "wss://api.traveltogether.eu/v1/websocket?token=8c1e32b2-0faa-4d54-9e00-ddb64b2c3b57"; /// Put your WebSockets server IP address and port number
+const String _SERVER_ADDRESS =
+    "wss://api.traveltogether.eu/v1/websocket?token=8c1e32b2-0faa-4d54-9e00-ddb64b2c3b57";
 
 class WebSocketsNotifications {
-  static final WebSocketsNotifications _sockets = new WebSocketsNotifications._internal();
+  static final WebSocketsNotifications _sockets =
+      new WebSocketsNotifications._internal();
 
-  factory WebSocketsNotifications(){
+  factory WebSocketsNotifications() {
     return _sockets;
   }
 
   WebSocketsNotifications._internal();
 
-  IOWebSocketChannel _channel; /// The WebSocket "open" channel
+  IOWebSocketChannel _channel;
 
-  bool _isOn = false; /// Is the connection established?
+  bool _isOn = false;
 
-  /// Listeners
-  ObserverList<Function> _listeners = new ObserverList<Function>(); /// List of methods to be called when a new message comes in.
+  ObserverList<Function> _listeners = new ObserverList<Function>();
 
-  initCommunication() async { /// Initialization the WebSockets connection with the server
-    reset(); /// Just in case, close any previous communication
+  initCommunication() async {
+    reset();
     try {
-      _channel = new IOWebSocketChannel.connect(_SERVER_ADDRESS); /// Open a new WebSocket communication
-      _channel.stream.listen(_onReceptionOfMessageFromServer); /// Start listening to new notifications / messages
-    } catch(e){
-      /// General error handling
+      _channel = new IOWebSocketChannel.connect(_SERVER_ADDRESS);
+      _channel.stream.listen(_onReceptionOfMessageFromServer);
+    } catch (e) {
       /// TODO
     }
   }
 
-  reset(){ /// Closes the WebSocket communication
-    if (_channel != null){
-      if (_channel.sink != null){
+  reset() {
+    if (_channel != null) {
+      if (_channel.sink != null) {
         _channel.sink.close();
         _isOn = false;
       }
     }
   }
 
-  send(String message){ /// Sends a message to the server
-    if (_channel != null){
-      if (_channel.sink != null && _isOn){
+  send(String message) {
+    if (_channel != null) {
+      _isOn = true;
+      if (_channel.sink != null && _isOn) {
+        debugPrint("message sent: " + message);
         _channel.sink.add(message);
       }
     }
   }
 
-  addListener(Function callback){  /// Adds a callback to be invoked in case of incoming notification
+  addListener(Function callback) {
     _listeners.add(callback);
   }
-  removeListener(Function callback){
+
+  removeListener(Function callback) {
     _listeners.remove(callback);
   }
 
-  _onReceptionOfMessageFromServer(message){  /// Callback which is invoked each time that we are receiving a message from the server
+  _onReceptionOfMessageFromServer(message) {
     _isOn = true;
-    _listeners.forEach((Function callback){
+    _listeners.forEach((Function callback) {
+      debugPrint("message received: " + message);
       callback(message);
     });
   }

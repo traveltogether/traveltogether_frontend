@@ -5,6 +5,7 @@ import 'package:traveltogether_frontend/view-models/journey_read_view_model.dart
 import 'package:traveltogether_frontend/view-models/user_read_view_model.dart';
 import 'package:traveltogether_frontend/widgets/request_and_offer_card.dart';
 
+
 class RequestsAndOffersPage extends StatefulWidget {
   final String pageType;
 

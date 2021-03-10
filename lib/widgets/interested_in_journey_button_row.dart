@@ -1,28 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:traveltogether_frontend/services/journey_service.dart';
+import 'package:traveltogether_frontend/services/user_service.dart';
+import 'package:traveltogether_frontend/view-models/journey_read_view_model.dart';
+import 'chat_button.dart';
 
 class InterestedInJourneyButtonRow extends StatefulWidget {
-  final int journeyId;
+  final JourneyReadViewModel journey;
+  final int currentUserId;
   final bool isInterestedInButtonDisabled;
   final void Function() refreshParent;
 
-  InterestedInJourneyButtonRow(
-      this.journeyId, this.refreshParent, this.isInterestedInButtonDisabled);
+  InterestedInJourneyButtonRow(this.currentUserId, this.journey, this.refreshParent,
+      this.isInterestedInButtonDisabled);
+
   @override
   _InterestedInJourneyButtonRowState createState() =>
-      _InterestedInJourneyButtonRowState();
+      _InterestedInJourneyButtonRowState(this.currentUserId);
 }
 
 class _InterestedInJourneyButtonRowState
     extends State<InterestedInJourneyButtonRow> {
   JourneyService journeyService;
+  UserService userService = new UserService();
+  String userName = "";
 
-  _InterestedInJourneyButtonRowState();
+  _InterestedInJourneyButtonRowState(id) {
+    userService.getUser(id).then(
+      (value) => setState(() {
+        setState(() {
+          userName = value.username;
+        });
+      }),
+    );
+  }
 
-  @override
   void initState() {
     super.initState();
-    journeyService = new JourneyService();
   }
 
   @override
@@ -36,7 +49,7 @@ class _InterestedInJourneyButtonRowState
                 : (() {
                     this
                         .journeyService
-                        .joinJourney(widget.journeyId)
+                        .joinJourney(widget.journey.id)
                         .then((response) {
                       if (response["error"] == null) {
                         widget.refreshParent();
@@ -46,12 +59,7 @@ class _InterestedInJourneyButtonRowState
                     });
                   }),
             child: Text("Interessiert mich")),
-        ElevatedButton(
-          onPressed: (() {
-            debugPrint("Chat button pressed");
-          }),
-          child: Text("Chat"),
-        ),
+        ChatButton(widget.journey.userId, userName),
       ],
     );
   }

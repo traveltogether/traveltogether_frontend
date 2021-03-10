@@ -9,10 +9,11 @@ class ChatRoomViewModel{
    participants.add(user_id);
   }
 
-  Map toJson() => {
-    'participants': participants,
-    'group': group,
-  };
+  ChatRoomViewModel.fromJson(Map json){
+    this.id = json["id"];
+    this.participants = json["participants"].cast<int>();
+    this.group = json["group"];
+  }
 }
 
 class ChatMessageViewModel{
@@ -24,10 +25,12 @@ class ChatMessageViewModel{
 
   ChatMessageViewModel(this.id, this.chat_id, this.sender_id, this.message, this.time,);
 
-  Map toJson() => {
-    'chat_id': chat_id,
-    'message' : message,
-    'time' : time,
-  };
+  ChatMessageViewModel.fromJson(Map json){
+    this.id = json["id"];
+    this.chat_id = json["chat_id"];
+    this.sender_id = json["sender_id"];
+    this.message = json["message"];
+    this.time = json["time"];
+  }
 
 }

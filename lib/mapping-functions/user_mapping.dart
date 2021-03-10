@@ -11,7 +11,6 @@ UserReadViewModel mapUserToReadViewModel(Map<String, dynamic> json) {
   user.mail = json["mail"];
   user.profileImage = json["profile_image"];
   user.disabilities = json["disabilities"];
-
   return user;
 }
 
