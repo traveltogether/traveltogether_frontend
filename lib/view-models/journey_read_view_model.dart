@@ -1,6 +1,8 @@
 class JourneyReadViewModel{
   int id;
   int userId;
+  bool isOffer;
+  bool isRequest;
   String startAddress;
   String endAddress;
   String approximateStartAddress;

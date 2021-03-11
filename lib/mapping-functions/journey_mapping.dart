@@ -8,6 +8,8 @@ JourneyReadViewModel mapJourneyToReadViewModel(Map<String, dynamic> json) {
 
   journey.id = json["id"];
   journey.userId = json["user_id"];
+  journey.isOffer = json["offer"];
+  journey.isRequest = json["request"];
   journey.startAddress = json["start_address"];
   journey.endAddress = json["end_address"];
   journey.approximateStartAddress = json["approximate_start_address"];
