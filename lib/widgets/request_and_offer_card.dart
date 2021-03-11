@@ -71,11 +71,11 @@ class RequestAndOfferCard extends StatelessWidget {
                 child: Text("Notiz:\n" + journey.note),
               ),
             if (_isCurrentUserPending)
-              InfoBox("Du hast diese Reise bereits angefragt", Colors.blueGrey),
+              InfoBox("Du hast diese Fahrt bereits angefragt", Colors.blueGrey),
             if (_isCurrentUserAccepted)
-              InfoBox("Du wurdest für diese Reise angenommen", Colors.green),
+              InfoBox("Du wurdest für diese Fahrt angenommen", Colors.green),
             if (_isCurrentUserDeclined)
-              InfoBox("Du wurdest für diese Reise abgelehnt", Colors.red),
+              InfoBox("Du wurdest für diese Fahrt abgelehnt", Colors.red),
             (() {
               if (this.currentUserId != null) {
                 return InterestedInJourneyButtonRow(
