@@ -3,6 +3,7 @@ import 'package:traveltogether_frontend/services/journey_service.dart';
 import 'package:traveltogether_frontend/types/journey_lists.dart';
 import 'package:traveltogether_frontend/view-models/journey_read_view_model.dart';
 import 'file:///C:/Users/admin/Documents/FH/SWE_II/traveltogether/traveltogether_frontend/lib/widgets/pending_page/pending_journeys_list.dart';
+import 'package:traveltogether_frontend/widgets/anonymizedAddressInfo.dart';
 
 class PendingPage extends StatefulWidget {
   final int currentUserId;
@@ -78,11 +79,14 @@ class _PendingPageState extends State<PendingPage> {
 
                 snapshot.data.forEach((journey) {
                   if (journey.pendingUserIds != null &&
-                          journey.pendingUserIds.contains(widget.currentUserId) ||
+                          journey.pendingUserIds
+                              .contains(widget.currentUserId) ||
                       journey.acceptedUserIds != null &&
-                          journey.acceptedUserIds.contains(widget.currentUserId) ||
+                          journey.acceptedUserIds
+                              .contains(widget.currentUserId) ||
                       journey.declinedUserIds != null &&
-                          journey.declinedUserIds.contains(widget.currentUserId)) {
+                          journey.declinedUserIds
+                              .contains(widget.currentUserId)) {
                     if (!journey.cancelledByHost) {
                       othersJourneys.add(journey);
                     } else {
@@ -108,6 +112,7 @@ class _PendingPageState extends State<PendingPage> {
 
                 return ListView(
                   children: [
+                    AnonymizedAddressInfo(),
                     Card(
                         margin: EdgeInsets.only(left: 7, right: 7, top: 5),
                         color: Colors.grey,
@@ -119,7 +124,8 @@ class _PendingPageState extends State<PendingPage> {
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold,
                                     ))))),
-                    PendingJourneysList(offers, widget.currentUserId, _refreshPage),
+                    PendingJourneysList(
+                        offers, widget.currentUserId, _refreshPage),
                     Card(
                         margin: EdgeInsets.only(left: 7, right: 7, top: 5),
                         color: Colors.grey,
@@ -130,7 +136,8 @@ class _PendingPageState extends State<PendingPage> {
                                     style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold))))),
-                    PendingJourneysList(requests, widget.currentUserId, _refreshPage),
+                    PendingJourneysList(
+                        requests, widget.currentUserId, _refreshPage),
                   ],
                 );
               }

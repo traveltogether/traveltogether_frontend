@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:traveltogether_frontend/services/journey_service.dart';
 import 'package:traveltogether_frontend/view-models/journey_read_view_model.dart';
 import 'package:traveltogether_frontend/view-models/user_read_view_model.dart';
+import 'package:traveltogether_frontend/widgets/anonymizedAddressInfo.dart';
 import 'package:traveltogether_frontend/widgets/request_and_offer_card.dart';
 import '../view-models/user_read_view_model.dart';
 
@@ -50,13 +51,18 @@ class _RequestsAndOffersPageState extends State<RequestsAndOffersPage> {
                           ? b.arrivalTime
                           : b.departureTime));
             });
-            return ListView.builder(
-              itemCount: journeys.length,
-              itemBuilder: (context, index) {
-                return RequestAndOfferCard(
-                    journeys[index], _refreshPage, widget.currentUser.id);
-              },
-            );
+            return ListView(children: [
+              AnonymizedAddressInfo(),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: journeys.length,
+                itemBuilder: (context, index) {
+                  return RequestAndOfferCard(
+                      journeys[index], _refreshPage, widget.currentUser.id);
+                },
+              )
+            ]);
           }
         },
       ),
