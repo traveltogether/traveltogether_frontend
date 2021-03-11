@@ -43,8 +43,11 @@ class RequestAndOfferCard extends StatelessWidget {
           children: <Widget>[
             Padding(
                 padding: EdgeInsets.only(bottom: 7),
-                child: AddressTable(journey.approximateStartAddress,
-                    journey.approximateEndAddress)),
+                child: journey.startAddress == null
+                    ? AddressTable(journey.approximateStartAddress,
+                        journey.approximateEndAddress, true)
+                    : AddressTable(
+                        journey.startAddress, journey.endAddress, false)),
             Padding(
               padding: EdgeInsets.only(bottom: 7),
               child: Row(

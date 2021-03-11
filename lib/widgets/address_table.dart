@@ -4,8 +4,9 @@ import 'formatted_address.dart';
 class AddressTable extends StatelessWidget {
   final String startAddress;
   final String endAddress;
+  final bool areAnonymized;
 
-  AddressTable(this.startAddress, this.endAddress);
+  AddressTable(this.startAddress, this.endAddress, this.areAnonymized);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,7 @@ class AddressTable extends StatelessWidget {
             ),
             Padding(
                 padding: EdgeInsets.only(bottom: 5),
-                child: FormattedAddress(startAddress)),
+                child: FormattedAddress(startAddress, areAnonymized)),
           ],
         ),
         TableRow(
@@ -28,7 +29,7 @@ class AddressTable extends StatelessWidget {
               "Nach:",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            FormattedAddress(endAddress),
+            FormattedAddress(endAddress, areAnonymized),
           ],
         )
       ],
