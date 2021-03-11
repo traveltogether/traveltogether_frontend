@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:traveltogether_frontend/types/journey_lists.dart';
-import 'package:traveltogether_frontend/widgets/others_cancelled_journeys_list.dart';
-import 'package:traveltogether_frontend/widgets/others_pending_journeys_list.dart';
-import 'package:traveltogether_frontend/widgets/own_cancelled_journeys_list.dart';
+import 'others_cancelled_journeys_list.dart';
+import 'others_pending_journeys_list.dart';
+import 'own_cancelled_journeys_list.dart';
 import 'own_pending_journeys_list.dart';
 
 class PendingJourneysList extends StatelessWidget {
@@ -21,13 +21,10 @@ class PendingJourneysList extends StatelessWidget {
         shrinkWrap: true,
         children: [
           OwnPendingJourneysList(journeyLists.journeys, refreshParent),
+          OthersPendingJourneysList(journeyLists.othersJourneys, refreshParent,
+              currentUserId, journeyLists.journeys.length == 0 ? true : false),
           OwnCancelledJourneysList(
               journeyLists.cancelledJourneys,
-              refreshParent,
-              currentUserId,
-              journeyLists.journeys.length == 0 ? true : false),
-          OthersPendingJourneysList(
-              journeyLists.othersJourneys,
               refreshParent,
               journeyLists.journeys.length == 0
                   ? (journeyLists.cancelledJourneys.length == 0 ? true : false)

@@ -3,7 +3,7 @@ import 'package:traveltogether_frontend/services/journey_service.dart';
 import 'package:traveltogether_frontend/services/user_service.dart';
 import 'package:traveltogether_frontend/types/journey_lists.dart';
 import 'package:traveltogether_frontend/view-models/journey_read_view_model.dart';
-import 'package:traveltogether_frontend/widgets/pending_journeys_list.dart';
+import 'file:///C:/Users/admin/Documents/FH/SWE_II/traveltogether/traveltogether_frontend/lib/widgets/pending_page/pending_journeys_list.dart';
 
 class PendingPage extends StatefulWidget {
   @override

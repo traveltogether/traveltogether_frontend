@@ -4,12 +4,12 @@ import 'package:traveltogether_frontend/widgets/request_and_offer_card.dart';
 
 import 'journey_item.dart';
 
-class OthersPendingJourneysList extends StatelessWidget {
+class OwnCancelledJourneysList extends StatelessWidget {
   final List<JourneyReadViewModel> journeys;
   final void Function() refreshParent;
   final bool isFirstItem;
 
-  OthersPendingJourneysList(
+  OwnCancelledJourneysList(
       this.journeys, this.refreshParent, this.isFirstItem);
 
   @override

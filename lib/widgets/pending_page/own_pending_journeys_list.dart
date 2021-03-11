@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:traveltogether_frontend/view-models/journey_read_view_model.dart';
 import 'package:traveltogether_frontend/widgets/pending_accepted_declined_users_list.dart';
+import 'package:traveltogether_frontend/widgets/pending_page/journey_item.dart';
 import 'package:traveltogether_frontend/widgets/request_and_offer_card.dart';
-import 'journey_item.dart';
 
 class OwnPendingJourneysList extends StatelessWidget {
   final List<JourneyReadViewModel> journeys;
