@@ -1,31 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:traveltogether_frontend/services/journey_service.dart';
-import 'package:traveltogether_frontend/services/user_service.dart';
 import 'package:traveltogether_frontend/types/journey_lists.dart';
 import 'package:traveltogether_frontend/view-models/journey_read_view_model.dart';
 import 'file:///C:/Users/admin/Documents/FH/SWE_II/traveltogether/traveltogether_frontend/lib/widgets/pending_page/pending_journeys_list.dart';
 
 class PendingPage extends StatefulWidget {
+  final int currentUserId;
+
+  PendingPage(this.currentUserId);
+
   @override
   _PendingPageState createState() => _PendingPageState();
 }
 
 class _PendingPageState extends State<PendingPage> {
-  JourneyService journeyService;
-  UserService userService;
-  int currentUserId;
-
-  @override
-  void initState() {
-    super.initState();
-    journeyService = new JourneyService();
-    userService = new UserService();
-
-    userService.getCurrentUser().then((user) {
-      currentUserId = user.id;
-      _refreshPage();
-    });
-  }
+  JourneyService journeyService = new JourneyService();
 
   void _refreshPage() {
     setState(() {});
@@ -66,13 +55,13 @@ class _PendingPageState extends State<PendingPage> {
             future: journeyService.getAll(),
             builder: (BuildContext context,
                 AsyncSnapshot<List<JourneyReadViewModel>> snapshot) {
-              if (!snapshot.hasData || currentUserId == null) {
+              if (!snapshot.hasData || widget.currentUserId == null) {
                 return Center(child: CircularProgressIndicator());
               } else {
                 var journeys = <JourneyReadViewModel>[];
                 var cancelledJourneys = <JourneyReadViewModel>[];
                 snapshot.data.forEach((journey) {
-                  if (journey.userId == currentUserId) {
+                  if (journey.userId == widget.currentUserId) {
                     if (!journey.cancelledByHost) {
                       journeys.add(journey);
                     } else {
@@ -89,11 +78,11 @@ class _PendingPageState extends State<PendingPage> {
 
                 snapshot.data.forEach((journey) {
                   if (journey.pendingUserIds != null &&
-                          journey.pendingUserIds.contains(currentUserId) ||
+                          journey.pendingUserIds.contains(widget.currentUserId) ||
                       journey.acceptedUserIds != null &&
-                          journey.acceptedUserIds.contains(currentUserId) ||
+                          journey.acceptedUserIds.contains(widget.currentUserId) ||
                       journey.declinedUserIds != null &&
-                          journey.declinedUserIds.contains(currentUserId)) {
+                          journey.declinedUserIds.contains(widget.currentUserId)) {
                     if (!journey.cancelledByHost) {
                       othersJourneys.add(journey);
                     } else {
@@ -130,7 +119,7 @@ class _PendingPageState extends State<PendingPage> {
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold,
                                     ))))),
-                    PendingJourneysList(offers, currentUserId, _refreshPage),
+                    PendingJourneysList(offers, widget.currentUserId, _refreshPage),
                     Card(
                         margin: EdgeInsets.only(left: 7, right: 7, top: 5),
                         color: Colors.grey,
@@ -141,7 +130,7 @@ class _PendingPageState extends State<PendingPage> {
                                     style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold))))),
-                    PendingJourneysList(requests, currentUserId, _refreshPage),
+                    PendingJourneysList(requests, widget.currentUserId, _refreshPage),
                   ],
                 );
               }

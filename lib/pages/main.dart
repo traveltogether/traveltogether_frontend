@@ -90,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      RequestsAndOffersPage("offers")));
+                                      RequestsAndOffersPage("offers", snapshot.data)));
                         },
                       );
                     },
@@ -105,7 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      RequestsAndOffersPage("requests")));
+                                      RequestsAndOffersPage("requests", snapshot.data)));
                         },
                       );
                     },
@@ -117,7 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => PendingPage()));
+                              builder: (context) => PendingPage(snapshot.data.id)));
                     },
                   ),
                   ListTile(
