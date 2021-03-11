@@ -3,10 +3,7 @@ import 'package:traveltogether_frontend/services/journey_service.dart';
 import 'package:traveltogether_frontend/services/user_service.dart';
 import 'package:traveltogether_frontend/types/journey_lists.dart';
 import 'package:traveltogether_frontend/view-models/journey_read_view_model.dart';
-import 'package:traveltogether_frontend/widgets/journey_item.dart';
-import 'package:traveltogether_frontend/widgets/pending_accepted_declined_users_list.dart';
 import 'package:traveltogether_frontend/widgets/pending_journeys_list.dart';
-import 'package:traveltogether_frontend/widgets/request_and_offer_card.dart';
 
 class PendingPage extends StatefulWidget {
   @override
