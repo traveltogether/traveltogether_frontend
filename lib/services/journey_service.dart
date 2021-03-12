@@ -82,7 +82,7 @@ class JourneyService extends ServiceBase {
     return delete('$url/$journeyId/decline/$userId');
   }
 
-  Future<Map<String, dynamic>> cancelJourney(int id) {
-    return post('$url/$id/cancel');
+  Future<Map<String, dynamic>> cancelJourney(int id, String reason) {
+    return post('$url/$id/cancel', {"reason": reason});
   }
 }

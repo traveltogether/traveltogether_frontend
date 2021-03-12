@@ -2,12 +2,21 @@ import 'package:flutter/material.dart';
 
 class FormattedAddress extends StatelessWidget {
   final String address;
+  final bool isAnonymized;
 
-  FormattedAddress(this.address);
+  FormattedAddress(this.address, this.isAnonymized);
 
   @override
   Widget build(BuildContext context) {
-    return Text(formatAddress(this.address));
+    return RichText(
+      text: TextSpan(
+          text: formatAddress(this.address),
+          style: TextStyle(color: Colors.black),
+          children: [
+            if (isAnonymized)
+              TextSpan(text: ' *', style: TextStyle(color: Colors.red))
+          ]),
+    );
   }
 
   String formatAddress(String test) {

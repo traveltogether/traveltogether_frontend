@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:traveltogether_frontend/services/journey_service.dart';
-import '../widgets/request_and_offer_card.dart';
+import 'package:traveltogether_frontend/pages/edit_profile_page.dart';
+import 'package:traveltogether_frontend/pages/pending_page.dart';
+import 'package:traveltogether_frontend/pages/requests_and_offers_page.dart';
+import 'package:traveltogether_frontend/services/user_service.dart';
+import 'package:traveltogether_frontend/websockets/chat_communication.dart';
+import 'package:traveltogether_frontend/view-models/user_read_view_model.dart';
+import 'package:traveltogether_frontend/widgets/type_enum.dart';
 
 void main() {
   runApp(MyApp());
@@ -11,98 +16,135 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      navigatorKey: navigatorKey,
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+
+      home: MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  JourneyService journeyService = new JourneyService();
-  String textfieldContent = "";
-
-  _MyHomePageState() {
-      }
+  UserService userService = new UserService();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text("Home"),
       ),
 
       drawer: Drawer(
-        child: Column(
-          children: <Widget>[
-            UserAccountsDrawerHeader(
-              accountEmail: Text("hiersteht@eine.mail"),
-              accountName: Text("EinName"),
-              currentAccountPicture: CircleAvatar(
-                backgroundImage: NetworkImage(
-                    "https://blog.wwf.de/wp-content/uploads/2019/10/pinguine.jpg"),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 20),
-            ),
-            ListTile(
-              leading: Icon(Icons.mail),
-              title: Text("Nummer 1"),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: Icon(Icons.mail),
-              title: Text("Nummer 2"),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: Icon(Icons.mail),
-              title: Text("Nummer 3"),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: Icon(Icons.mail),
-              title: Text("Nummer 4"),
-              onTap: () {},
-            ),
-            Divider(),
-            Expanded(
-                child: Align(
-              alignment: FractionalOffset.bottomCenter,
-              child: ListTile(
-                leading: Icon(Icons.settings),
-                title: Text("Einstellungen"),
-                onTap: () {},
-              ),
-            ))
-          ],
+        child: FutureBuilder<UserReadViewModel>(
+          future: userService.getCurrentUser(),
+          builder: (BuildContext context,
+              AsyncSnapshot<UserReadViewModel> snapshot) {
+            if (!snapshot.hasData) {
+              return Center(child: CircularProgressIndicator());
+            } else {
+              print(snapshot.data.id);
+              return Column(
+                children: <Widget>[
+                  UserAccountsDrawerHeader(
+                    accountName: Text(snapshot.data.username),
+                    accountEmail: Text(snapshot.data.firstName),
+                    currentAccountPicture: CircleAvatar(
+                      backgroundImage: NetworkImage(
+                          "https://blog.wwf.de/wp-content/uploads/2019/10/pinguine.jpg"),
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 35, left: 40),
+                        child: CircleAvatar(
+                          backgroundColor: Colors.black54,
+                          child: IconButton(
+                            iconSize: 20,
+                            icon: Icon(Icons.edit, color: Colors.white),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => EditProfilePage()));
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 20),
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.mail),
+                    title: Text("Angebote"),
+                    onTap: () {
+                      setState(
+                        () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      RequestsAndOffersPage("offers", snapshot.data)));
+                        },
+                      );
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.mail),
+                    title: Text("Anfragen"),
+                    onTap: () {
+                      setState(
+                        () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      RequestsAndOffersPage("requests", snapshot.data)));
+                        },
+                      );
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.mail),
+                    title: Text("Meine Fahrten"),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PendingPage(snapshot.data.id)));
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.mail),
+                    title: Text("Chat"),
+                    onTap: () {
+                      chat.send(
+                          Type.ChatRoomsPacket, snapshot.data.id.toString());
+                    },
+                  ),
+                  Divider(),
+                  Expanded(
+                      child: Align(
+                    alignment: FractionalOffset.bottomCenter,
+                    child: ListTile(
+                      leading: Icon(Icons.settings),
+                      title: Text("Einstellungen"),
+                      onTap: () {},
+                    ),
+                  ))
+                ],
+              );
+            }
+          },
         ),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            RequestAndOfferCard(),
-            Text(textfieldContent),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
