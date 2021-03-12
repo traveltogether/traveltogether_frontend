@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:traveltogether_frontend/widgets/pop_up.dart';
 
 class SettingsPage extends StatefulWidget {
   SettingsPage({Key key, this.title}) : super(key: key);
@@ -36,6 +37,10 @@ class SettingsPageState extends State<SettingsPage> {
                 setState(() {
                   isHighContrast = value;
                   writeHighContrast(value);
+                  showDialog(context: context, builder: (context){
+                  return PopUp("Hinweis", "Bitte starten Sie für diese Änderung die Applikation neu");
+                  }
+                  );
                 });
               },
               activeTrackColor: Colors.lightBlueAccent,
