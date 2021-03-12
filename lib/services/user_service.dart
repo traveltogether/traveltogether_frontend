@@ -20,7 +20,7 @@ class UserService extends ServiceBase {
 
   Future<Map<String, dynamic>> addUser(UserWriteViewModel user) async {
     var json = mapUserToJson(user);
-    return await post("auth/register", json);
+    return await post("auth/register", json, false);
   }
 
   Future<Map<String, dynamic>> login(

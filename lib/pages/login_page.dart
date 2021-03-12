@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:traveltogether_frontend/pages/register_page.dart';
 import '../widgets/pop_up.dart';
 import '../widgets/text_input.dart';
 import 'package:traveltogether_frontend/services/user_service.dart';
@@ -62,7 +63,7 @@ class LoginPageState extends State<LoginPage> {
                         child: TextInput(
                             "Passwort", Icons.lock, _controllerPassword,
                             isObscure: true)),
-                    SizedBox(height: 170),
+                    SizedBox(height: 120),
                     Padding(
                         padding: EdgeInsets.symmetric(
                             horizontal: 16.0, vertical: 8.0),
@@ -106,6 +107,20 @@ class LoginPageState extends State<LoginPage> {
                                 });
                               }
                             })),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 8.0),
+                      child: ElevatedButton(
+                      child: Text('Registrieren'),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => RegisterPage()));
+
+                        }
+                      ),
+                    )
                   ],
                 ),
               ),

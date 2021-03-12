@@ -199,8 +199,7 @@ class EditProfilePageState extends State<EditProfilePage> {
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
                 child: Container(
-                    child: MaterialButton(
-                      color: Colors.blueAccent,
+                    child: ElevatedButton(
                       child: Text("Änderungen speichern"),
                       onPressed: (){
                         if (_formKey.currentState.validate()) print("valide");

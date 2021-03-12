@@ -106,9 +106,8 @@ class RegisterPageState extends State<RegisterPage> {
               Padding(
                   padding:
                       EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                  child: MaterialButton(
+                  child: ElevatedButton(
                     child: Text('Registrieren'),
-                    color: Colors.blueAccent,
                     onPressed: () {
                       password = _controllerPassword.text;
                       passwordRepeat = _controllerRepeatPassword.text;
