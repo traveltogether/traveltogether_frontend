@@ -168,6 +168,8 @@ class AddJourneyPageState extends State<AddJourneyPage> {
                         validator: (value) {
                           if (value == null) {
                             return "Bitte Eingebefeld ausfüllen";
+                          } else if (value.isBefore(DateTime.now())) {
+                            return "Bitte wähle ein Datum/eine Zeit in der Zukunft";
                           }
                           return null;
                         },
