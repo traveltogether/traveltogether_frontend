@@ -5,6 +5,7 @@ import '../widgets/text_input.dart';
 import 'package:traveltogether_frontend/services/journey_service.dart';
 import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'main.dart';
 
 class AddJourneyPage extends StatefulWidget {
   AddJourneyPage({Key key}) : super(key: key);
@@ -17,20 +18,21 @@ class AddJourneyPageState extends State<AddJourneyPage> {
   var journey = new JourneyWriteViewModel();
   JourneyService journeyService = new JourneyService();
 
-  bool request;
-  bool offer;
+  bool request = false;
+  bool offer = true;
   String startLatLong;
   String endLatLong;
   DateTime journeyDay;
-  DateTime departureTime;
-  DateTime arrivalTime;
+  DateTime time;
+  bool timeIsDeparture = true;
   String note;
 
   final _formKey = GlobalKey<FormState>();
 
   int _radioValue = 0;
-  TextEditingController _controllerStartLatLong;
-  TextEditingController _controllerEndLatLong;
+  int _timeRadioValue = 0;
+  TextEditingController _controllerStartLatLong = new TextEditingController();
+  TextEditingController _controllerEndLatLong = new TextEditingController();
   int _departureTime;
   int _arrivalTime;
   TextEditingController _controllerNote;
@@ -57,14 +59,27 @@ class AddJourneyPageState extends State<AddJourneyPage> {
     });
   }
 
-  _createJourney(int departure, int arrival) {
+  void _handleTimeRadioValueChange(int value) {
+    setState(() {
+      _timeRadioValue = value;
+      switch (_timeRadioValue) {
+        case 0:
+          timeIsDeparture = false;
+          break;
+        case 1:
+          timeIsDeparture = true;
+          break;
+      }
+      print(timeIsDeparture);
+    });
+  }
+
+  _createJourney(int time) {
     journey.request = request;
     journey.offer = offer;
-    journey.departureTime = departure;
-    journey.arrivalTime = arrival;
+    journey.departureTime = timeIsDeparture ? time : null;
+    journey.arrivalTime = timeIsDeparture ? null : time;
     journey.note = _controllerNote.text;
-    return journey;
-    //journeyService.add(journey);
   }
 
   @override
@@ -107,96 +122,106 @@ class AddJourneyPageState extends State<AddJourneyPage> {
                         ),
                       ],
                     )),
-                Padding(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
-                    child: TextInput("Start-Adresse", Icons.location_on,
-                        _controllerStartLatLong)),
-                Padding(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
-                    child: TextInput("Ziel-Adresse", Icons.location_on,
-                        _controllerEndLatLong)),
+
                 Padding(
                   padding:
                       EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
                   child: Column(children: <Widget>[
-                    Text('Tag auswählen: '),
+                    Padding(
+                        padding:
+                        EdgeInsets.only(bottom: 15),
+                        child: TextInput("Startadresse", Icons.location_on,
+                            _controllerStartLatLong)),
+                    Padding(
+                        padding:
+                        EdgeInsets.only(bottom: 25),
+                        child: TextInput("Zieladresse", Icons.location_on,
+                            _controllerEndLatLong)),
                     DateTimeField(
-                      validator: (value) {
-                        if (value == null) {
-                          return "Bitte Eingebefeld ausfüllen";
-                        }
-                        return null;
-                      },
-                      format: DateFormat("yyyy-MM-dd"),
-                      onShowPicker: (context, currentValue) async {
-                        final date = await showDatePicker(
+                      format: DateFormat("dd.MM.yyyy"),
+                      decoration: InputDecoration(
+                        hintText: "Tag auswählen",
+                        border: const OutlineInputBorder(),
+                      ),
+                      onShowPicker: (context, currentValue) {
+                        return showDatePicker(
                             context: context,
-                            firstDate: DateTime.now().add(Duration(days: 1)),
+                            firstDate: DateTime.now(),
                             initialDate: currentValue ?? DateTime.now(),
                             lastDate: DateTime(2100));
-                        journeyDay = date;
-                        return journeyDay;
                       },
-                    ),
-                    Text(''),
-                    Text('Abfahrtzeit:'),
-                    DateTimeField(
+                      onChanged: (value) {
+                        journeyDay = value;
+                      },
                       validator: (value) {
                         if (value == null) {
                           return "Bitte Eingebefeld ausfüllen";
                         }
                         return null;
                       },
-                      format: DateFormat("HH:mm"),
-                      onShowPicker: (context, currentValue) async {
-                        if (journeyDay != null) {
-                          final time = await showTimePicker(
-                            context: context,
-                            initialTime: TimeOfDay.fromDateTime(
-                                currentValue ?? DateTime.now()),
-                          );
-                          departureTime =
-                              DateTimeField.combine(journeyDay, time);
-                          return departureTime;
-                        } else {
-                          return currentValue;
-                        }
-                      },
                     ),
-                    Text(''),
-                    Text('Ankunftzeit:'),
-                    DateTimeField(
-                      validator: (value) {
-                        if (value == null) {
-                          return "Bitte Eingebefeld ausfüllen";
-                        }
-                        return null;
-                      },
-                      format: DateFormat("HH:mm"),
-                      onShowPicker: (context, currentValue) async {
-                        if (journeyDay != null) {
-                          final time = await showTimePicker(
-                            context: context,
-                            initialTime: TimeOfDay.fromDateTime(
-                                currentValue ?? DateTime.now()),
-                          );
-                          arrivalTime = DateTimeField.combine(journeyDay, time);
-                          return arrivalTime;
-                        } else {
-                          return currentValue;
-                        }
-                      },
+              Row(
+                children: <Widget>[
+                  Radio(
+                    value: 0,
+                    groupValue: _timeRadioValue,
+                    onChanged: _handleTimeRadioValueChange,
+                  ),
+                  Text(
+                    'Startzeit',
+                    style: TextStyle(fontSize: 16.0),
+                  ),
+                  Radio(
+                    value: 1,
+                    groupValue: _timeRadioValue,
+                    onChanged: _handleTimeRadioValueChange,
+                  ),
+                  Text(
+                    'Endzeit',
+                    style: TextStyle(
+                      fontSize: 16.0,
+                    ),
+                  ),
+                ],
+              ),
+                    Padding(
+                      padding: EdgeInsets.only(top:15, bottom: 15),
+                      child: DateTimeField(
+                        decoration: InputDecoration(
+                          hintText: "Zeit",
+                          border: const OutlineInputBorder(),
+                        ),
+                        validator: (value) {
+                          if (value == null) {
+                            return "Bitte Eingebefeld ausfüllen";
+                          }
+                          return null;
+                        },
+                        format: DateFormat("HH:mm"),
+                        onShowPicker: (context, currentValue) async {
+                          print(journeyDay.toString());
+                          if (journeyDay != null) {
+                            final pickedTime = await showTimePicker(
+                              context: context,
+                              initialTime: TimeOfDay.fromDateTime(
+                                  currentValue ?? DateTime.now()),
+                            );
+                            time = DateTimeField.combine(journeyDay, pickedTime);
+                            return time;
+                          } else {
+                            return currentValue;
+                          }
+                        },
+                      ),
                     ),
                   ]),
                 ),
                 Padding(
                   padding:
-                      EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+                      EdgeInsets.only(right: 15, left: 15, bottom: 17),
                   child: TextFormField(
                     controller: _controllerNote,
-                    minLines: 2,
+                    minLines: 1,
                     maxLines: 5,
                     keyboardType: TextInputType.multiline,
                     decoration: InputDecoration(
@@ -205,27 +230,38 @@ class AddJourneyPageState extends State<AddJourneyPage> {
                     ),
                   ),
                 ),
-                Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                    child: MaterialButton(
-                        child: Text('Fahrt Erstellen'),
-                        color: Colors.blueAccent,
-                        onPressed: () {
-                          _createJourney(
-                              departureTime.toUtc().millisecondsSinceEpoch,
-                              arrivalTime.toUtc().millisecondsSinceEpoch);
-                          if (_formKey.currentState.validate()) {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return JourneyCreationPopUp(
-                                      _controllerStartLatLong.text,
-                                      _controllerEndLatLong.text,
-                                      journey);
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    OutlinedButton(
+                      child: Text("Abbrechen"),
+                      onPressed: () { Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  MyHomePage()));
+                      },
+                    ),
+                        ElevatedButton(
+                            child: Text('Fahrt Erstellen'),
+                            onPressed: () {
+                              if (_formKey.currentState.validate()) {
+                                _createJourney(
+                                    time.toUtc().millisecondsSinceEpoch);
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return JourneyCreationPopUp(
+                                          _controllerStartLatLong.text,
+                                          _controllerEndLatLong.text,
+                                          journey);
+                                    }).then((response) {
+                                  print(response);
                                 });
-                          }
-                        }))
+                              }
+                            })
+                  ]
+                )
               ]),
             ),
           ),
