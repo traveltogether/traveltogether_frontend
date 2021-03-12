@@ -12,14 +12,12 @@ import 'package:traveltogether_frontend/widgets/type_enum.dart';
 
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 
-
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-
-  Color color = Colors.blue;
+  bool isHighContrast = false; //hier von JSON Datei holen ob true oder false
 
   @override
   Widget build(BuildContext context) {
@@ -27,20 +25,13 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       navigatorKey: navigatorKey,
 
-      theme: FlexColorScheme.light(
-        colors: FlexColor.schemes[FlexScheme.brandBlue].light,
-      ).toTheme,
-
-      darkTheme: FlexColorScheme.dark(
-        colors: FlexColor.schemes[FlexScheme.mandyRed].dark,
-      ).toTheme,
-
-      themeMode: ThemeMode.system, //main zeile zum ändern
-
-      // theme: ThemeData(
-      //   primarySwatch: Colors.blue,
-      //   visualDensity: VisualDensity.adaptivePlatformDensity,
-      // ),
+      darkTheme: isHighContrast
+          ? FlexColorScheme.dark(
+              colors: FlexColor.schemes[FlexScheme.mandyRed].dark,
+            ).toTheme
+          : FlexColorScheme.light(
+              colors: FlexColor.schemes[FlexScheme.brandBlue].light,
+            ).toTheme,
 
       home: MyHomePage(),
     );
@@ -48,7 +39,6 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -64,11 +54,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   checkIfUserIsLoggedIn() async {
     var sharedPreferences = await SharedPreferences.getInstance();
-    if(sharedPreferences.getString("authKey") == null) {
+    if (sharedPreferences.getString("authKey") == null) {
       Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => LoginPage()));
+          context, MaterialPageRoute(builder: (context) => LoginPage()));
     }
   }
 
@@ -78,7 +66,6 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text("Home"),
       ),
-
       drawer: Drawer(
         child: FutureBuilder<UserReadViewModel>(
           future: userService.getCurrentUser(),
@@ -126,8 +113,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      RequestsAndOffersPage("offers", snapshot.data)));
+                                  builder: (context) => RequestsAndOffersPage(
+                                      "offers", snapshot.data)));
                         },
                       );
                     },
@@ -141,8 +128,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      RequestsAndOffersPage("requests", snapshot.data)));
+                                  builder: (context) => RequestsAndOffersPage(
+                                      "requests", snapshot.data)));
                         },
                       );
                     },
@@ -154,7 +141,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => PendingPage(snapshot.data.id)));
+                              builder: (context) =>
+                                  PendingPage(snapshot.data.id)));
                     },
                   ),
                   ListTile(
