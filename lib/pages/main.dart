@@ -4,25 +4,43 @@ import 'package:traveltogether_frontend/pages/edit_profile_page.dart';
 import 'package:traveltogether_frontend/pages/pending_page.dart';
 import 'package:traveltogether_frontend/pages/login_page.dart';
 import 'package:traveltogether_frontend/pages/requests_and_offers_page.dart';
+import 'package:traveltogether_frontend/pages/settings_page.dart';
 import 'package:traveltogether_frontend/services/user_service.dart';
 import 'package:traveltogether_frontend/websockets/chat_communication.dart';
 import 'package:traveltogether_frontend/view-models/user_read_view_model.dart';
 import 'package:traveltogether_frontend/widgets/type_enum.dart';
+
+import 'package:flex_color_scheme/flex_color_scheme.dart';
+
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+
+  Color color = Colors.blue;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       navigatorKey: navigatorKey,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
+
+      theme: FlexColorScheme.light(
+        colors: FlexColor.schemes[FlexScheme.brandBlue].light,
+      ).toTheme,
+
+      darkTheme: FlexColorScheme.dark(
+        colors: FlexColor.schemes[FlexScheme.mandyRed].dark,
+      ).toTheme,
+
+      themeMode: ThemeMode.system, //main zeile zum ändern
+
+      // theme: ThemeData(
+      //   primarySwatch: Colors.blue,
+      //   visualDensity: VisualDensity.adaptivePlatformDensity,
+      // ),
 
       home: MyHomePage(),
     );
@@ -154,7 +172,12 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: ListTile(
                       leading: Icon(Icons.settings),
                       title: Text("Einstellungen"),
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SettingsPage()));
+                      },
                     ),
                   ))
                 ],
