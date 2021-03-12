@@ -34,7 +34,7 @@ class _JourneyCreationPopUpState extends State<JourneyCreationPopUp> {
           future: Future.wait(
               [searchAddress(widget.startAddress), searchAddress(widget.endAddress)]),
           builder: (context, snapshot) {
-            if (snapshot.hasData) {
+            if (!snapshot.hasData) {
               return Padding(
                 padding: EdgeInsets.symmetric(horizontal: 95),
                 child: SizedBox(
