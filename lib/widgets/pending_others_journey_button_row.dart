@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:traveltogether_frontend/services/journey_service.dart';
 import 'package:traveltogether_frontend/view-models/journey_read_view_model.dart';
 import 'package:traveltogether_frontend/widgets/pop_up.dart';
+import 'chat_button.dart';
 
 class PendingOthersJourneyButtonRow extends StatelessWidget {
   final JourneyReadViewModel journey;
@@ -39,11 +40,7 @@ class PendingOthersJourneyButtonRow extends StatelessWidget {
               });
             }),
             child: Text("Entfernen")),
-        ElevatedButton(
-            onPressed: (() {
-              debugPrint("Chat");
-            }),
-            child: Text("Chat")),
+        ChatButton(journey.userId, currentUserId),
       ],
     );
   }

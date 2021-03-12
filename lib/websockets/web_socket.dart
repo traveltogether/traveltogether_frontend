@@ -45,7 +45,6 @@ class WebSocketsNotifications {
     if (_channel != null) {
       _isOn = true;
       if (_channel.sink != null && _isOn) {
-        debugPrint("message sent: " + message);
         _channel.sink.add(message);
       }
     }
@@ -62,7 +61,6 @@ class WebSocketsNotifications {
   _onReceptionOfMessageFromServer(message) {
     _isOn = true;
     _listeners.forEach((Function callback) {
-      debugPrint("message received: " + message);
       callback(message);
     });
   }

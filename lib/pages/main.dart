@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:traveltogether_frontend/pages/edit_profile_page.dart';
 import 'package:traveltogether_frontend/pages/pending_page.dart';
 import 'package:traveltogether_frontend/services/user_service.dart';
+import 'add_journey_page.dart';
 import 'file:///C:/Users/AnandarL/Documents/semester%204/SWE%20II/traveltogether_frontend/lib/websockets/chat_communication.dart';
 import 'package:traveltogether_frontend/view-models/user_read_view_model.dart';
+import 'package:traveltogether_frontend/widgets/type_enum.dart';
 import 'requests_and_offers_page.dart';
 
 void main() {
@@ -124,9 +126,19 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   ListTile(
                     leading: Icon(Icons.mail),
+                    title: Text("Fahrt erstellen"),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AddJourneyPage()));
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.mail),
                     title: Text("Chat"),
                     onTap: () {
-                      chat.send("ChatRoomsPacket", "", snapshot.data);
+                      chat.send(Type.ChatRoomsPacket, snapshot.data.id.toString());
                     },
                   ),
                   Divider(),

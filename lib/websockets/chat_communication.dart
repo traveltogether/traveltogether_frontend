@@ -5,11 +5,12 @@ import 'package:traveltogether_frontend/pages/chat_messages_page.dart';
 import 'package:traveltogether_frontend/pages/chat_rooms_page.dart';
 import 'package:traveltogether_frontend/view-models/user_read_view_model.dart';
 import 'package:traveltogether_frontend/view-models/chat_room_view_model.dart';
+import 'package:traveltogether_frontend/widgets/type_enum.dart';
 import 'web_socket.dart';
+
 
 ChatCommunication chat = new ChatCommunication();
 final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
-
 class ChatCommunication {
   static final ChatCommunication _chat = new ChatCommunication._internal();
   List<ChatMessageViewModel> chatRoomMessagesList;
@@ -42,16 +43,15 @@ class ChatCommunication {
             participants.forEach((id) {
               if (id == userId) {
                 List<String> information = [chatRoom.id.toString(), userId.toString(), currentUserId.toString()];
-                debugPrint("id: " + id.toString());
                 String info = information.join(',');
-                chatRoomAlreadyExists == false;
-                chat.send('ChatRoomMessagesPacket', info);
+                chatRoomAlreadyExists = false;
+                chat.send(Type.ChatRoomMessagesPacket, info);
               }
             });
           });
         }else{
           navigatorKey.currentState.push(MaterialPageRoute(
-              builder: (context) => ChatRoomsPage(chatRoomsList, currentUser)));
+              builder: (context) => ChatRoomsPage(chatRoomsList, currentUserId)));
         }
         break;
       case "ChatUnreadMessagesPacket":
@@ -87,44 +87,47 @@ class ChatCommunication {
     }
     switch (message["error"]) {
       case "privat_chat_already_exists":
-        print("HELLO: " + currentUserId.toString());
         chatRoomAlreadyExists = true;
-        debugPrint("privat_chat_already_exists");
-        chat.send("ChatRoomsPacket", "");
+        chat.send(Type.ChatRoomsPacket, currentUserId.toString());
     }
   }
 
-  send(String type, String information, [UserReadViewModel user] ) {
-    if (type == 'ChatRoomsPacket') {
-      currentUser = user;
-      sockets.send(json.encode({"type": "ChatRoomsPacket"}));
-    } else if (type == 'ChatRoomMessagesPacket') {
-      List<String> info = information.split(',');
-      chatId = int.parse(info[0]);
-      userId = int.parse(info[1]);
-      currentUserId = int.parse(info[2]);
-      sockets.send(json.encode({"type": type, "chat_id": int.parse(info[0])}));
-    } else if (type == 'ChatMessagePacket') {
-      sockets.send(information);
-    } else if (type == 'ChatRoomLeaveUserPacket') {
-      sockets.send(json.encode({
-        "type": "ChatRoomLeaveUserPacket",
-        "information": {"chat_id": int.parse(information)}
-      }));
-    } else if (type == 'ChatRoomCreatePacket') {
-      List<String> info = information.split(',');
-      userId = int.parse(info[0]);
-      currentUserId = int.parse(info[1]);
-
-      sockets.send(json.encode({
-        "type": type,
-        "information": {
-          "participants": [userId],
-          "group": false,
-        }
-      }));
-    } else {
-      sockets.send(json.encode({"type": type, "information": information}));
+  send(Type type, [String information]) {
+    switch(type) {
+      case Type.ChatMessagePacket:
+        sockets.send(information);
+        break;
+      case Type.ChatRoomCreatePacket:
+        List<String> info = information.split(',');
+        userId = int.parse(info[0]);
+        currentUserId = int.parse(info[1]);
+        sockets.send(json.encode({
+          "type": "ChatRoomCreatePacket",
+          "information": {
+            "participants": [userId],
+            "group": false,
+          }
+        }));
+        break;
+      case Type.ChatRoomLeaveUserPacket:
+        sockets.send(json.encode({
+          "type": "ChatRoomLeaveUserPacket",
+          "information": {"chat_id": int.parse(information)}
+        }));
+        break;
+      case Type.ChatRoomAddUserPacket:
+        break;
+      case Type.ChatRoomMessagesPacket:
+        List<String> info = information.split(',');
+        chatId = int.parse(info[0]);
+        userId = int.parse(info[1]);
+        currentUserId = int.parse(info[2]);
+        sockets.send(json.encode({"type": "ChatRoomMessagesPacket", "chat_id": int.parse(info[0])}));
+        break;
+      case Type.ChatRoomsPacket:
+        currentUserId = int.parse(information);
+        sockets.send(json.encode({"type": "ChatRoomsPacket"}));
+        break;
     }
   }
 

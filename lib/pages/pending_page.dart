@@ -156,7 +156,7 @@ class _PendingPageState extends State<PendingPage> {
                                   .pendingUserIds
                                   .contains(currentUserId))
                             JourneyItem(JourneyItemType.pendingOthersJourney,
-                                othersJourneys[index], _refreshPage),
+                                othersJourneys[index], _refreshPage, null, currentUserId),
                           if (othersJourneys[index].acceptedUserIds != null &&
                               othersJourneys[index]
                                   .acceptedUserIds

@@ -2,28 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:traveltogether_frontend/services/user_service.dart';
 import 'file:///C:/Users/AnandarL/Documents/semester%204/SWE%20II/traveltogether_frontend/lib/websockets/chat_communication.dart';
 import 'package:traveltogether_frontend/view-models/user_read_view_model.dart';
+import 'package:traveltogether_frontend/widgets/type_enum.dart';
 
 class ChatRoomsPage extends StatefulWidget {
   final List chatRoomsList;
-  final UserReadViewModel currentUser;
+  final int currentUserId;
 
-  ChatRoomsPage(this.chatRoomsList, this.currentUser);
+  ChatRoomsPage(this.chatRoomsList, this.currentUserId);
 
   @override
-  _ChatRoomsPageState createState() => _ChatRoomsPageState(this.chatRoomsList, this.currentUser);
+  _ChatRoomsPageState createState() => _ChatRoomsPageState(this.chatRoomsList, this.currentUserId);
 }
 
 class _ChatRoomsPageState extends State<ChatRoomsPage> {
   UserService userService = new UserService();
   List<int> userIds = [];
 
-  _ChatRoomsPageState(chatRoomList, currentUser) {
-    print(chatRoomList);
+  _ChatRoomsPageState(chatRoomList, currentUserId) {
     chatRoomList.forEach((chatRoom) {
       List<int> participants = chatRoom.participants;
       participants.forEach((id) {
-        if (id != currentUser.id) {
-          debugPrint("id: " + id.toString());
+        if (id != currentUserId) {
           userIds.add(id);
         }
       });
@@ -36,13 +35,13 @@ class _ChatRoomsPageState extends State<ChatRoomsPage> {
         ', "chat_id" : ' +
         chat_id.toString() +
         ' }';
-    chat.send("ChatRoomAddUserPacket", information);
+    chat.send(Type.ChatRoomAddUserPacket, information);
   }
 
-  _onOpenChat(int chatId, int userId, int currentUserId) {
-    List<String> information = [chatId.toString(), userId.toString(), currentUserId.toString()];
+  _onOpenChat(int chatId, int userId) {
+    List<String> information = [chatId.toString(), userId.toString(), widget.currentUserId.toString()];
     String info = information.join(',');
-    chat.send('ChatRoomMessagesPacket', info);
+    chat.send(Type.ChatRoomMessagesPacket, info);
   }
 
   @override
@@ -69,7 +68,7 @@ class _ChatRoomsPageState extends State<ChatRoomsPage> {
                           trailing: ElevatedButton(
                             onPressed: () {
                               _onOpenChat(widget.chatRoomsList[index].id,
-                                  snapshot.data.id, widget.currentUser.id);
+                                  snapshot.data.id);
                             },
                             child: new Text('Chat'),
                           ),

@@ -3,6 +3,8 @@ import 'package:traveltogether_frontend/services/journey_service.dart';
 import 'package:traveltogether_frontend/view-models/journey_read_view_model.dart';
 import 'package:traveltogether_frontend/widgets/pop_up.dart';
 
+import 'chat_button.dart';
+
 class RejectedUserButtonRow extends StatelessWidget {
   final JourneyReadViewModel journey;
   final int userId;
@@ -41,11 +43,7 @@ class RejectedUserButtonRow extends StatelessWidget {
               });
             }),
             child: Text("Absage aufheben")),
-        ElevatedButton(
-            onPressed: (() {
-              debugPrint("Chat");
-            }),
-            child: Text("Chat")),
+        ChatButton(userId, journey.userId),
       ],
     );
   }

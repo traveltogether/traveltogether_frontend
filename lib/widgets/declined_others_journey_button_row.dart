@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:traveltogether_frontend/view-models/journey_read_view_model.dart';
 
+import 'chat_button.dart';
+
 class DeclinedOthersJourneyButtonRow extends StatelessWidget {
   final JourneyReadViewModel journey;
   final int currentUserId;
@@ -14,11 +16,7 @@ class DeclinedOthersJourneyButtonRow extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        ElevatedButton(
-            onPressed: (() {
-              debugPrint("Chat");
-            }),
-            child: Text("Chat")),
+        ChatButton(journey.userId, currentUserId),
       ],
     );
   }

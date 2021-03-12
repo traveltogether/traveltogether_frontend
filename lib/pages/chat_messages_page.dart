@@ -5,6 +5,7 @@ import 'package:traveltogether_frontend/services/user_service.dart';
 import 'package:traveltogether_frontend/view-models/chat_room_view_model.dart';
 import 'package:traveltogether_frontend/view-models/user_read_view_model.dart';
 import 'package:traveltogether_frontend/websockets/chat_communication.dart';
+import 'package:traveltogether_frontend/widgets/type_enum.dart';
 
 class ChatMessagesPage extends StatefulWidget {
   final int chatRoomID;
@@ -42,20 +43,16 @@ class _ChatMessagesPageState extends State<ChatMessagesPage> {
   }
 
   _onMessageAction(message) {
-    print(message);
     switch (message["type"]) {
       case 'ChatMessagePacket':
         ChatMessageViewModel newMessage =
             new ChatMessageViewModel.fromJson(message["chat_message"]);
-        print("before = " + widget.messagesList.length.toString());
         widget.messagesList.add(newMessage);
-        print("after = " + widget.messagesList.length.toString());
         _refreshPage();
         break;
       case "ChatRoomLeaveUserPacket":
-        debugPrint("Left Chat");
         setState(() {
-          chat.send("ChatRoomsPacket", "");
+          chat.send(Type.ChatRoomsPacket, "");
         });
         break;
     }
@@ -64,7 +61,7 @@ class _ChatMessagesPageState extends State<ChatMessagesPage> {
   _onSendChat(message) {
     messageController.clear();
     chat.send(
-        'ChatMessagePacket',
+        Type.ChatMessagePacket,
         json.encode({
           "type": "ChatMessagePacket",
           "chat_message": {"chat_id": widget.chatRoomID, "message": message}
@@ -86,7 +83,7 @@ class _ChatMessagesPageState extends State<ChatMessagesPage> {
               FlatButton(
                 onPressed: () {
                   chat.send(
-                      "ChatRoomLeaveUserPacket", widget.chatRoomID.toString());
+                      Type.ChatRoomLeaveUserPacket, widget.chatRoomID.toString());
                 },
                 child: Text('Yes'),
               ),
@@ -116,7 +113,6 @@ class _ChatMessagesPageState extends State<ChatMessagesPage> {
                     if (!snapshot.hasData) {
                       return Center(child: CircularProgressIndicator());
                     } else {
-                      print(widget.userId);
                       return Row(
                         children: <Widget>[
                           IconButton(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'file:///C:/Users/AnandarL/Documents/semester%204/SWE%20II/traveltogether_frontend/lib/websockets/chat_communication.dart';
+import 'package:traveltogether_frontend/widgets/type_enum.dart';
 
 class ChatButton extends StatelessWidget {
   final int userId;
@@ -13,7 +14,7 @@ class ChatButton extends StatelessWidget {
       this.currentUserId.toString()
     ];
     String info = information.join(',');
-    chat.send('ChatRoomCreatePacket', info);
+    chat.send(Type.ChatRoomCreatePacket, info);
   }
 
   @override
