@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:traveltogether_frontend/pages/edit_profile_page.dart';
 import 'package:traveltogether_frontend/pages/pending_page.dart';
+import 'package:traveltogether_frontend/pages/login_page.dart';
 import 'package:traveltogether_frontend/pages/requests_and_offers_page.dart';
 import 'package:traveltogether_frontend/services/user_service.dart';
 import 'package:traveltogether_frontend/websockets/chat_communication.dart';
@@ -35,6 +37,22 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   UserService userService = new UserService();
+
+  @override
+  void initState() {
+    super.initState();
+    checkIfUserIsLoggedIn();
+  }
+
+  checkIfUserIsLoggedIn() async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+    if(sharedPreferences.getString("authKey") == null) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => LoginPage()));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -1,10 +1,8 @@
 import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web_socket_channel/io.dart';
 
 WebSocketsNotifications sockets = new WebSocketsNotifications();
-
-const String _SERVER_ADDRESS =
-    "wss://api.traveltogether.eu/v1/websocket?token=8c1e32b2-0faa-4d54-9e00-ddb64b2c3b57";
 
 class WebSocketsNotifications {
   static final WebSocketsNotifications _sockets =
@@ -24,8 +22,12 @@ class WebSocketsNotifications {
 
   initCommunication() async {
     reset();
+    var sharedPreferences = await SharedPreferences.getInstance();
+    var SERVERADDRESS =
+    "wss://api.traveltogether.eu/v1/websocket?token=${sharedPreferences.getString("authKey")}";
+
     try {
-      _channel = new IOWebSocketChannel.connect(_SERVER_ADDRESS);
+      _channel = new IOWebSocketChannel.connect(SERVERADDRESS);
       _channel.stream.listen(_onReceptionOfMessageFromServer);
     } catch (e) {
       /// TODO

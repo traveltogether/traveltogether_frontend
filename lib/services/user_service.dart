@@ -13,8 +13,8 @@ class UserService extends ServiceBase {
   }
 
   Future<UserReadViewModel> getCurrentUser() async {
-    var user = await get('$url/me')
-        .then((json) => mapUserToReadViewModel(json));
+    var user =
+        await get('$url/me').then((json) => mapUserToReadViewModel(json));
     return user;
   }
 
@@ -23,16 +23,20 @@ class UserService extends ServiceBase {
     return await post("auth/register", json);
   }
 
-  Future<Map<String, dynamic>> login(String usernameOrMail, String password) async {
-    return await post("auth/login",  {"username_or_mail": usernameOrMail, "password": password});
+  Future<Map<String, dynamic>> login(
+      String usernameOrMail, String password) async {
+    return await post("auth/login",
+        {"username_or_mail": usernameOrMail, "password": password}, true);
   }
 
   Future<Map<String, dynamic>> changeMail(String newMail) async {
     return put("auth/mail", {"mail": newMail});
   }
 
-  Future<Map<String, dynamic>> changePassword(String oldPassword, String newPassword) async {
-    return put("auth/password", {"old_password": oldPassword, "new_password": newPassword});
+  Future<Map<String, dynamic>> changePassword(
+      String oldPassword, String newPassword) async {
+    return put("auth/password",
+        {"old_password": oldPassword, "new_password": newPassword});
   }
 
   Future<Map<String, dynamic>> changeDisability(String disability) async {

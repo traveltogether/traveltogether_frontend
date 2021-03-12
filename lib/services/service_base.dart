@@ -1,10 +1,7 @@
 import 'dart:io';
 import 'dart:convert';
 import 'dart:async';
-import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'package:flutter/foundation.dart';
 
 class ServiceBase {
   HttpClient client = new HttpClient();

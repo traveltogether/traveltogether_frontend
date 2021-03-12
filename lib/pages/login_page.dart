@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import '../widgets/pop_up.dart';
 import '../widgets/text_input.dart';
 import 'package:traveltogether_frontend/services/user_service.dart';
+
+import 'main.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key, this.title}) : super(key: key);
@@ -11,9 +14,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class LoginPageState extends State<LoginPage> {
-  List<String> data = ['peter@gmail.com', 'P3ter', 'abcd1234'];
   String name;
   String password;
+  AutovalidateMode _autoValidate = AutovalidateMode.disabled;
 
   bool check;
   UserService userService = new UserService();
@@ -32,63 +35,82 @@ class LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Login"),
-      ),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                SizedBox(height: 170),
-                Padding(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
-                    child: TextInput(
-                        "Username oder Email", Icons.person, _controllerName)),
-                Padding(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
-                    child:
-                        TextInput("Passwort", Icons.lock, _controllerPassword, isObscure: true)),
-                SizedBox(height: 170),
-                Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                    child: MaterialButton(
-                      child: Text('Login'),
-                      color: Colors.blue,
-                      onPressed: () {
-                        userService.login(
-                            _controllerName.text, _controllerPassword.text);
-
-                        if (_validation(name, password)) {
-                          print("Erfolgreicher Login");
-                        } else {
-                          print(
-                              "Nutzerdaten nicht vorhanden, bitte Probieren Sie es erneut");
-                        }
-                        if (_formKey.currentState.validate()) print("valide");
-                      },
-                    )),
-              ],
+    return new WillPopScope(
+        onWillPop: () async => false,
+        child: Scaffold(
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            title: Text("Login"),
+          ),
+          body: Center(
+            child: SingleChildScrollView(
+              child: Form(
+                key: _formKey,
+                autovalidateMode: _autoValidate,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    SizedBox(height: 170),
+                    Padding(
+                        padding: EdgeInsets.symmetric(
+                            vertical: 16.0, horizontal: 16.0),
+                        child: TextInput("Username oder Email", Icons.person,
+                            _controllerName)),
+                    Padding(
+                        padding: EdgeInsets.symmetric(
+                            vertical: 16.0, horizontal: 16.0),
+                        child: TextInput(
+                            "Passwort", Icons.lock, _controllerPassword,
+                            isObscure: true)),
+                    SizedBox(height: 170),
+                    Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 16.0, vertical: 8.0),
+                        child: ElevatedButton(
+                            child: Text('Login'),
+                            onPressed: () {
+                              if (_formKey.currentState.validate()) {
+                                userService
+                                    .login(_controllerName.text,
+                                        _controllerPassword.text)
+                                    .then((response) {
+                                  if (response["error"] == null) {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return PopUp("Login",
+                                              "Du wurdest erfolgreich eingeloggt!");
+                                        }).then((_) {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  MyHomePage()));
+                                    });
+                                  } else {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return PopUp(
+                                              "Fehler",
+                                              response["error"] +
+                                                  "Bitte prüfe dein Passwort und Nutzernamen.",
+                                              isWarning: true);
+                                        });
+                                  }
+                                });
+                              } else {
+                                setState(() {
+                                  _autoValidate =
+                                      AutovalidateMode.onUserInteraction;
+                                });
+                              }
+                            })),
+                  ],
+                ),
+              ),
             ),
           ),
-        ),
-      ),
-    );
-  }
-
-  bool _validation(String name, String password) {
-    if (data[0] == name || data[1] == name) {
-      if (password == data[2]) {
-        return true;
-      }
-    } else {
-      return false;
-    }
+        ));
   }
 }
