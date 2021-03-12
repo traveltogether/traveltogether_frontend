@@ -34,7 +34,7 @@ class OthersPendingJourneysList extends StatelessWidget {
             if (journeys[index].pendingUserIds != null &&
                 journeys[index].pendingUserIds.contains(currentUserId))
               JourneyItem(JourneyItemType.pendingOthersJourney, journeys[index],
-                  refreshParent),
+                  refreshParent, null, currentUserId),
             if (journeys[index].acceptedUserIds != null &&
                 journeys[index].acceptedUserIds.contains(currentUserId))
               JourneyItem(JourneyItemType.acceptedOthersJourney,
