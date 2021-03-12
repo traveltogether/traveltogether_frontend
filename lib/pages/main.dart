@@ -123,16 +123,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   ListTile(
                     leading: Icon(Icons.mail),
-                    title: Text("Fahrt erstellen"),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => AddJourneyPage()));
-                    },
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.mail),
                     title: Text("Chat"),
                     onTap: () {
                       chat.send(

@@ -8,7 +8,9 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'main.dart';
 
 class AddJourneyPage extends StatefulWidget {
-  AddJourneyPage({Key key}) : super(key: key);
+  final String pageType;
+
+  AddJourneyPage(this.pageType);
 
   @override
   AddJourneyPageState createState() => AddJourneyPageState();
@@ -18,8 +20,9 @@ class AddJourneyPageState extends State<AddJourneyPage> {
   var journey = new JourneyWriteViewModel();
   JourneyService journeyService = new JourneyService();
 
-  bool request = false;
-  bool offer = true;
+  String title = "";
+  bool request;
+  bool offer;
   String startLatLong;
   String endLatLong;
   DateTime journeyDay;
@@ -32,34 +35,24 @@ class AddJourneyPageState extends State<AddJourneyPage> {
 
   final _formKey = GlobalKey<FormState>();
 
-  int _radioValue = 0;
   int _timeRadioValue = 0;
   TextEditingController _controllerStartLatLong = new TextEditingController();
   TextEditingController _controllerEndLatLong = new TextEditingController();
-  int _departureTime;
-  int _arrivalTime;
   TextEditingController _controllerNote;
 
   @override
   void initState() {
     super.initState();
     _controllerNote = new TextEditingController();
-  }
-
-  void _handleRadioValueChange(int value) {
-    setState(() {
-      _radioValue = value;
-      switch (_radioValue) {
-        case 0:
-          offer = true;
-          request = false;
-          break;
-        case 1:
-          offer = false;
-          request = true;
-          break;
-      }
-    });
+    if (widget.pageType == "requests") {
+      request = true;
+      offer = false;
+      title = "Anfrage erstellen";
+    } else {
+      request = false;
+      offer = true;
+      title = "Angebot erstellen";
+    }
   }
 
   void _handleTimeRadioValueChange(int value) {
@@ -89,43 +82,15 @@ class AddJourneyPageState extends State<AddJourneyPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Fahrt Erstellen"),
+          title: Text(title),
         ),
-        body: Center(
-          child: SingleChildScrollView(
+        body: SingleChildScrollView(
             child: Form(
               key: _formKey,
               autovalidate: _autoValidate,
-              child:
-                  Column(mainAxisAlignment: MainAxisAlignment.start, children: <
-                      Widget>[
-                Padding(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
-                    child: Row(
-                      children: <Widget>[
-                        Radio(
-                          value: 0,
-                          groupValue: _radioValue,
-                          onChanged: _handleRadioValueChange,
-                        ),
-                        Text(
-                          'Angebot',
-                          style: TextStyle(fontSize: 16.0),
-                        ),
-                        Radio(
-                          value: 1,
-                          groupValue: _radioValue,
-                          onChanged: _handleRadioValueChange,
-                        ),
-                        Text(
-                          'Anfrage',
-                          style: TextStyle(
-                            fontSize: 16.0,
-                          ),
-                        ),
-                      ],
-                    )),
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
                 Padding(
                   padding:
                       EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
@@ -265,18 +230,18 @@ class AddJourneyPageState extends State<AddJourneyPage> {
                                         _controllerEndLatLong.text,
                                         journey);
                                   }).then((response) {
-                                    if (response[0] && response[1]) {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => MyHomePage()));
-                                    } else {
-                                      print(response[0]);
-                                      print(response[1]);
-                                      isStartAddressValid = response[0];
-                                      isEndAddressValid = response[1];
-                                      _formKey.currentState.validate();
-                                    }
+                                if (response[0] && response[1]) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => MyHomePage()));
+                                } else {
+                                  print(response[0]);
+                                  print(response[1]);
+                                  isStartAddressValid = response[0];
+                                  isEndAddressValid = response[1];
+                                  _formKey.currentState.validate();
+                                }
                               });
                             } else {
                               setState(() {
@@ -288,6 +253,6 @@ class AddJourneyPageState extends State<AddJourneyPage> {
               ]),
             ),
           ),
-        ));
+        );
   }
 }

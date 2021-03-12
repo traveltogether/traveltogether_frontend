@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:traveltogether_frontend/pages/add_journey_page.dart';
 import 'package:traveltogether_frontend/services/journey_service.dart';
 import 'package:traveltogether_frontend/view-models/journey_read_view_model.dart';
 import 'package:traveltogether_frontend/view-models/user_read_view_model.dart';
@@ -65,6 +66,16 @@ class _RequestsAndOffersPageState extends State<RequestsAndOffersPage> {
               )
             ]);
           }
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        tooltip: 'Increment',
+        child: Icon(Icons.add),
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => AddJourneyPage(widget.pageType)));
         },
       ),
     );
