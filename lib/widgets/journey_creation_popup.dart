@@ -35,10 +35,13 @@ class _JourneyCreationPopUpState extends State<JourneyCreationPopUp> {
               [searchAddress(widget.startAddress), searchAddress(widget.endAddress)]),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
-              return SizedBox(
-                  width: 8,
-                  height: 8,
-                  child: CircularProgressIndicator()
+              return Padding(
+                padding: EdgeInsets.symmetric(horizontal: 95),
+                child: SizedBox(
+                  child: CircularProgressIndicator(),
+                  width: 40,
+                  height: 40,
+                ),
               );
             } else {
               if (snapshot.data[0] != null && snapshot.data[1] != null) {
@@ -59,10 +62,13 @@ class _JourneyCreationPopUpState extends State<JourneyCreationPopUp> {
                     future: journeyService.add(widget.journey),
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) {
-                        return SizedBox(
-                          width: 8,
-                          height: 8,
-                            child: CircularProgressIndicator()
+                        return Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 95),
+                          child: SizedBox(
+                            child: CircularProgressIndicator(),
+                            width: 40,
+                            height: 40,
+                          ),
                         );
                       } else {
                         areButtonsDisabled = false;
