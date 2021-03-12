@@ -26,6 +26,7 @@ class AddJourneyPageState extends State<AddJourneyPage> {
   DateTime time;
   bool timeIsDeparture = true;
   String note;
+  bool _autoValidate = false;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -92,6 +93,7 @@ class AddJourneyPageState extends State<AddJourneyPage> {
           child: SingleChildScrollView(
             child: Form(
               key: _formKey,
+              autovalidate: _autoValidate,
               child:
                   Column(mainAxisAlignment: MainAxisAlignment.start, children: <
                       Widget>[
@@ -122,19 +124,16 @@ class AddJourneyPageState extends State<AddJourneyPage> {
                         ),
                       ],
                     )),
-
                 Padding(
                   padding:
                       EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
                   child: Column(children: <Widget>[
                     Padding(
-                        padding:
-                        EdgeInsets.only(bottom: 15),
+                        padding: EdgeInsets.only(bottom: 15),
                         child: TextInput("Startadresse", Icons.location_on,
                             _controllerStartLatLong)),
                     Padding(
-                        padding:
-                        EdgeInsets.only(bottom: 25),
+                        padding: EdgeInsets.only(bottom: 25),
                         child: TextInput("Zieladresse", Icons.location_on,
                             _controllerEndLatLong)),
                     DateTimeField(
@@ -160,32 +159,32 @@ class AddJourneyPageState extends State<AddJourneyPage> {
                         return null;
                       },
                     ),
-              Row(
-                children: <Widget>[
-                  Radio(
-                    value: 0,
-                    groupValue: _timeRadioValue,
-                    onChanged: _handleTimeRadioValueChange,
-                  ),
-                  Text(
-                    'Startzeit',
-                    style: TextStyle(fontSize: 16.0),
-                  ),
-                  Radio(
-                    value: 1,
-                    groupValue: _timeRadioValue,
-                    onChanged: _handleTimeRadioValueChange,
-                  ),
-                  Text(
-                    'Endzeit',
-                    style: TextStyle(
-                      fontSize: 16.0,
+                    Row(
+                      children: <Widget>[
+                        Radio(
+                          value: 0,
+                          groupValue: _timeRadioValue,
+                          onChanged: _handleTimeRadioValueChange,
+                        ),
+                        Text(
+                          'Startzeit',
+                          style: TextStyle(fontSize: 16.0),
+                        ),
+                        Radio(
+                          value: 1,
+                          groupValue: _timeRadioValue,
+                          onChanged: _handleTimeRadioValueChange,
+                        ),
+                        Text(
+                          'Endzeit',
+                          style: TextStyle(
+                            fontSize: 16.0,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
                     Padding(
-                      padding: EdgeInsets.only(top:15, bottom: 15),
+                      padding: EdgeInsets.only(top: 15, bottom: 15),
                       child: DateTimeField(
                         decoration: InputDecoration(
                           hintText: "Zeit",
@@ -206,7 +205,8 @@ class AddJourneyPageState extends State<AddJourneyPage> {
                               initialTime: TimeOfDay.fromDateTime(
                                   currentValue ?? DateTime.now()),
                             );
-                            time = DateTimeField.combine(journeyDay, pickedTime);
+                            time =
+                                DateTimeField.combine(journeyDay, pickedTime);
                             return time;
                           } else {
                             return currentValue;
@@ -217,8 +217,7 @@ class AddJourneyPageState extends State<AddJourneyPage> {
                   ]),
                 ),
                 Padding(
-                  padding:
-                      EdgeInsets.only(right: 15, left: 15, bottom: 17),
+                  padding: EdgeInsets.only(right: 15, left: 15, bottom: 17),
                   child: TextFormField(
                     controller: _controllerNote,
                     minLines: 1,
@@ -231,37 +230,40 @@ class AddJourneyPageState extends State<AddJourneyPage> {
                   ),
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    OutlinedButton(
-                      child: Text("Abbrechen"),
-                      onPressed: () { Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  MyHomePage()));
-                      },
-                    ),
-                        ElevatedButton(
-                            child: Text('Fahrt Erstellen'),
-                            onPressed: () {
-                              if (_formKey.currentState.validate()) {
-                                _createJourney(
-                                    time.toUtc().millisecondsSinceEpoch);
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return JourneyCreationPopUp(
-                                          _controllerStartLatLong.text,
-                                          _controllerEndLatLong.text,
-                                          journey);
-                                    }).then((response) {
-                                  print(response);
-                                });
-                              }
-                            })
-                  ]
-                )
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      OutlinedButton(
+                        child: Text("Abbrechen"),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MyHomePage()));
+                        },
+                      ),
+                      ElevatedButton(
+                          child: Text('Fahrt Erstellen'),
+                          onPressed: () {
+                            if (_formKey.currentState.validate()) {
+                              _createJourney(
+                                  time.toUtc().millisecondsSinceEpoch);
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return JourneyCreationPopUp(
+                                        _controllerStartLatLong.text,
+                                        _controllerEndLatLong.text,
+                                        journey);
+                                  }).then((response) {
+                                print(response);
+                              });
+                            } else {
+                              setState(() {
+                                _autoValidate = true;
+                              });
+                            }
+                          })
+                    ])
               ]),
             ),
           ),
