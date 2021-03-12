@@ -27,6 +27,8 @@ class AddJourneyPageState extends State<AddJourneyPage> {
   bool timeIsDeparture = true;
   String note;
   bool _autoValidate = false;
+  bool isStartAddressValid = true;
+  bool isEndAddressValid = true;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -131,11 +133,19 @@ class AddJourneyPageState extends State<AddJourneyPage> {
                     Padding(
                         padding: EdgeInsets.only(bottom: 15),
                         child: TextInput("Startadresse", Icons.location_on,
-                            _controllerStartLatLong)),
+                            _controllerStartLatLong, customValidator: (value) {
+                          if (!isStartAddressValid)
+                            return "Bitte spezifiziere deine Addresse genauer";
+                          return null;
+                        })),
                     Padding(
                         padding: EdgeInsets.only(bottom: 25),
                         child: TextInput("Zieladresse", Icons.location_on,
-                            _controllerEndLatLong)),
+                            _controllerEndLatLong, customValidator: (value) {
+                          if (!isEndAddressValid)
+                            return "Bitte spezifiziere deine Addresse genauer";
+                          return null;
+                        })),
                     DateTimeField(
                       format: DateFormat("dd.MM.yyyy"),
                       decoration: InputDecoration(
@@ -255,7 +265,18 @@ class AddJourneyPageState extends State<AddJourneyPage> {
                                         _controllerEndLatLong.text,
                                         journey);
                                   }).then((response) {
-                                print(response);
+                                    if (response[0] && response[1]) {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => MyHomePage()));
+                                    } else {
+                                      print(response[0]);
+                                      print(response[1]);
+                                      isStartAddressValid = response[0];
+                                      isEndAddressValid = response[1];
+                                      _formKey.currentState.validate();
+                                    }
                               });
                             } else {
                               setState(() {

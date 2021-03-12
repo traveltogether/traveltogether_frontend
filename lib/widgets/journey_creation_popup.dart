@@ -18,11 +18,11 @@ class JourneyCreationPopUp extends StatefulWidget {
 class _JourneyCreationPopUpState extends State<JourneyCreationPopUp> {
   final JourneyService journeyService = new JourneyService();
 
-  bool areButtonsDisabled = true;
+  bool isButtonDisabled = true;
 
-  bool isStartAddressValid;
+  bool isStartAddressValid = false;
 
-  bool isEndAddressValid;
+  bool isEndAddressValid = false;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class _JourneyCreationPopUpState extends State<JourneyCreationPopUp> {
           future: Future.wait(
               [searchAddress(widget.startAddress), searchAddress(widget.endAddress)]),
           builder: (context, snapshot) {
-            if (!snapshot.hasData) {
+            if (snapshot.hasData) {
               return Padding(
                 padding: EdgeInsets.symmetric(horizontal: 95),
                 child: SizedBox(
@@ -51,13 +51,6 @@ class _JourneyCreationPopUpState extends State<JourneyCreationPopUp> {
                     [snapshot.data[1].lat, snapshot.data[1].lon].join(";");
                 isStartAddressValid = true;
                 isEndAddressValid = true;
-                print(widget.journey.startLatLong);
-                print(widget.journey.endLatLong);
-                print(widget.journey.request);
-                print(widget.journey.offer);
-                print(widget.journey.departureTime);
-                print(widget.journey.arrivalTime);
-                print(widget.journey.note);
                 return FutureBuilder<Map<String, dynamic>>(
                     future: journeyService.add(widget.journey),
                     builder: (context, snapshot) {
@@ -71,7 +64,7 @@ class _JourneyCreationPopUpState extends State<JourneyCreationPopUp> {
                           ),
                         );
                       } else {
-                        areButtonsDisabled = false;
+                        isButtonDisabled = false;
                         if (snapshot.data["error"] == null) {
                           return Text(
                                   "Deine Fahrt wurde erfolgreich erstellt!");
@@ -82,9 +75,13 @@ class _JourneyCreationPopUpState extends State<JourneyCreationPopUp> {
                       }
                     });
               } else {
-                areButtonsDisabled = false;
-                if (snapshot.data[0] != null) isStartAddressValid = true;
-                if (snapshot.data[1] != null) isEndAddressValid = true;
+                isButtonDisabled = false;
+                if (snapshot.data[0] != null) {
+                  isStartAddressValid = true;
+                }
+                if (snapshot.data[1] != null) {
+                  isEndAddressValid = true;
+                }
                 return Text(
                         "Die angegebenen Adressen konnten nicht gefunden werden.");
               }
@@ -93,7 +90,7 @@ class _JourneyCreationPopUpState extends State<JourneyCreationPopUp> {
       actions: [
         TextButton(
             onPressed: () {
-              if (!areButtonsDisabled) {
+              if (!isButtonDisabled) {
                 Navigator.pop(
                     context, [isStartAddressValid, isEndAddressValid]);
               }
