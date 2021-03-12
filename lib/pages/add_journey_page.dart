@@ -173,7 +173,6 @@ class AddJourneyPageState extends State<AddJourneyPage> {
                         },
                         format: DateFormat("HH:mm"),
                         onShowPicker: (context, currentValue) async {
-                          print(journeyDay.toString());
                           if (journeyDay != null) {
                             final pickedTime = await showTimePicker(
                               context: context,
