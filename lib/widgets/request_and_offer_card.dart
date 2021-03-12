@@ -82,7 +82,8 @@ class RequestAndOfferCard extends StatelessWidget {
             (() {
               if (this.currentUserId != null) {
                 return InterestedInJourneyButtonRow(
-                    this.journey.id,
+                    this.currentUserId,
+                    this.journey,
                     refreshParent,
                     _isCurrentUserPending ||
                         _isCurrentUserAccepted ||

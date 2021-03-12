@@ -3,6 +3,8 @@ import 'package:traveltogether_frontend/services/journey_service.dart';
 import 'package:traveltogether_frontend/view-models/journey_read_view_model.dart';
 import 'package:traveltogether_frontend/widgets/pop_up.dart';
 
+import 'chat_button.dart';
+
 class AcceptedOthersJourneyButtonRow extends StatelessWidget {
   final JourneyReadViewModel journey;
   final int currentUserId;
@@ -41,11 +43,7 @@ class AcceptedOthersJourneyButtonRow extends StatelessWidget {
               });
             }),
             child: Text("Verlassen")),
-        ElevatedButton(
-            onPressed: (() {
-              debugPrint("Chat");
-            }),
-            child: Text("Chat")),
+        ChatButton(journey.userId, currentUserId),
       ],
     );
   }

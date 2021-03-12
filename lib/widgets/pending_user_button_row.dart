@@ -6,6 +6,8 @@ import 'package:traveltogether_frontend/view-models/journey_read_view_model.dart
 import 'package:traveltogether_frontend/view-models/user_read_view_model.dart';
 import 'package:traveltogether_frontend/widgets/pop_up.dart';
 
+import 'chat_button.dart';
+
 class PendingUserButtonRow extends StatelessWidget {
   final JourneyReadViewModel journey;
   final int userId;
@@ -63,11 +65,7 @@ class PendingUserButtonRow extends StatelessWidget {
           }),
           child: Text("Ablehnen"),
         ),
-        ElevatedButton(
-            onPressed: (() {
-              debugPrint("Chat");
-            }),
-            child: Text("Chat")),
+        ChatButton(userId, journey.userId),
       ],
     );
   }

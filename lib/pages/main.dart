@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:traveltogether_frontend/pages/add_journey_page.dart';
 import 'package:traveltogether_frontend/pages/edit_profile_page.dart';
 import 'package:traveltogether_frontend/pages/pending_page.dart';
+import 'package:traveltogether_frontend/pages/requests_and_offers_page.dart';
 import 'package:traveltogether_frontend/services/user_service.dart';
+import 'package:traveltogether_frontend/websockets/chat_communication.dart';
 import 'package:traveltogether_frontend/view-models/user_read_view_model.dart';
-import 'requests_and_offers_page.dart';
+import 'package:traveltogether_frontend/widgets/type_enum.dart';
 
 void main() {
   runApp(MyApp());
@@ -14,6 +17,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      navigatorKey: navigatorKey,
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -122,8 +126,21 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   ListTile(
                     leading: Icon(Icons.mail),
-                    title: Text("Nummer 4"),
-                    onTap: () {},
+                    title: Text("Fahrt erstellen"),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AddJourneyPage()));
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.mail),
+                    title: Text("Chat"),
+                    onTap: () {
+                      chat.send(
+                          Type.ChatRoomsPacket, snapshot.data.id.toString());
+                    },
                   ),
                   Divider(),
                   Expanded(

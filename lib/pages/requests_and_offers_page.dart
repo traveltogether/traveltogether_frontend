@@ -6,6 +6,7 @@ import 'package:traveltogether_frontend/widgets/anonymizedAddressInfo.dart';
 import 'package:traveltogether_frontend/widgets/request_and_offer_card.dart';
 import '../view-models/user_read_view_model.dart';
 
+
 class RequestsAndOffersPage extends StatefulWidget {
   final String pageType;
   final UserReadViewModel currentUser;
