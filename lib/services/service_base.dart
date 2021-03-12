@@ -43,7 +43,7 @@ class ServiceBase {
   }
 
   Future<Map<String, dynamic>> post(String url,
-      [Map<String, dynamic> jsonBody, bool login]) async {
+      [Map<String, dynamic> jsonBody, bool login = false]) async {
     return client
         .postUrl(Uri.https('$baseUrl', '$version$url'))
         .then((HttpClientRequest request) async {
