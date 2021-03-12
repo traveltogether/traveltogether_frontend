@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:traveltogether_frontend/types/journey_lists.dart';
 import 'others_cancelled_journeys_list.dart';
-import 'others_pending_journeys_list.dart';
 import 'own_cancelled_journeys_list.dart';
+import 'others_pending_journey_list.dart';
 import 'own_pending_journeys_list.dart';
 
 class PendingJourneysList extends StatelessWidget {
