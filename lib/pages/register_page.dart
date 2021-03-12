@@ -123,13 +123,10 @@ class RegisterPageState extends State<RegisterPage> {
                           user.mail = _controllerEmail.text;
                           user.username = _controllerNickname.text;
                           user.firstName = _controllerFirstName.text;
+                          user.password = _controllerPassword.text;
 
-                          this
-                              .userService
-                              .addUser(user)
-                              .then((val) => print(val.toString()));
-
-                          Navigator.pop(context);
+                          this.userService.addUser(user);
+                         //Navigator.pop(context);
                         }
                       } else {
                         print("Passwort bitte erneut eingeben");

@@ -11,7 +11,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class LoginPageState extends State<LoginPage> {
-  List<String> data = ['peter@gmail.com', 'P3ter', 'abcd1234'];
   String name;
   String password;
 
@@ -63,14 +62,9 @@ class LoginPageState extends State<LoginPage> {
                       color: Colors.blue,
                       onPressed: () {
                         userService.login(
-                            _controllerName.text, _controllerPassword.text);
+                            _controllerName.text, _controllerPassword.text).then((value) => Navigator.pop(context),
+                        );
 
-                        if (_validation(name, password)) {
-                          print("Erfolgreicher Login");
-                        } else {
-                          print(
-                              "Nutzerdaten nicht vorhanden, bitte Probieren Sie es erneut");
-                        }
                         if (_formKey.currentState.validate()) print("valide");
                       },
                     )),
@@ -80,15 +74,5 @@ class LoginPageState extends State<LoginPage> {
         ),
       ),
     );
-  }
-
-  bool _validation(String name, String password) {
-    if (data[0] == name || data[1] == name) {
-      if (password == data[2]) {
-        return true;
-      }
-    } else {
-      return false;
-    }
   }
 }

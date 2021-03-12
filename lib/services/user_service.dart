@@ -20,11 +20,11 @@ class UserService extends ServiceBase {
 
   Future<Map<String, dynamic>> addUser(UserWriteViewModel user) async {
     var json = mapUserToJson(user);
-    return await post("auth/register", json);
+    return await post("auth/register", json, false);
   }
 
   Future<Map<String, dynamic>> login(String usernameOrMail, String password) async {
-    return await post("auth/login",  {"username_or_mail": usernameOrMail, "password": password});
+    return await post("auth/login",  {"username_or_mail": usernameOrMail, "password": password}, true);
   }
 
   Future<Map<String, dynamic>> changeMail(String newMail) async {
