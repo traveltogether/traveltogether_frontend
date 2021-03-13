@@ -8,7 +8,7 @@ class Button extends StatelessWidget {
   double customTextScale;
 
   Button(this.text,
-      {this.customTextColor = Colors.black87, this.customTextScale = 1.0});
+      { this.customTextScale = 1.0});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class Button extends StatelessWidget {
       onPressed: null,
       child: Text(
         this.text,
-        style: TextStyle(color: this.customTextColor),
+        style: TextStyle(),
         textScaleFactor: this.customTextScale,
         textAlign: TextAlign.left,
       ),

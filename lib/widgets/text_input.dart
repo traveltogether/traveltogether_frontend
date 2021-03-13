@@ -24,7 +24,6 @@ class TextInput extends StatelessWidget {
         hintText: this.text,
         enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(
-          color: Colors.blue,
         )),
         border: OutlineInputBorder(),
       ),

@@ -116,7 +116,6 @@ class EditProfilePageState extends State<EditProfilePage> {
                     height: 45,
                     child: Button(
                       "Nutzername: " + this.username,
-                      customTextColor: Colors.black54,
                       customTextScale: 1.1,
                     ),
                   ),
