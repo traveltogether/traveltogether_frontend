@@ -8,7 +8,7 @@ class ServiceBase {
   final String baseUrl = "api.traveltogether.eu";
   final String version = "/v1/";
 
-  void setAuthKey(Future<Map<String, dynamic>> json) async {
+  Future<void> setAuthKey(Future<Map<String, dynamic>> json) async {
     var authKey = await json.then((value) => value["session_key"].toString());
     var sharedPreferences = await SharedPreferences.getInstance();
     await sharedPreferences.setString("authKey", authKey);

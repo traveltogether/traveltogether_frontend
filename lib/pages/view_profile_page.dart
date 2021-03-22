@@ -1,4 +1,4 @@
-  import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:traveltogether_frontend/services/user_service.dart';
 import 'package:traveltogether_frontend/widgets/button.dart';
 
@@ -17,7 +17,7 @@ class ViewProfilePageState extends State<ViewProfilePage> {
   String mail;
   String disabilities;
   int id = 4;
-  double Fieldwidth = 300;
+  double fieldWidth = 300;
   double scale = 1.25;
 
   ViewProfilePageState() {
@@ -60,24 +60,31 @@ class ViewProfilePageState extends State<ViewProfilePage> {
           Padding(
             padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
             child: Container(
-
-              width: this.Fieldwidth,
-            child: Button(this.firstName, customTextScale: scale,),
+              width: this.fieldWidth,
+              child: Button(
+                this.firstName,
+                customTextScale: scale,
+              ),
             ),
           ),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
             child: Container(
-              width: this.Fieldwidth,
-              child: Button(this.username, customTextScale: scale,),
+              width: this.fieldWidth,
+              child: Button(
+                this.username,
+                customTextScale: scale,
+              ),
             ),
           ),
           Padding(
-
             padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
             child: Container(
-              width: this.Fieldwidth,
-              child: Button(this.disabilities, customTextScale: this.scale,),
+              width: this.fieldWidth,
+              child: Button(
+                this.disabilities,
+                customTextScale: this.scale,
+              ),
             ),
           ),
         ],

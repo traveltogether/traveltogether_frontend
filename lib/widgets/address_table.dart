@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'formatted_address.dart';
 
 class AddressTable extends StatelessWidget {

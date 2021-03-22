@@ -15,8 +15,7 @@ class PopUp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (isWarning == true) titleColor = Colors.red;
-    if (isHighContrast == true) titleColor = Colors.black;
+    if (isWarning) titleColor = Colors.red;
 
     Widget okButton = TextButton(
       child: Text(

@@ -1,30 +1,22 @@
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:traveltogether_frontend/pages/edit_profile_page.dart';
-import 'package:traveltogether_frontend/pages/pending_page.dart';
 import 'package:traveltogether_frontend/pages/login_page.dart';
+import 'package:traveltogether_frontend/pages/pending_page.dart';
 import 'package:traveltogether_frontend/pages/requests_and_offers_page.dart';
 import 'package:traveltogether_frontend/pages/settings_page.dart';
+import 'package:traveltogether_frontend/services/navigator_service.dart';
+import 'package:traveltogether_frontend/services/theme_service.dart';
 import 'package:traveltogether_frontend/services/user_service.dart';
-import 'package:traveltogether_frontend/websockets/chat_communication.dart';
 import 'package:traveltogether_frontend/view-models/user_read_view_model.dart';
+import 'package:traveltogether_frontend/websockets/chat_communication.dart';
 import 'package:traveltogether_frontend/widgets/type_enum.dart';
 
-import 'package:flex_color_scheme/flex_color_scheme.dart';
+ChatCommunication chat;
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      navigatorKey: navigatorKey,
-      home: MyHomePage(),
-    );
-  }
+void run() {
+  runApp(MaterialApp(home: LoginPage()));
 }
 
 class MyHomePage extends StatefulWidget {
@@ -46,8 +38,10 @@ class _MyHomePageState extends State<MyHomePage> {
   checkIfUserIsLoggedIn() async {
     var sharedPreferences = await SharedPreferences.getInstance();
     if (sharedPreferences.getString("authKey") == null) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => LoginPage()));
+      navigatorKey.currentState.pushReplacement(
+          MaterialPageRoute(builder: (context) => LoginPage()));
+    } else {
+      chat = ChatCommunication();
     }
   }
 
@@ -57,20 +51,26 @@ class _MyHomePageState extends State<MyHomePage> {
     if (isHighContrast == null) {
       isHighContrast = false;
     }
-    print(isHighContrast);
+    if (isHighContrast) {
+      ThemeService.data = FlexColorScheme.dark(
+        colors: FlexColor.schemes[FlexScheme.mandyRed].dark,
+      ).toTheme;
+    } else {
+      ThemeService.data = FlexColorScheme.light(
+        colors: FlexColor.schemes[FlexScheme.brandBlue].light,
+      ).toTheme;
+    }
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      darkTheme: isHighContrast
-          ? FlexColorScheme.dark(
-              colors: FlexColor.schemes[FlexScheme.mandyRed].dark,
-            ).toTheme
-          : FlexColorScheme.light(
-              colors: FlexColor.schemes[FlexScheme.brandBlue].light,
-            ).toTheme,
+      navigatorKey: navigatorKey,
+      darkTheme: ThemeService.data ??
+          FlexColorScheme.light(
+            colors: FlexColor.schemes[FlexScheme.brandBlue].light,
+          ).toTheme,
       home: Scaffold(
         appBar: AppBar(
           title: Text("Home"),
@@ -83,7 +83,6 @@ class _MyHomePageState extends State<MyHomePage> {
               if (!snapshot.hasData) {
                 return Center(child: CircularProgressIndicator());
               } else {
-                print(snapshot.data.id);
                 return Column(
                   children: <Widget>[
                     UserAccountsDrawerHeader(
@@ -183,6 +182,26 @@ class _MyHomePageState extends State<MyHomePage> {
               }
             },
           ),
+        ),
+        body: Align(
+          child: Column(
+              children: [
+                Text.rich(TextSpan(
+                    text: "Herzlich Willkommen!",
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 20))),
+                Text.rich(TextSpan(
+                    text: "Klicke auf das Menü links oben",
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 20))),
+                Text.rich(TextSpan(
+                    text: "um etwas zu tun.",
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 20))),
+              ],
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center),
+          alignment: Alignment.center,
         ),
       ),
     );

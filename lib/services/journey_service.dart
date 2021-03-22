@@ -78,7 +78,8 @@ class JourneyService extends ServiceBase {
     return post('$url/$journeyId/decline/$userId');
   }
 
-  Future<Map<String, dynamic>> reverseRejectionOfUser(int journeyId, int userId) {
+  Future<Map<String, dynamic>> reverseRejectionOfUser(
+      int journeyId, int userId) {
     return delete('$url/$journeyId/decline/$userId');
   }
 

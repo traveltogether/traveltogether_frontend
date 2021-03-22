@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:traveltogether_frontend/services/user_service.dart';
 import 'package:traveltogether_frontend/view-models/chat_room_view_model.dart';
@@ -47,8 +48,10 @@ class _ChatMessagesPageState extends State<ChatMessagesPage> {
       case 'ChatMessagePacket':
         ChatMessageViewModel newMessage =
             new ChatMessageViewModel.fromJson(message["chat_message"]);
-        widget.messagesList.add(newMessage);
-        _refreshPage();
+        if (widget.chatRoomID == newMessage.chatId) {
+          widget.messagesList.add(newMessage);
+          _refreshPage();
+        }
         break;
       case "ChatRoomLeaveUserPacket":
         setState(() {
@@ -68,31 +71,6 @@ class _ChatMessagesPageState extends State<ChatMessagesPage> {
         }));
   }
 
-  _onLeaveChat() {
-    return showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text('Chat Verlassen?'),
-            content: Text(
-                'Sind Sie sicher, dass Sie den Chat dauerhaft verlassen möchten?'),
-            actions: <Widget>[
-              FlatButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: Text('No'),
-              ),
-              FlatButton(
-                onPressed: () {
-                  chat.send(
-                      Type.ChatRoomLeaveUserPacket, widget.chatRoomID.toString());
-                },
-                child: Text('Yes'),
-              ),
-            ],
-          ),
-        ) ??
-        false;
-  }
-
   @override
   Widget build(BuildContext context) {
     Timer(
@@ -103,7 +81,6 @@ class _ChatMessagesPageState extends State<ChatMessagesPage> {
       appBar: AppBar(
         elevation: 0,
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
         flexibleSpace: SafeArea(
           child: Container(
               padding: EdgeInsets.only(right: 16),
@@ -121,15 +98,10 @@ class _ChatMessagesPageState extends State<ChatMessagesPage> {
                             },
                             icon: Icon(
                               Icons.arrow_back,
-                              color: Colors.black,
                             ),
                           ),
                           SizedBox(
                             width: 2,
-                          ),
-                          CircleAvatar(
-                            //backgroundImage: NetworkImage("<https://randomuser.me/api/portraits/men/5.jpg>"),
-                            maxRadius: 20,
                           ),
                           SizedBox(
                             width: 12,
@@ -139,20 +111,13 @@ class _ChatMessagesPageState extends State<ChatMessagesPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                Text(snapshot.data.username),
+                                Text.rich(TextSpan(
+                                    text: snapshot.data.username,
+                                    style: TextStyle(color: Colors.white))),
                                 SizedBox(
                                   height: 6,
                                 ),
                               ],
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              _onLeaveChat();
-                            },
-                            icon: Icon(
-                              Icons.exit_to_app_rounded,
-                              color: Colors.black,
                             ),
                           ),
                         ],
@@ -174,14 +139,14 @@ class _ChatMessagesPageState extends State<ChatMessagesPage> {
                 padding:
                     EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 10),
                 child: Align(
-                  alignment: (widget.messagesList[index].sender_id !=
+                  alignment: (widget.messagesList[index].senderId !=
                           widget.currentUserId
                       ? Alignment.topLeft
                       : Alignment.topRight),
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      color: (widget.messagesList[index].sender_id !=
+                      color: (widget.messagesList[index].senderId !=
                               widget.currentUserId
                           ? Colors.grey.shade200
                           : Colors.blue[200]),
@@ -189,7 +154,7 @@ class _ChatMessagesPageState extends State<ChatMessagesPage> {
                     padding: EdgeInsets.all(16),
                     child: Text(
                       widget.messagesList[index].message,
-                      style: TextStyle(fontSize: 15),
+                      style: TextStyle(fontSize: 15, color: Colors.black),
                     ),
                   ),
                 ),
@@ -202,7 +167,6 @@ class _ChatMessagesPageState extends State<ChatMessagesPage> {
               padding: EdgeInsets.only(left: 10, bottom: 10, top: 10),
               height: 60,
               width: double.infinity,
-              color: Colors.white,
               child: Row(
                 children: <Widget>[
                   SizedBox(
@@ -213,7 +177,6 @@ class _ChatMessagesPageState extends State<ChatMessagesPage> {
                       controller: messageController,
                       decoration: InputDecoration(
                           hintText: "Write message...",
-                          hintStyle: TextStyle(color: Colors.black54),
                           border: InputBorder.none),
                     ),
                   ),
@@ -222,11 +185,11 @@ class _ChatMessagesPageState extends State<ChatMessagesPage> {
                   ),
                   FloatingActionButton(
                     onPressed: () {
-                      _onSendChat(messageController.text);
+                      if (messageController.text.trim().isNotEmpty)
+                        _onSendChat(messageController.text);
                     },
                     child: Icon(
                       Icons.send,
-                      color: Colors.white,
                       size: 18,
                     ),
                     backgroundColor: Colors.blue,

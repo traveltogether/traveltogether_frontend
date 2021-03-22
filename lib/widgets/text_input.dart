@@ -22,9 +22,7 @@ class TextInput extends StatelessWidget {
       decoration: InputDecoration(
         prefixIcon: Icon(this.icon),
         hintText: this.text,
-        enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-        )),
+        enabledBorder: OutlineInputBorder(borderSide: BorderSide()),
         border: OutlineInputBorder(),
       ),
       controller: this._controller,

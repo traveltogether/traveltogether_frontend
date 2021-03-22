@@ -1,4 +1,3 @@
-
 class DatabaseMethods {
   List<ChatRoom> _chatRoom = [];
 
@@ -17,8 +16,10 @@ class DatabaseMethods {
       return _searchList;
     } else {
       for (int i = 0; i < userlist.length; i++) {
-        if (userlist[i].userName.toLowerCase().contains(
-            username.toLowerCase())) {
+        if (userlist[i]
+            .userName
+            .toLowerCase()
+            .contains(username.toLowerCase())) {
           _searchList.add(userlist[i]);
         }
       }
@@ -32,8 +33,10 @@ class DatabaseMethods {
       return _searchList;
     } else {
       for (int i = 0; i < userlist.length; i++) {
-        if (userlist[i].userEmail.toLowerCase().contains(
-            useremail.toLowerCase())) {
+        if (userlist[i]
+            .userEmail
+            .toLowerCase()
+            .contains(useremail.toLowerCase())) {
           _searchList.add(userlist[i]);
         }
       }
@@ -41,8 +44,8 @@ class DatabaseMethods {
     }
   }
 
-  createChatRoom(int chatRoomID, chatRoomMap){
-    _chatRoom.add(ChatRoom(chatRoomID: chatRoomID,chatRoomMap: chatRoomMap));
+  createChatRoom(int chatRoomID, chatRoomMap) {
+    _chatRoom.add(ChatRoom(chatRoomID: chatRoomID, chatRoomMap: chatRoomMap));
     return ChatRoom(chatRoomID: chatRoomID, chatRoomMap: chatRoomMap);
   }
 }

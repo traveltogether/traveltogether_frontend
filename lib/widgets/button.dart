@@ -7,8 +7,7 @@ class Button extends StatelessWidget {
   Color customTextColor;
   double customTextScale;
 
-  Button(this.text,
-      { this.customTextScale = 1.0});
+  Button(this.text, {this.customTextScale = 1.0});
 
   @override
   Widget build(BuildContext context) {

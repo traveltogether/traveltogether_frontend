@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:traveltogether_frontend/services/theme_service.dart';
 
 class FormattedAddress extends StatelessWidget {
   final String address;
@@ -11,7 +12,7 @@ class FormattedAddress extends StatelessWidget {
     return RichText(
       text: TextSpan(
           text: formatAddress(this.address),
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: ThemeService.data.textTheme.bodyText1.color),
           children: [
             if (isAnonymized)
               TextSpan(text: ' *', style: TextStyle(color: Colors.red))

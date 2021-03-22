@@ -10,7 +10,8 @@ class PendingOthersJourneyButtonRow extends StatelessWidget {
   final void Function() refreshParent;
   JourneyService journeyService;
 
-  PendingOthersJourneyButtonRow(this.journey, this.currentUserId, this.refreshParent) {
+  PendingOthersJourneyButtonRow(
+      this.journey, this.currentUserId, this.refreshParent) {
     this.journeyService = new JourneyService();
   }
 

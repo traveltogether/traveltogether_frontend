@@ -46,7 +46,6 @@ class EditProfilePageState extends State<EditProfilePage> {
   TextEditingController _controllerFirstName;
   TextEditingController _controllerEmail;
   TextEditingController _controllerDisabilities;
-  TextEditingController _controllerProfilePic;
 
   TextEditingController _controllerOldPassword;
   TextEditingController _controllerNewPassword;
@@ -85,26 +84,9 @@ class EditProfilePageState extends State<EditProfilePage> {
                     ),
                     Positioned(
                       child: CircleAvatar(
-                        radius: 80,
-                        backgroundImage: NetworkImage(
-                            "https://blog.wwf.de/wp-content/uploads/2019/10/pinguine.jpg"),
-                        child: Padding(
-                          padding: EdgeInsets.only(top: 90, left: 105),
-                          child: CircleAvatar(
-                            radius: 25,
-                            backgroundColor: Colors.black54,
-                            //child: Padding(padding: EdgeInsets.only(top: 35, left: 40),
-                            child: IconButton(
-                              iconSize: 25.0,
-                              icon: Icon(Icons.upload_outlined,
-                                  color: Colors.white),
-                              onPressed: () {
-                                //Upload Profile Pic
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
+                          radius: 80,
+                          backgroundImage: NetworkImage(
+                              "https://blog.wwf.de/wp-content/uploads/2019/10/pinguine.jpg")),
                     ),
                   ],
                 ),

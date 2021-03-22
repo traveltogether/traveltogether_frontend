@@ -1,16 +1,18 @@
 import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:traveltogether_frontend/pages/chat_messages_page.dart';
 import 'package:traveltogether_frontend/pages/chat_rooms_page.dart';
-import 'package:traveltogether_frontend/view-models/user_read_view_model.dart';
+import 'package:traveltogether_frontend/services/navigator_service.dart';
 import 'package:traveltogether_frontend/view-models/chat_room_view_model.dart';
+import 'package:traveltogether_frontend/view-models/user_read_view_model.dart';
 import 'package:traveltogether_frontend/widgets/type_enum.dart';
+
 import 'web_socket.dart';
 
+ChatCommunication chat = ChatCommunication();
 
-ChatCommunication chat = new ChatCommunication();
-final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
 class ChatCommunication {
   static final ChatCommunication _chat = new ChatCommunication._internal();
   List<ChatMessageViewModel> chatRoomMessagesList;
@@ -28,56 +30,52 @@ class ChatCommunication {
   ChatCommunication._internal() {
     sockets.initCommunication();
     sockets.addListener(_onMessageReceived);
-    sockets.send(json.encode({"type": "ChatUnreadMessagesPacket"}));
   }
 
   _onMessageReceived(serverMessage) {
     Map message = json.decode(serverMessage);
     switch (message["type"]) {
       case "ChatRoomsPacket":
-        List<ChatRoomViewModel> chatRoomsList = List<ChatRoomViewModel>.from(
-            message["chat_rooms"].map((i) => ChatRoomViewModel.fromJson(i)));
-        if (chatRoomAlreadyExists == true){
+        List<ChatRoomViewModel> chatRoomsList = [];
+        (message["chat_rooms"] as List<dynamic>).forEach((element) =>
+            chatRoomsList.add(ChatRoomViewModel.fromJson(element)));
+        if (chatRoomAlreadyExists) {
           chatRoomsList.forEach((chatRoom) {
             List<int> participants = chatRoom.participants;
             participants.forEach((id) {
               if (id == userId) {
-                List<String> information = [chatRoom.id.toString(), userId.toString(), currentUserId.toString()];
+                List<String> information = [
+                  chatRoom.id.toString(),
+                  userId.toString(),
+                  currentUserId.toString()
+                ];
                 String info = information.join(',');
                 chatRoomAlreadyExists = false;
                 chat.send(Type.ChatRoomMessagesPacket, info);
               }
             });
           });
-        }else{
+        } else {
           navigatorKey.currentState.push(MaterialPageRoute(
-              builder: (context) => ChatRoomsPage(chatRoomsList, currentUserId)));
+              builder: (context) =>
+                  ChatRoomsPage(chatRoomsList, currentUserId)));
         }
         break;
-      case "ChatUnreadMessagesPacket":
-        List<ChatMessageViewModel> unreadChatMessagesList =
-            List<ChatMessageViewModel>.from(message["chat_messages"]
-                .map((i) => ChatMessageViewModel.fromJson(i)));
-        break;
       case "ChatRoomMessagesPacket":
-        chatRoomMessagesList = List<ChatMessageViewModel>.from(
-            message["chat_messages"]
-                .map((i) => ChatMessageViewModel.fromJson(i)));
+        chatRoomMessagesList = [];
+        (message["chat_messages"] as List<dynamic>).forEach((element) =>
+            chatRoomMessagesList.add(ChatMessageViewModel.fromJson(element)));
         chatRoomMessagesList.sort((a, b) => a.time.compareTo(b.time));
         navigatorKey.currentState.push(new MaterialPageRoute(
             builder: (context) => new ChatMessagesPage(
-                chatId,
-                chatRoomMessagesList,
-                userId,
-            currentUserId)));
+                chatId, chatRoomMessagesList, userId, currentUserId)));
         break;
       case "ChatRoomCreatePacket":
-
         ChatRoomViewModel newChatRoom =
-            message["information"].map((i) => ChatRoomViewModel.fromJson(i));
+            ChatRoomViewModel.fromJson(message["information"]);
         navigatorKey.currentState.push(new MaterialPageRoute(
             builder: (context) =>
-                 ChatMessagesPage(newChatRoom.id, [], userId, currentUserId)));
+                ChatMessagesPage(newChatRoom.id, [], userId, currentUserId)));
         break;
       default:
         _listeners.forEach((Function callback) {
@@ -93,7 +91,7 @@ class ChatCommunication {
   }
 
   send(Type type, [String information]) {
-    switch(type) {
+    switch (type) {
       case Type.ChatMessagePacket:
         sockets.send(information);
         break;
@@ -122,7 +120,8 @@ class ChatCommunication {
         chatId = int.parse(info[0]);
         userId = int.parse(info[1]);
         currentUserId = int.parse(info[2]);
-        sockets.send(json.encode({"type": "ChatRoomMessagesPacket", "chat_id": int.parse(info[0])}));
+        sockets.send(json.encode(
+            {"type": "ChatRoomMessagesPacket", "chat_id": int.parse(info[0])}));
         break;
       case Type.ChatRoomsPacket:
         currentUserId = int.parse(information);

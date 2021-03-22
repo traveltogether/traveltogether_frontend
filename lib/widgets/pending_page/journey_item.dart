@@ -28,7 +28,7 @@ class JourneyItem extends StatelessWidget {
   final void Function() refreshParent;
   String text;
   String reason;
-  Color color = Colors.black;
+  Color color;
 
   JourneyItem(this.type,
       [this.journey, this.refreshParent, this.user, this.currentUserId]) {
@@ -114,11 +114,7 @@ class JourneyItem extends StatelessWidget {
                           text: text,
                           style: TextStyle(color: color),
                         ),
-                        if (reason != null)
-                          TextSpan(
-                            text: "\n${reason}",
-                            style: TextStyle(color: Colors.black),
-                          )
+                        if (reason != null) TextSpan(text: "\n${reason}")
                       ]))),
                   (() {
                     switch (this.type) {

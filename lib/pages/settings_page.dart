@@ -11,44 +11,50 @@ class SettingsPage extends StatefulWidget {
 }
 
 class SettingsPageState extends State<SettingsPage> {
-  bool isHighContrast = false;
-
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     readHighContrast();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text("Einstellungen"),
-        ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            SwitchListTile(
-              title: const Text('High Contrast'),
-              value: isHighContrast,
-              onChanged: (bool value) {
-                setState(() {
-                  isHighContrast = value;
-                  writeHighContrast(value);
-                  showDialog(context: context, builder: (context){
-                  return PopUp("Hinweis", "Bitte starten Sie für diese Änderung die Applikation neu");
-                  }
-                  );
-                });
-              },
-              activeTrackColor: Colors.lightBlueAccent,
-              activeColor: Colors.lightBlue,
-              secondary: const Icon(Icons.lightbulb_outline),
-            ),
-          ],
-        ));
+    return FutureBuilder<bool>(
+        future: readHighContrast(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) return CircularProgressIndicator();
+
+          bool isHighContrast = snapshot.data;
+          return Scaffold(
+              appBar: AppBar(
+                title: Text("Einstellungen"),
+              ),
+              body: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SwitchListTile(
+                    title: const Text('High Contrast'),
+                    value: isHighContrast,
+                    onChanged: (bool value) {
+                      setState(() {
+                        isHighContrast = value;
+                        writeHighContrast(value);
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return PopUp("Hinweis",
+                                  "Bitte starten Sie für diese Änderung die Applikation neu");
+                            });
+                      });
+                    },
+                    activeTrackColor: Colors.lightBlueAccent,
+                    activeColor: Colors.lightBlue,
+                    secondary: const Icon(Icons.lightbulb_outline),
+                  ),
+                ],
+              ));
+        });
   }
 
   writeHighContrast(bool isHighContrast) async {
@@ -56,9 +62,8 @@ class SettingsPageState extends State<SettingsPage> {
     await sharedPreferences.setBool("HighContrastMode", isHighContrast);
   }
 
-  readHighContrast() async {
+  Future<bool> readHighContrast() async {
     var sharedPreferences = await SharedPreferences.getInstance();
-    isHighContrast = sharedPreferences.getBool("HighContrastMode");
-    setState(() {});
+    return sharedPreferences.getBool("HighContrastMode") ?? false;
   }
 }

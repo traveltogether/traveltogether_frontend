@@ -1,9 +1,7 @@
-
 import 'package:traveltogether_frontend/view-models/user_read_view_model.dart';
 import 'package:traveltogether_frontend/view-models/user_write_view_model.dart';
 
-UserReadViewModel
-mapUserToReadViewModel(Map<String, dynamic> json) {
+UserReadViewModel mapUserToReadViewModel(Map<String, dynamic> json) {
   var user = new UserReadViewModel();
 
   user.id = json["id"];

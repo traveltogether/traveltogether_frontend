@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
-
-import '../view-models/journey_write_view_model.dart';
 import '../view-models/journey_read_view_model.dart';
+import '../view-models/journey_write_view_model.dart';
 
 JourneyReadViewModel mapJourneyToReadViewModel(Map<String, dynamic> json) {
   var journey = new JourneyReadViewModel();

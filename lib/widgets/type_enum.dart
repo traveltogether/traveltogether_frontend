@@ -1,1 +1,9 @@
-enum Type {ChatMessagePacket, ChatRoomAddUserPacket, ChatRoomLeaveUserPacket, ChatRoomCreatePacket, ChatUnreadMessagesPacket, ChatRoomMessagesPacket, ChatRoomsPacket}
+enum Type {
+  ChatMessagePacket,
+  ChatRoomAddUserPacket,
+  ChatRoomLeaveUserPacket,
+  ChatRoomCreatePacket,
+  ChatUnreadMessagesPacket,
+  ChatRoomMessagesPacket,
+  ChatRoomsPacket
+}

@@ -23,14 +23,14 @@ class WebSocketsNotifications {
   initCommunication() async {
     reset();
     var sharedPreferences = await SharedPreferences.getInstance();
-    var SERVERADDRESS =
-    "wss://api.traveltogether.eu/v1/websocket?token=${sharedPreferences.getString("authKey")}";
+    var serverAddress =
+        "wss://api.traveltogether.eu/v1/websocket?token=${sharedPreferences.getString("authKey")}";
 
     try {
-      _channel = new IOWebSocketChannel.connect(SERVERADDRESS);
+      _channel = new IOWebSocketChannel.connect(serverAddress);
       _channel.stream.listen(_onReceptionOfMessageFromServer);
     } catch (e) {
-      /// TODO
+      // ignore exceptions
     }
   }
 

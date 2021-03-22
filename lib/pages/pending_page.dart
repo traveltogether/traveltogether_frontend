@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:traveltogether_frontend/services/journey_service.dart';
 import 'package:traveltogether_frontend/types/journey_lists.dart';
 import 'package:traveltogether_frontend/view-models/journey_read_view_model.dart';
-import 'package:traveltogether_frontend/widgets/anonymizedAddressInfo.dart';
+import 'package:traveltogether_frontend/widgets/anonymized_address_info.dart';
 import 'package:traveltogether_frontend/widgets/pending_page/pending_journeys_list.dart';
 
 class PendingPage extends StatefulWidget {

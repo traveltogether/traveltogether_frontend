@@ -3,10 +3,9 @@ import 'package:traveltogether_frontend/pages/add_journey_page.dart';
 import 'package:traveltogether_frontend/services/journey_service.dart';
 import 'package:traveltogether_frontend/view-models/journey_read_view_model.dart';
 import 'package:traveltogether_frontend/view-models/user_read_view_model.dart';
-import 'package:traveltogether_frontend/widgets/anonymizedAddressInfo.dart';
+import 'package:traveltogether_frontend/widgets/anonymized_address_info.dart';
 import 'package:traveltogether_frontend/widgets/request_and_offer_card.dart';
 import '../view-models/user_read_view_model.dart';
-
 
 class RequestsAndOffersPage extends StatefulWidget {
   final String pageType;

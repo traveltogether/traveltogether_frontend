@@ -5,8 +5,8 @@ class ChatRoomViewModel {
 
   ChatRoomViewModel(this.id, this.participants, this.group);
 
-  void addUser(int user_id) {
-    participants.add(user_id);
+  void addUser(int userId) {
+    participants.add(userId);
   }
 
   ChatRoomViewModel.fromJson(Map json) {
@@ -18,23 +18,23 @@ class ChatRoomViewModel {
 
 class ChatMessageViewModel {
   int id;
-  int chat_id;
-  int sender_id;
+  int chatId;
+  int senderId;
   String message;
   int time;
 
   ChatMessageViewModel(
     this.id,
-    this.chat_id,
-    this.sender_id,
+    this.chatId,
+    this.senderId,
     this.message,
     this.time,
   );
 
   ChatMessageViewModel.fromJson(Map json) {
     this.id = json["id"];
-    this.chat_id = json["chat_id"];
-    this.sender_id = json["sender_id"];
+    this.chatId = json["chat_id"];
+    this.senderId = json["sender_id"];
     this.message = json["message"];
     this.time = json["time"];
   }

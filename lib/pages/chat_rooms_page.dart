@@ -11,7 +11,8 @@ class ChatRoomsPage extends StatefulWidget {
   ChatRoomsPage(this.chatRoomsList, this.currentUserId);
 
   @override
-  _ChatRoomsPageState createState() => _ChatRoomsPageState(this.chatRoomsList, this.currentUserId);
+  _ChatRoomsPageState createState() =>
+      _ChatRoomsPageState(this.chatRoomsList, this.currentUserId);
 }
 
 class _ChatRoomsPageState extends State<ChatRoomsPage> {
@@ -29,17 +30,21 @@ class _ChatRoomsPageState extends State<ChatRoomsPage> {
     });
   }
 
-  _onAddUser(int user_id, int chat_id) {
+  _onAddUser(int userId, int chatId) {
     var information = '{ "chat_id" : ' +
-        user_id.toString() +
+        userId.toString() +
         ', "chat_id" : ' +
-        chat_id.toString() +
+        chatId.toString() +
         ' }';
     chat.send(Type.ChatRoomAddUserPacket, information);
   }
 
   _onOpenChat(int chatId, int userId) {
-    List<String> information = [chatId.toString(), userId.toString(), widget.currentUserId.toString()];
+    List<String> information = [
+      chatId.toString(),
+      userId.toString(),
+      widget.currentUserId.toString()
+    ];
     String info = information.join(',');
     chat.send(Type.ChatRoomMessagesPacket, info);
   }
@@ -48,8 +53,7 @@ class _ChatRoomsPageState extends State<ChatRoomsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("travel together"),
-        automaticallyImplyLeading: false,
+        title: Text("Chat"),
       ),
       body: widget.chatRoomsList.isEmpty
           ? Center(child: Text('Noch keine Chats vorhanden'))

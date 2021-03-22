@@ -31,8 +31,10 @@ class _JourneyCreationPopUpState extends State<JourneyCreationPopUp> {
         "Fahrt erstellen",
       ),
       content: FutureBuilder<List<Place>>(
-          future: Future.wait(
-              [searchAddress(widget.startAddress), searchAddress(widget.endAddress)]),
+          future: Future.wait([
+            searchAddress(widget.startAddress),
+            searchAddress(widget.endAddress)
+          ]),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return Padding(
@@ -67,10 +69,10 @@ class _JourneyCreationPopUpState extends State<JourneyCreationPopUp> {
                         isButtonDisabled = false;
                         if (snapshot.data["error"] == null) {
                           return Text(
-                                  "Deine Fahrt wurde erfolgreich erstellt!");
+                              "Deine Fahrt wurde erfolgreich erstellt!");
                         } else {
                           return Text(snapshot.data["error"] +
-                                  "\n\nBitte kontaktiere den Support.");
+                              "\n\nBitte kontaktiere den Support.");
                         }
                       }
                     });
@@ -83,7 +85,7 @@ class _JourneyCreationPopUpState extends State<JourneyCreationPopUp> {
                   isEndAddressValid = true;
                 }
                 return Text(
-                        "Die angegebenen Adressen konnten nicht gefunden werden.");
+                    "Die angegebenen Adressen konnten nicht gefunden werden.");
               }
             }
           }),

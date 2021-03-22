@@ -1,4 +1,4 @@
-class JourneyReadViewModel{
+class JourneyReadViewModel {
   int id;
   int userId;
   bool isOffer;

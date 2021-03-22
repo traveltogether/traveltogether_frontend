@@ -11,7 +11,8 @@ class AcceptedOthersJourneyButtonRow extends StatelessWidget {
   final void Function() refreshParent;
   JourneyService journeyService;
 
-  AcceptedOthersJourneyButtonRow(this.journey, this.currentUserId, this.refreshParent) {
+  AcceptedOthersJourneyButtonRow(
+      this.journey, this.currentUserId, this.refreshParent) {
     this.journeyService = new JourneyService();
   }
 

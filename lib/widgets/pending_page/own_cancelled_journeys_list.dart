@@ -9,8 +9,7 @@ class OwnCancelledJourneysList extends StatelessWidget {
   final void Function() refreshParent;
   final bool isFirstItem;
 
-  OwnCancelledJourneysList(
-      this.journeys, this.refreshParent, this.isFirstItem);
+  OwnCancelledJourneysList(this.journeys, this.refreshParent, this.isFirstItem);
 
   @override
   Widget build(BuildContext context) {
