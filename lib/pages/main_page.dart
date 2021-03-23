@@ -67,7 +67,8 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return MaterialApp(
       navigatorKey: navigatorKey,
-      darkTheme: ThemeService.data ??
+      themeMode: ThemeMode.light,
+      theme: ThemeService.data ??
           FlexColorScheme.light(
             colors: FlexColor.schemes[FlexScheme.brandBlue].light,
           ).toTheme,
