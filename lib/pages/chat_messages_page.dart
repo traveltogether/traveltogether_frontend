@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:traveltogether_frontend/services/theme_service.dart';
 import 'package:traveltogether_frontend/services/user_service.dart';
 import 'package:traveltogether_frontend/view-models/chat_room_view_model.dart';
 import 'package:traveltogether_frontend/view-models/user_read_view_model.dart';
@@ -164,6 +165,7 @@ class _ChatMessagesPageState extends State<ChatMessagesPage> {
           Align(
             alignment: Alignment.bottomLeft,
             child: Container(
+              color: ThemeService.data.backgroundColor,
               padding: EdgeInsets.only(left: 10, bottom: 10, top: 10),
               height: 60,
               width: double.infinity,
