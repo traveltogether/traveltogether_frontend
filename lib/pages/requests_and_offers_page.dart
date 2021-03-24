@@ -32,11 +32,10 @@ class _RequestsAndOffersPageState extends State<RequestsAndOffersPage> {
       ),
       body: FutureBuilder<List<JourneyReadViewModel>>(
         future: journeyService.getAll(
-          openForRequests: true,
-          offer: widget.pageType == "offers" ? true : null,
-          request: widget.pageType == "requests" ? true : null,
-          nonExpired: true
-        ),
+            openForRequests: true,
+            offer: widget.pageType == "offers" ? true : null,
+            request: widget.pageType == "requests" ? true : null,
+            nonExpired: true),
         builder: (BuildContext context,
             AsyncSnapshot<List<JourneyReadViewModel>> snapshot) {
           if ((!snapshot.hasData || widget.currentUser == null)) {
@@ -44,7 +43,9 @@ class _RequestsAndOffersPageState extends State<RequestsAndOffersPage> {
           } else {
             List<JourneyReadViewModel> journeys = [];
             snapshot.data.forEach((journey) {
-              if (journey.userId != widget.currentUser.id) {
+              if (journey.userId != widget.currentUser.id &&
+                  journey.cancelledByHost != null &&
+                  !journey.cancelledByHost) {
                 journeys.add(journey);
               }
               journeys.sort((a, b) =>

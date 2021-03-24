@@ -10,7 +10,6 @@ import 'package:traveltogether_frontend/widgets/rejected_user_button_row.dart';
 
 import '../../services/theme_service.dart';
 
-
 enum JourneyItemType {
   pending,
   accepted,
@@ -118,9 +117,12 @@ class JourneyItem extends StatelessWidget {
                           text: text,
                           style: TextStyle(color: color),
                         ),
-                        if (reason != null) TextSpan(
-                            style: TextStyle(color: ThemeService.data.textTheme.bodyText1.color),
-                            text: "\n${reason}")
+                        if (reason != null)
+                          TextSpan(
+                              style: TextStyle(
+                                  color: ThemeService
+                                      .data.textTheme.bodyText1.color),
+                              text: "\n${reason}")
                       ]))),
                   (() {
                     switch (this.type) {

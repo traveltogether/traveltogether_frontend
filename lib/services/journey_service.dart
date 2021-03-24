@@ -15,7 +15,8 @@ class JourneyService extends ServiceBase {
       queryParameters["openForRequests"] = openForRequests.toString();
     if (request != null) queryParameters["request"] = request.toString();
     if (offer != null) queryParameters["offer"] = offer.toString();
-    if (nonExpired != null) queryParameters["non-expired"] = nonExpired.toString();
+    if (nonExpired != null)
+      queryParameters["non-expired"] = nonExpired.toString();
     return queryParameters;
   }
 
