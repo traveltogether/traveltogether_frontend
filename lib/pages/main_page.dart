@@ -16,7 +16,12 @@ import 'package:traveltogether_frontend/widgets/type_enum.dart';
 ChatCommunication chat;
 
 void run() {
-  runApp(MaterialApp(home: LoginPage()));
+  runApp(MaterialApp(
+      home: LoginPage(),
+      theme: FlexColorScheme.light(
+        colors: FlexColor.schemes[FlexScheme.brandBlue].light,
+      ).toTheme,
+      themeMode: ThemeMode.light));
 }
 
 class MyHomePage extends StatefulWidget {
