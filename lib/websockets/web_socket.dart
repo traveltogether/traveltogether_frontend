@@ -18,20 +18,36 @@ class WebSocketsNotifications {
 
   bool _isOn = false;
 
+  bool _closed = true;
+
   ObserverList<Function> _listeners = new ObserverList<Function>();
 
-  initCommunication() async {
-    reset();
-    var sharedPreferences = await SharedPreferences.getInstance();
-    var serverAddress =
-        "wss://api.traveltogether.eu/v1/websocket?token=${sharedPreferences.getString("authKey")}";
+  Future<void> initCommunication() async {
+    if (_closed) {
+      reset();
+      var sharedPreferences = await SharedPreferences.getInstance();
+      var serverAddress =
+          "wss://api.traveltogether.eu/v1/websocket?token=${sharedPreferences.getString("authKey")}";
 
-    try {
       _channel = new IOWebSocketChannel.connect(serverAddress);
-      _channel.stream.listen(_onReceptionOfMessageFromServer);
-    } catch (e) {
-      // ignore exceptions
+      _channel.stream.listen(_onReceptionOfMessageFromServer,
+          onDone: () => onClosed(null), onError: onClosed);
+      _closed = false;
     }
+  }
+
+  onClosed(x) {
+    try {
+      reset();
+    } catch (e) {
+      print(e);
+    }
+
+    _closed = true;
+  }
+
+  bool isClosed() {
+    return _closed;
   }
 
   reset() {
