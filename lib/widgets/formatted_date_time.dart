@@ -17,7 +17,7 @@ class FormattedDateTime extends StatelessWidget {
     } else {
       final DateTime dateTime =
           DateTime.fromMillisecondsSinceEpoch(this.dateTime);
-      final DateFormat formatter = DateFormat('dd.MM.yyyy, hh:mm');
+      final DateFormat formatter = DateFormat('dd.MM.yyyy, HH:mm');
       final String formatted = formatter.format(dateTime);
       return formatted;
     }
