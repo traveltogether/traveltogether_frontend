@@ -9,12 +9,13 @@ class JourneyService extends ServiceBase {
   final String url = "journeys";
 
   Map<String, String> assembleQueryParameters(
-      [bool openForRequests, bool request, bool offer]) {
+      [bool openForRequests, bool request, bool offer, bool nonExpired]) {
     var queryParameters = new Map<String, String>();
     if (openForRequests != null)
       queryParameters["openForRequests"] = openForRequests.toString();
     if (request != null) queryParameters["request"] = request.toString();
     if (offer != null) queryParameters["offer"] = offer.toString();
+    if (nonExpired != null) queryParameters["non-expired"] = nonExpired.toString();
     return queryParameters;
   }
 
@@ -27,9 +28,9 @@ class JourneyService extends ServiceBase {
   }
 
   Future<List<JourneyReadViewModel>> getAll(
-      {bool openForRequests, bool request, bool offer}) async {
+      {bool openForRequests, bool request, bool offer, bool nonExpired}) async {
     var queryParameters =
-        assembleQueryParameters(openForRequests, request, offer);
+        assembleQueryParameters(openForRequests, request, offer, nonExpired);
 
     var journeys = await get('$url', queryParameters).then((json) {
       List<JourneyReadViewModel> journeys = [];

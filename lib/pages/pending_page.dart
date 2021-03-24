@@ -53,7 +53,7 @@ class _PendingPageState extends State<PendingPage> {
     return Scaffold(
         appBar: AppBar(title: Text("Meine Fahrten")),
         body: FutureBuilder<List<JourneyReadViewModel>>(
-            future: journeyService.getAll(),
+            future: journeyService.getAll(nonExpired: true),
             builder: (BuildContext context,
                 AsyncSnapshot<List<JourneyReadViewModel>> snapshot) {
               if (!snapshot.hasData || widget.currentUserId == null) {

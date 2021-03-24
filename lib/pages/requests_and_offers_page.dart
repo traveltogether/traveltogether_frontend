@@ -35,6 +35,7 @@ class _RequestsAndOffersPageState extends State<RequestsAndOffersPage> {
           openForRequests: true,
           offer: widget.pageType == "offers" ? true : null,
           request: widget.pageType == "requests" ? true : null,
+          nonExpired: true
         ),
         builder: (BuildContext context,
             AsyncSnapshot<List<JourneyReadViewModel>> snapshot) {
