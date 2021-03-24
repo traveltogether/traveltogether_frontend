@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:traveltogether_frontend/pages/register_page.dart';
-import '../widgets/pop_up.dart';
-import '../widgets/text_input.dart';
 import 'package:traveltogether_frontend/services/user_service.dart';
 
+import '../widgets/pop_up.dart';
+import '../widgets/text_input.dart';
 import 'main_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -104,8 +104,11 @@ class LoginPageState extends State<LoginPage> {
                                         builder: (context) {
                                           return PopUp(
                                               "Fehler",
-                                              response["error"] +
-                                                  " Bitte prüfe dein Passwort und Nutzernamen.",
+                                              response["error"] ==
+                                                      "invalid_login_data"
+                                                  ? "Ungültige Nutzerdaten"
+                                                  : response["error"] +
+                                                      " Bitte prüfe dein Passwort und Nutzernamen.",
                                               isWarning: true);
                                         });
                                   }
